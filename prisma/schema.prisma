@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AppointmentStatus {
+  new
+  contacted
+  advised
+  completed
+}
+
+enum LeadStatus {
+  new
+  contacted
+  done
+}
+
+model Appointment {
+  id              String            @id @default(uuid()) @db.Uuid
+  fullName        String            @map("full_name")
+  phone           String
+  need            String?
+  budget          String?
+  appointmentTime String?           @map("appointment_time")
+  contactMethod   String?           @map("contact_method")
+  source          String?
+  status          AppointmentStatus @default(new)
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@map("appointments")
+}
+
+model ChatbotLead {
+  id              String     @id @default(uuid()) @db.Uuid
+  fullName        String?    @map("full_name")
+  phone           String?
+  need            String?
+  area            String?
+  budget          String?
+  bedrooms        String?
+  neededTime      String?    @map("needed_time")
+  purpose         String?
+  appointmentTime String?    @map("appointment_time")
+  contactMethod   String?    @map("contact_method")
+  conversation    Json?
+  status          LeadStatus @default(new)
+  createdAt       DateTime   @default(now()) @map("created_at")
+
+  @@map("chatbot_leads")
+}
+
+model NewsPost {
+  id           String    @id @default(uuid()) @db.Uuid
+  title        String
+  slug         String    @unique
+  excerpt      String?
+  content      String?
+  thumbnailUrl String?   @map("thumbnail_url")
+  published    Boolean   @default(false)
+  publishedAt  DateTime? @map("published_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("news_posts")
+}
+
+model Contact {
+  id        String   @id @default(uuid()) @db.Uuid
+  fullName  String   @map("full_name")
+  phone     String
+  email     String?
+  message   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contacts")
+}
+
+model Rent {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectCode  String   @map("project_code") @db.VarChar
+  unitCode     String   @map("unit_code") @db.VarChar
+  areaSqm      Decimal  @map("area_sqm") @db.Decimal
+  bedrooms     Int
+  bathrooms    Int
+  furnishing   String?  @db.Text
+  view         String?  @db.Text
+  price        Decimal  @db.Decimal
+  availability String?  @db.Text
+  sourceName   String?  @map("source_name") @db.VarChar
+  note         String?  @db.Text
+  imageUrls    String[] @default([]) @map("image_urls")
+  isVisible    Boolean  @default(true) @map("is_visible")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("rent")
+}
+
+model Sell {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectCode   String   @map("project_code") @db.VarChar
+  unitCode      String   @map("unit_code") @db.VarChar
+  areaSqm       Decimal  @map("area_sqm") @db.Decimal
+  bedrooms      Int
+  bathrooms     Int
+  furnishing    String?  @db.Text
+  view          String?  @db.Text
+  contractPrice String?  @map("contract_price") @db.Text
+  sellingPrice  String   @map("selling_price") @db.Text
+  availability  String?  @db.Text
+  sourceName    String?  @map("source_name") @db.VarChar
+  note          String?  @db.Text
+  imageUrls     String[] @default([]) @map("image_urls")
+  isVisible     Boolean  @default(true) @map("is_visible")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("sell")
+}
+
+model Staff {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  role       String
+  phone      String
+  zalo       String?
+  initials   String
+  image      String?
+  color      String
+  speciality String?
+  order      Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("staff")
+}

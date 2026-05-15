@@ -1,0 +1,426 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ================================================================
+   M-Real Estate — Design System
+   Brand: Gold primary + Navy secondary
+   Logo colors: Gold #C9971D + Navy #1D2E6F
+   ================================================================ */
+
+@theme {
+  /* --- Brand Colors (from logo) --- */
+  --color-navy:          #1D2E6F;
+  --color-navy-light:    #2A3E8F;
+  --color-navy-dark:     #141F4A;
+  --color-gold:          #C9971D;
+  --color-gold-light:    #DDB840;
+  --color-gold-dark:     #A37A12;
+  --color-dark:          #1C1C2E;
+  --color-dark-light:    #2D2D44;
+  --color-gray-bg:       #F5F5F5;
+  --color-gray-text:     #666666;
+  --color-gray-border:   #E0E0E0;
+  --color-gray-muted:    #999999;
+
+  /* Utility aliases — keep orange token pointing to gold for backward compat */
+  --color-orange:        #C9971D;
+  --color-orange-light:  #DDB840;
+  --color-orange-dark:   #A37A12;
+
+  /* --- shadcn/ui semantic tokens --- */
+  --color-background:             #FFFFFF;
+  --color-foreground:             #1C1C2E;
+  --color-card:                   #FFFFFF;
+  --color-card-foreground:        #1C1C2E;
+  --color-popover:                #FFFFFF;
+  --color-popover-foreground:     #1C1C2E;
+  --color-primary:                #C9971D;
+  --color-primary-foreground:     #FFFFFF;
+  --color-secondary:              #1D2E6F;
+  --color-secondary-foreground:   #FFFFFF;
+  --color-muted:                  #F5F5F5;
+  --color-muted-foreground:       #666666;
+  --color-accent:                 #1D2E6F;
+  --color-accent-foreground:      #FFFFFF;
+  --color-destructive:            #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-border:                 #E0E0E0;
+  --color-input:                  #E0E0E0;
+  --color-ring:                   #C9971D;
+
+  /* --- Radius --- */
+  --radius-sm:  0.25rem;
+  --radius-md:  0.375rem;
+  --radius-lg:  0.5rem;
+  --radius-xl:  0.75rem;
+  --radius-2xl: 1rem;
+
+  /* --- Typography --- */
+  --font-sans: "Inter", "ui-sans-serif", system-ui, sans-serif;
+  --font-heading: "Montserrat", "ui-sans-serif", system-ui, sans-serif;
+
+  /* --- Shadows --- */
+  --shadow-card:    0 2px 12px 0 rgba(0, 0, 0, 0.08);
+  --shadow-hover:   0 8px 32px 0 rgba(201, 151, 29, 0.20);
+  --shadow-gold:    0 4px 16px 0 rgba(201, 151, 29, 0.40);
+  --shadow-navy:    0 4px 20px 0 rgba(29, 46, 111, 0.30);
+  --shadow-orange:  0 4px 16px 0 rgba(201, 151, 29, 0.40);
+
+  /* --- Animations --- */
+  --animate-fade-in:      fade-in 0.4s ease-out;
+  --animate-slide-up:     slide-up 0.4s ease-out;
+  --animate-slide-down:   slide-down 0.25s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slider-fade {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}
+
+/* Reduce motion for users who prefer it & limit Framer Motion global speed */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ================================================================
+   Base Styles
+   ================================================================ */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    border-color: var(--color-gray-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    @apply font-sans;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-dark);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: white;
+  }
+
+  /* Focus ring — gold */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-gray-bg); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-gold);
+    border-radius: 3px;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+/* ================================================================
+   Utility Classes
+   ================================================================ */
+@layer utilities {
+  /* Container */
+  .container-site {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Section padding */
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* Text gradient gold */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Gold underline accent */
+  .heading-accent {
+    position: relative;
+    display: inline-block;
+  }
+  .heading-accent::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--color-gold);
+    border-radius: 2px;
+  }
+  .heading-accent-center::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Card hover */
+  .card-hover {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Button gold (PRIMARY CTA) */
+  .btn-navy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--color-gold);
+    color: white;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: var(--radius-lg);
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-navy:hover {
+    background-color: var(--color-gold-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-gold);
+  }
+  .btn-navy:active {
+    transform: translateY(0);
+    background-color: var(--color-gold-dark);
+  }
+
+  /* Button gold (accent CTA) */
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--color-gold);
+    color: white;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: var(--radius-lg);
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-gold:hover {
+    background-color: var(--color-gold-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-gold);
+  }
+  .btn-gold:active {
+    transform: translateY(0);
+    background-color: var(--color-gold-dark);
+  }
+
+  /* Button navy outline */
+  .btn-navy-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    color: var(--color-navy);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-navy);
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .btn-navy-outline:hover {
+    background-color: var(--color-navy);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* Section label — gold primary */
+  .section-label {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+}
+
+@theme inline {
+  --color-sidebar-ring:          var(--sidebar-ring);
+  --color-sidebar-border:          var(--sidebar-border);
+  --color-sidebar-accent-foreground:          var(--sidebar-accent-foreground);
+  --color-sidebar-accent:          var(--sidebar-accent);
+  --color-sidebar-primary-foreground:          var(--sidebar-primary-foreground);
+  --color-sidebar-primary:          var(--sidebar-primary);
+  --color-sidebar-foreground:          var(--sidebar-foreground);
+  --color-sidebar:          var(--sidebar);
+  --color-chart-5:          var(--chart-5);
+  --color-chart-4:          var(--chart-4);
+  --color-chart-3:          var(--chart-3);
+  --color-chart-2:          var(--chart-2);
+  --color-chart-1:          var(--chart-1);
+  --color-ring:          var(--ring);
+  --color-input:          var(--input);
+  --color-border:          var(--border);
+  --color-destructive:          var(--destructive);
+  --color-accent-foreground:          var(--accent-foreground);
+  --color-accent:          var(--accent);
+  --color-muted-foreground:          var(--muted-foreground);
+  --color-muted:          var(--muted);
+  --color-secondary-foreground:          var(--secondary-foreground);
+  --color-secondary:          var(--secondary);
+  --color-primary-foreground:          var(--primary-foreground);
+  --color-primary:          var(--primary);
+  --color-popover-foreground:          var(--popover-foreground);
+  --color-popover:          var(--popover);
+  --color-card-foreground:          var(--card-foreground);
+  --color-card:          var(--card);
+  --color-foreground:          var(--foreground);
+  --color-background:          var(--background);
+  --radius-sm:          calc(var(--radius) * 0.6);
+  --radius-md:          calc(var(--radius) * 0.8);
+  --radius-lg:          var(--radius);
+  --radius-xl:          calc(var(--radius) * 1.4);
+  --radius-2xl:          calc(var(--radius) * 1.8);
+  --radius-3xl:          calc(var(--radius) * 2.2);
+  --radius-4xl:          calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* M-Real Estate Brand — Navy primary, Gold accent/ring */
+  --background:                 oklch(1 0 0);
+  --foreground:                 oklch(0.19 0.06 264);
+  --card:                       oklch(1 0 0);
+  --card-foreground:            oklch(0.19 0.06 264);
+  --popover:                    oklch(1 0 0);
+  --popover-foreground:         oklch(0.19 0.06 264);
+  --primary:                    oklch(0.69 0.13 75);  /* gold */
+  --primary-foreground:         oklch(1 0 0);
+  --secondary:                  oklch(0.19 0.06 264);  /* navy */
+  --secondary-foreground:       oklch(1 0 0);
+  --muted:                      oklch(0.97 0 0);
+  --muted-foreground:           oklch(0.46 0.01 264);
+  --accent:                     oklch(0.19 0.06 264);  /* navy accent */
+  --accent-foreground:          oklch(1 0 0);
+  --destructive:                oklch(0.577 0.245 27.325);
+  --border:                     oklch(0.92 0 0);
+  --input:                      oklch(0.92 0 0);
+  --ring:                       oklch(0.69 0.13 75);  /* gold ring */
+  --chart-1:                    oklch(0.69 0.13 75);
+  --chart-2:                    oklch(0.19 0.06 264);
+  --chart-3:                    oklch(0.44 0.04 264);
+  --chart-4:                    oklch(0.82 0.08 75);
+  --chart-5:                    oklch(0.56 0.02 264);
+  --radius:                     0.625rem;
+  --sidebar:                    oklch(0.985 0 0);
+  --sidebar-foreground:         oklch(0.19 0.06 264);
+  --sidebar-primary:            oklch(0.19 0.06 264);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent:             oklch(0.69 0.13 75);
+  --sidebar-accent-foreground:  oklch(1 0 0);
+  --sidebar-border:             oklch(0.92 0 0);
+  --sidebar-ring:               oklch(0.69 0.13 75);
+}
+
+.dark {
+  --background:          oklch(0.145 0 0);
+  --foreground:          oklch(0.985 0 0);
+  --card:          oklch(0.205 0 0);
+  --card-foreground:          oklch(0.985 0 0);
+  --popover:          oklch(0.205 0 0);
+  --popover-foreground:          oklch(0.985 0 0);
+  --primary:          oklch(0.922 0 0);
+  --primary-foreground:          oklch(0.205 0 0);
+  --secondary:          oklch(0.269 0 0);
+  --secondary-foreground:          oklch(0.985 0 0);
+  --muted:          oklch(0.269 0 0);
+  --muted-foreground:          oklch(0.708 0 0);
+  --accent:          oklch(0.269 0 0);
+  --accent-foreground:          oklch(0.985 0 0);
+  --destructive:          oklch(0.704 0.191 22.216);
+  --border:          oklch(1 0 0 / 10%);
+  --input:          oklch(1 0 0 / 15%);
+  --ring:          oklch(0.556 0 0);
+  --chart-1:          oklch(0.87 0 0);
+  --chart-2:          oklch(0.556 0 0);
+  --chart-3:          oklch(0.439 0 0);
+  --chart-4:          oklch(0.371 0 0);
+  --chart-5:          oklch(0.269 0 0);
+  --sidebar:          oklch(0.205 0 0);
+  --sidebar-foreground:          oklch(0.985 0 0);
+  --sidebar-primary:          oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground:          oklch(0.985 0 0);
+  --sidebar-accent:          oklch(0.269 0 0);
+  --sidebar-accent-foreground:          oklch(0.985 0 0);
+  --sidebar-border:          oklch(1 0 0 / 10%);
+  --sidebar-ring:          oklch(0.556 0 0);
+}
