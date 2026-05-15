@@ -1,7 +1,10 @@
 "use server";
 
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import { revalidatePath } from "next/cache";
+import type { AppointmentStatus } from "@/generated/client/client";
+
+const workflowStatuses = new Set<AppointmentStatus>(["new", "contacted", "advised", "completed", "cancelled"]);
 
 export async function submitAppointment(formData: FormData) {
   try {
@@ -42,5 +45,21 @@ export async function submitAppointment(formData: FormData) {
   } catch (error) {
     console.error("Appointment submission error:", error);
     return { success: false, error: "Có lỗi xảy ra. Vui lòng thử lại." };
+  }
+}
+
+export async function updateAppointmentStatus(id: string, status: AppointmentStatus) {
+  if (!workflowStatuses.has(status)) {
+    return { success: false, error: "Trạng thái không hợp lệ" };
+  }
+
+  try {
+    await prisma.appointment.update({ where: { id }, data: { status } });
+    revalidatePath("/admin/appointments");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error) {
+    console.error("Appointment status update error:", error);
+    return { success: false, error: "Không cập nhật được trạng thái lịch hẹn" };
   }
 }

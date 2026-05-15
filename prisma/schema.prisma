@@ -7,18 +7,103 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
 enum AppointmentStatus {
   new
   contacted
   advised
   completed
+  cancelled
 }
 
 enum LeadStatus {
   new
   contacted
+  advised
+  completed
+  cancelled
   done
 }
+
+enum FurnishingStatus {
+  DEVELOPER_HANDOVER
+  BASIC_FURNISHED
+  FULLY_FURNISHED
+}
+
+// ─── Core models ─────────────────────────────────────────────────────────────
+
+model RentalListing {
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectCode     String           @map("project_code") @db.VarChar
+  unitCode        String           @map("unit_code") @db.VarChar
+  areaSqm         Decimal          @map("area_sqm") @db.Decimal
+  bedrooms        Int
+  bathrooms       Int
+  furnishingStatus FurnishingStatus @default(FULLY_FURNISHED) @map("furnishing_status")
+  furnishingNote  String?          @map("furnishing_note") @db.Text
+  view            String?          @db.Text
+  rentPrice       Decimal          @map("rent_price") @db.Decimal
+  displayPrice    String           @default("") @map("display_price") @db.Text
+  availability    String?          @db.Text
+  sourceName      String?          @map("source_name") @db.VarChar
+  note            String?          @db.Text
+  imagePaths      String[]         @default([]) @map("image_paths")
+  isVisible       Boolean          @default(true) @map("is_visible")
+  isFeatured      Boolean          @default(false) @map("is_featured")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("rental_listings")
+}
+
+model SaleListing {
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectCode     String           @map("project_code") @db.VarChar
+  unitCode        String           @map("unit_code") @db.VarChar
+  areaSqm         Decimal          @map("area_sqm") @db.Decimal
+  bedrooms        Int
+  bathrooms       Int
+  furnishingStatus FurnishingStatus @default(DEVELOPER_HANDOVER) @map("furnishing_status")
+  furnishingNote  String?          @map("furnishing_note") @db.Text
+  view            String?          @db.Text
+  contractPrice   Decimal?         @map("contract_price") @db.Decimal
+  sellingPrice    Decimal          @map("selling_price") @db.Decimal
+  displayPrice    String           @default("") @map("display_price") @db.Text
+  availability    String?          @db.Text
+  sourceName      String?          @map("source_name") @db.VarChar
+  note            String?          @db.Text
+  imagePaths      String[]         @default([]) @map("image_paths")
+  isVisible       Boolean          @default(true) @map("is_visible")
+  isFeatured      Boolean          @default(false) @map("is_featured")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@map("sale_listings")
+}
+
+model NewsPost {
+  id            String    @id @default(uuid()) @db.Uuid
+  title         String
+  slug          String    @unique
+  excerpt       String?
+  content       String?
+  thumbnailPath String?   @map("thumbnail_path")
+  imagePaths    String[]  @default([]) @map("image_paths")
+  featured      Boolean   @default(false)
+  published     Boolean   @default(false)
+  publishedAt   DateTime? @map("published_at")
+  seoTitle      String?   @map("seo_title")
+  seoDescription String?  @map("seo_description")
+  tags          String[]  @default([])
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@map("news_posts")
+}
+
+// ─── CRM / Leads ─────────────────────────────────────────────────────────────
 
 model Appointment {
   id              String            @id @default(uuid()) @db.Uuid
@@ -54,73 +139,18 @@ model ChatbotLead {
   @@map("chatbot_leads")
 }
 
-model NewsPost {
-  id           String    @id @default(uuid()) @db.Uuid
-  title        String
-  slug         String    @unique
-  excerpt      String?
-  content      String?
-  thumbnailUrl String?   @map("thumbnail_url")
-  published    Boolean   @default(false)
-  publishedAt  DateTime? @map("published_at")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-
-  @@map("news_posts")
-}
-
 model Contact {
-  id        String   @id @default(uuid()) @db.Uuid
-  fullName  String   @map("full_name")
-  phone     String
-  email     String?
-  message   String?
-  createdAt DateTime @default(now()) @map("created_at")
+  id          String    @id @default(uuid()) @db.Uuid
+  fullName    String    @map("full_name")
+  phone       String
+  email       String?
+  message     String?
+  status      String    @default("new")
+  contactedAt DateTime? @map("contacted_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@map("contacts")
-}
-
-model Rent {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  projectCode  String   @map("project_code") @db.VarChar
-  unitCode     String   @map("unit_code") @db.VarChar
-  areaSqm      Decimal  @map("area_sqm") @db.Decimal
-  bedrooms     Int
-  bathrooms    Int
-  furnishing   String?  @db.Text
-  view         String?  @db.Text
-  price        Decimal  @db.Decimal
-  availability String?  @db.Text
-  sourceName   String?  @map("source_name") @db.VarChar
-  note         String?  @db.Text
-  imageUrls    String[] @default([]) @map("image_urls")
-  isVisible    Boolean  @default(true) @map("is_visible")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
-
-  @@map("rent")
-}
-
-model Sell {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  projectCode   String   @map("project_code") @db.VarChar
-  unitCode      String   @map("unit_code") @db.VarChar
-  areaSqm       Decimal  @map("area_sqm") @db.Decimal
-  bedrooms      Int
-  bathrooms     Int
-  furnishing    String?  @db.Text
-  view          String?  @db.Text
-  contractPrice String?  @map("contract_price") @db.Text
-  sellingPrice  String   @map("selling_price") @db.Text
-  availability  String?  @db.Text
-  sourceName    String?  @map("source_name") @db.VarChar
-  note          String?  @db.Text
-  imageUrls     String[] @default([]) @map("image_urls")
-  isVisible     Boolean  @default(true) @map("is_visible")
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
-
-  @@map("sell")
 }
 
 model Staff {

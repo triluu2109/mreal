@@ -17,7 +17,7 @@ export function makeListingSlug(title: string, id = crypto.randomUUID()): string
 export function formatArea(areaSqm: number | null | undefined): string | null {
   if (areaSqm == null) return null;
   const value = Number(areaSqm);
-  return `${Number.isInteger(value) ? value.toFixed(0) : value} m2`;
+  return `${Number.isInteger(value) ? value.toFixed(0) : value} m²`;
 }
 
 export function formatLayout(bedrooms?: number | null, bathrooms?: number | null): string | null {
@@ -27,8 +27,8 @@ export function formatLayout(bedrooms?: number | null, bathrooms?: number | null
 
 export function buildListingTitle(_projectCode: string, _unitCode: string, areaSqm: number | string, bedrooms: number, bathrooms: number): string {
   const value = Number(areaSqm);
-  const area = `${Number.isInteger(value) ? value.toFixed(0) : value}m2`;
-  return `Can ho Q7 Riverside, ${bedrooms}PN ${bathrooms}WC, ${area}`;
+  const area = `${Number.isInteger(value) ? value.toFixed(0) : value}m²`;
+  return `Căn hộ Q7 Riverside, ${bedrooms}PN ${bathrooms}WC, ${area}`;
 }
 
 export function formatRentPrice(price: number | string): string {

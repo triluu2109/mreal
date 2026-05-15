@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import ChatbotClientWrapper from "@/components/chatbot/ChatbotClientWrapper";
+import { siteImages } from "@/config/images";
+// import { getImageUrl } from "@/lib/image";
 import "./globals.css";
 
 const inter = Inter({
@@ -44,8 +46,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: "/assets/logo/favicon.ico",
-    shortcut: "/assets/logo/favicon.ico",
+    icon: siteImages.logo.favicon,
+    shortcut: siteImages.logo.favicon,
   },
 };
 

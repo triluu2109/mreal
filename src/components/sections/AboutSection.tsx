@@ -1,6 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { siteImages } from "@/config/images";
+import { getImageUrl } from "@/lib/image";
+
+const q7Images = siteImages.project.q7SaigonRiverside;
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
@@ -13,21 +17,21 @@ export default function AboutSection() {
           <div className="relative">
             <div className="relative rounded-xl overflow-hidden shadow-xl aspect-[4/3]">
               <Image
-                src="/assets/project/z7579009657242_1136569b25216d4cea12e483ec3b5a07.jpg"
+                src={getImageUrl(q7Images.gallery[0])}
                 alt="M-Real Estate - Van phong"
                 fill
                 className="object-cover"
               />
             </div>
             {/* Floating mini card */}
-            <div className="absolute -bottom-6 -right-6 bg-navy text-white rounded-xl shadow-lg p-5 hidden md:block">
+            <div className="absolute -bottom-6 -right-6 bg-gold text-white rounded-xl shadow-lg p-5 hidden md:block">
               <div className="font-heading font-extrabold text-3xl">7+</div>
-              <div className="text-sm font-medium text-white/90 mt-1">Nam kinh nghiem</div>
+              <div className="text-sm font-medium text-white/90 mt-1">Năm kinh nghiệm</div>
             </div>
             {/* Small accent image */}
             <div className="absolute -top-4 -left-4 w-28 h-28 rounded-xl overflow-hidden border-4 border-white shadow-lg hidden md:block">
               <Image
-                src="/assets/project/z7579009678830_e298dfef6c11c358f1097c4f444d7405.jpg"
+                src={getImageUrl(q7Images.gallery[1])}
                 alt="Du an"
                 fill
                 className="object-cover"

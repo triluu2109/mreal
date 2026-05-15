@@ -1,161 +1,134 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/prisma";
+import { MessageSquare } from "lucide-react";
+import { prisma } from "@/server/db/prisma";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, MessageSquare } from "lucide-react";
+import { DataTable } from "@/components/admin/DataTable";
+import { EmptyState } from "@/components/admin/EmptyState";
+import { SectionHeader } from "@/components/admin/SectionHeader";
+import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/WorkflowActions";
+import { workflowStatusOptions } from "@/components/admin/StatusBadge";
+import { ChatHistoryButton } from "@/components/admin/ChatHistoryModal";
+import type { LeadStatus } from "@/generated/client/client";
 
 export const metadata: Metadata = { title: "Chatbot Leads | Admin" };
 export const dynamic = "force-dynamic";
 
-export default async function ChatbotLeadsPage() {
-  let leads: Awaited<ReturnType<typeof prisma.chatbotLead.findMany>> = [];
-  let error: string | null = null;
+const pageSize = 20;
+const statusValues = new Set(["new", "contacted", "advised", "completed", "cancelled", "done"]);
 
-  try {
-    leads = await prisma.chatbotLead.findMany({
+export default async function ChatbotLeadsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; status?: string; q?: string }>;
+}) {
+  const params = await searchParams;
+  const page = Math.max(1, Number(params.page) || 1);
+  const status = statusValues.has(params.status ?? "") ? (params.status as LeadStatus) : undefined;
+  const q = params.q?.trim() ?? "";
+  const where = {
+    ...(status ? { status } : {}),
+    ...(q
+      ? {
+          OR: [
+            { fullName: { contains: q, mode: "insensitive" as const } },
+            { phone: { contains: q, mode: "insensitive" as const } },
+            { need: { contains: q, mode: "insensitive" as const } },
+            { area: { contains: q, mode: "insensitive" as const } },
+            { budget: { contains: q, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
+  };
+
+  const [leads, total] = await Promise.all([
+    prisma.chatbotLead.findMany({
+      where,
       orderBy: { createdAt: "desc" },
-    });
-  } catch (err) {
-    error = err instanceof Error ? err.message : "Lỗi kết nối database.";
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-2xl p-10 text-center">
-        <p className="text-red-600 font-medium">Không thể tải dữ liệu chatbot leads.</p>
-        <p className="text-red-400 text-sm mt-2">{error}</p>
-      </div>
-    );
-  }
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.chatbotLead.count({ where }),
+  ]);
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   return (
     <div>
-      <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin" className="text-gray-text hover:text-navy">
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-navy">Chatbot Leads</h1>
-          <p className="text-gray-text text-sm mt-1">{leads.length} leads từ AI chatbot</p>
-        </div>
-      </div>
+      <SectionHeader title="Chatbot Leads" description={`${total} leads theo bộ lọc hiện tại`} backHref="/admin" />
+
+      <form className="mb-5 flex flex-col gap-3 rounded-2xl border border-gray-border bg-white p-4 sm:flex-row sm:items-center">
+        <input
+          name="q"
+          defaultValue={q}
+          placeholder="Tìm theo tên, SĐT, nhu cầu, khu vực..."
+          className="min-h-10 flex-1 rounded-lg border border-gray-border px-3 text-sm outline-none focus:border-gold"
+        />
+        <select name="status" defaultValue={status ?? "all"} className="min-h-10 rounded-lg border border-gray-border bg-white px-3 text-sm outline-none focus:border-gold">
+          {workflowStatusOptions.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <button type="submit" className="min-h-10 rounded-lg bg-navy px-4 text-sm font-semibold text-white hover:bg-navy-light">
+          Lọc
+        </button>
+      </form>
 
       {leads.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-border p-16 text-center">
-          <MessageSquare size={48} className="text-gray-border mx-auto mb-4" />
-          <p className="text-gray-text text-lg">Chưa có lead nào từ chatbot.</p>
-        </div>
+        <EmptyState icon={MessageSquare} title="Chưa có lead phù hợp" description="Thử đổi bộ lọc hoặc từ khóa tìm kiếm." />
       ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {leads.map((lead) => {
-            const rawConversation = lead.conversation;
-            const conversation: Array<{ role: string; content: string }> =
-              Array.isArray(rawConversation)
-                ? (rawConversation as Array<{ role: string; content: string }>).filter(
-                    (msg) => msg && typeof msg === "object" && typeof msg.role === "string" && typeof msg.content === "string"
-                  )
-                : [];
-            return (
-              <div
-                key={lead.id}
-                className="bg-white rounded-2xl border border-gray-border p-6 hover:border-gold/30 transition-all"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="font-heading font-bold text-navy text-lg">
-                      {lead.fullName ?? lead.phone ?? "Chưa để lại SĐT"}
-                    </div>
-                    {lead.fullName && (
-                      <div className="text-gray-text text-sm mt-1">
-                        SĐT: {lead.phone ?? "Chưa có"}
-                      </div>
-                    )}
-                    <div className="text-gray-muted text-sm mt-1">
-                      Ngày: {formatDate(lead.createdAt)}
-                    </div>
+        <DataTable headers={["Khách hàng", "Nhu cầu", "Thông tin", "Trạng thái", "Thao tác", "Ngày tạo"]}>
+          {leads.map((lead) => (
+            <tr key={lead.id} className="transition-colors hover:bg-gray-bg/50">
+              <td className="px-5 py-4">
+                <div className="font-semibold text-navy">{lead.fullName ?? "Chưa có tên"}</div>
+                {lead.phone
+                  ? <a href={`tel:${lead.phone}`} className="text-sm text-gray-text hover:text-gold">{lead.phone}</a>
+                  : <span className="text-sm text-gray-muted">Chưa có SĐT</span>}
+                {/* Chat history inline */}
+                {lead.conversation && (
+                  <div className="mt-1.5">
+                    <ChatHistoryButton
+                      conversation={lead.conversation}
+                      name={lead.fullName ?? lead.phone ?? "Lead"}
+                    />
                   </div>
-                  <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                    lead.status === "new" ? "bg-blue-50 text-blue-600" :
-                    lead.status === "contacted" ? "bg-yellow-50 text-yellow-600" :
-                    "bg-green-50 text-green-600"
-                  }`}>
-                    {lead.status === "new" ? "Mới" : lead.status === "contacted" ? "Đã liên hệ" : "Xong"}
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-3 mb-4">
-                  {lead.need && (
-                    <span className="bg-navy/5 text-navy text-xs px-3 py-1 rounded-full">
-                      📋 {lead.need}
-                    </span>
-                  )}
-                  {lead.area && (
-                    <span className="bg-navy/5 text-navy text-xs px-3 py-1 rounded-full">
-                      📍 {lead.area}
-                    </span>
-                  )}
-                  {lead.budget && (
-                    <span className="bg-gold/10 text-gold-dark text-xs px-3 py-1 rounded-full">
-                      💰 {lead.budget}
-                    </span>
-                  )}
-                  {lead.bedrooms && (
-                    <span className="bg-navy/5 text-navy text-xs px-3 py-1 rounded-full">
-                      🛏 {lead.bedrooms} PN
-                    </span>
-                  )}
-                  {lead.neededTime && (
-                    <span className="bg-navy/5 text-navy text-xs px-3 py-1 rounded-full">
-                      🕒 {lead.neededTime}
-                    </span>
-                  )}
-                  {lead.purpose && (
-                    <span className="bg-navy/5 text-navy text-xs px-3 py-1 rounded-full">
-                      🎯 {lead.purpose}
-                    </span>
-                  )}
-                  {lead.appointmentTime && (
-                    <span className="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full">
-                      Lịch: {lead.appointmentTime}
-                    </span>
-                  )}
-                  {lead.contactMethod && (
-                    <span className="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full">
-                      {lead.contactMethod}
-                    </span>
-                  )}
-                </div>
-
-                {/* Chat history */}
-                {conversation && conversation.length > 0 && (
-                  <details className="mt-3">
-                    <summary className="text-gold text-sm cursor-pointer hover:underline">
-                      Xem lịch sử chat ({conversation.length} tin nhắn)
-                    </summary>
-                    <div className="mt-3 space-y-2 max-h-48 overflow-y-auto bg-gray-bg rounded-xl p-4">
-                      {conversation.slice(-6).map((msg, i) => (
-                        <div
-                          key={i}
-                          className={`text-xs p-2 rounded-lg ${
-                            msg.role === "user"
-                              ? "bg-navy text-white ml-8"
-                              : "bg-white text-navy mr-8 border border-gray-border"
-                          }`}
-                        >
-                          <span className="font-semibold opacity-60">
-                            {msg.role === "user" ? "Khách: " : "Bot: "}
-                          </span>
-                          {msg.content}
-                        </div>
-                      ))}
-                    </div>
-                  </details>
                 )}
-              </div>
-            );
-          })}
-        </div>
+              </td>
+              <td className="px-5 py-4 text-sm text-gray-text">
+                <div className="max-w-[220px] line-clamp-2">{lead.need ?? "-"}</div>
+                {lead.budget ? <div className="mt-1 text-xs font-semibold text-gold-dark">{lead.budget}</div> : null}
+              </td>
+              <td className="px-5 py-4 text-sm text-gray-text">
+                <div>{[lead.area, lead.bedrooms ? `${lead.bedrooms} PN` : null].filter(Boolean).join(" · ") || "-"}</div>
+                <div className="mt-1 text-xs text-gray-muted">{[lead.neededTime, lead.purpose, lead.contactMethod].filter(Boolean).join(" · ")}</div>
+              </td>
+              {/* ── Trạng thái (riêng cột) ── */}
+              <td className="px-5 py-4">
+                <WorkflowStatusBadge status={lead.status} />
+              </td>
+              {/* ── Thao tác (riêng cột) ── */}
+              <td className="px-5 py-4">
+                <WorkflowActionButtons id={lead.id} kind="lead" status={lead.status} />
+              </td>
+              <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-text">{formatDate(lead.createdAt)}</td>
+            </tr>
+          ))}
+        </DataTable>
       )}
+
+      {totalPages > 1 ? (
+        <div className="mt-6 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+            <Link
+              key={pageNumber}
+              href={`/admin/chatbot-leads?page=${pageNumber}&status=${status ?? "all"}&q=${encodeURIComponent(q)}`}
+              className={`rounded-lg px-3 py-2 text-sm font-semibold ${pageNumber === page ? "bg-gold text-white" : "border border-gray-border bg-white text-gray-text"}`}
+            >
+              {pageNumber}
+            </Link>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

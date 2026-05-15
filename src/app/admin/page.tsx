@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import { Building, Calendar, FileText, Mail, MessageSquare, TrendingUp, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
@@ -8,44 +8,52 @@ export const metadata: Metadata = { title: "Admin Dashboard | M-Real Estate" };
 export const dynamic = "force-dynamic";
 
 async function getStats() {
-  try {
-    const [appointments, leads, news, contacts, sell, rent, staff] = await Promise.all([
-      prisma.appointment.count(),
-      prisma.chatbotLead.count(),
-      prisma.newsPost.count(),
-      prisma.contact.count(),
-      prisma.sell.count(),
-      prisma.rent.count(),
-      prisma.staff.count(),
-    ]);
+  const [
+    appointments,
+    leads,
+    news,
+    contacts,
+    sell,
+    rent,
+    staff,
+    newAppointments,
+    newLeads,
+    recentAppointments,
+    recentLeads,
+    sellVisible,
+    rentVisible,
+  ] = await Promise.all([
+    safe(() => prisma.appointment.count(), 0),
+    safe(() => prisma.chatbotLead.count(), 0),
+    safe(() => prisma.newsPost.count(), 0),
+    safe(() => prisma.contact.count(), 0),
+    safe(() => prisma.saleListing.count(), 0),
+    safe(() => prisma.rentalListing.count(), 0),
+    safe(() => prisma.staff.count(), 0),
+    safe(() => prisma.appointment.count({ where: { status: "new" } }), 0),
+    safe(() => prisma.chatbotLead.count({ where: { status: "new" } }), 0),
+    safe(() => prisma.appointment.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: { id: true, fullName: true, phone: true, status: true, createdAt: true },
+    }), []),
+    safe(() => prisma.chatbotLead.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: { id: true, fullName: true, phone: true, need: true, area: true, status: true, createdAt: true },
+    }), []),
+    safe(() => prisma.saleListing.count({ where: { isVisible: true } }), 0),
+    safe(() => prisma.rentalListing.count({ where: { isVisible: true } }), 0),
+  ]);
 
-    const [newAppointments, newLeads, recentAppointments, recentLeads, sellVisible, rentVisible] = await Promise.all([
-      prisma.appointment.count({ where: { status: "new" } }),
-      prisma.chatbotLead.count({ where: { status: "new" } }),
-      prisma.appointment.findMany({
-        take: 5,
-        orderBy: { createdAt: "desc" },
-        select: { id: true, fullName: true, phone: true, status: true, createdAt: true },
-      }),
-      prisma.chatbotLead.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
-      prisma.sell.count({ where: { isVisible: true } }),
-      prisma.rent.count({ where: { isVisible: true } }),
-    ]);
-
-    return {
-      appointments, leads, news, contacts, sell, rent, staff,
-      newAppointments, newLeads, recentAppointments, recentLeads,
-      sellVisible, rentVisible,
-      sellHidden: sell - sellVisible,
-      rentHidden: rent - rentVisible,
-    };
-  } catch {
-    return {
-      appointments: 0, leads: 0, news: 0, contacts: 0, sell: 0, rent: 0, staff: 0,
-      newAppointments: 0, newLeads: 0, recentAppointments: [], recentLeads: [],
-      sellVisible: 0, rentVisible: 0, sellHidden: 0, rentHidden: 0,
-    };
-  }
+  return {
+    appointments, leads, news, contacts, sell, rent, staff,
+    newAppointments, newLeads, recentAppointments, recentLeads,
+    sellVisible,
+    rentVisible,
+    sellHidden: sell - sellVisible,
+    rentHidden: rent - rentVisible,
+  };
 }
 
 export default async function AdminDashboard() {
@@ -55,12 +63,12 @@ export default async function AdminDashboard() {
     {
       icon: Building, label: "Giỏ hàng bán", value: stats.sell, new: null,
       href: "/admin/sell", color: "bg-navy",
-      sub: `${stats.sellVisible} hiện · ${stats.sellHidden} ẩn`,
+      sub: `${stats.sellVisible} hiện - ${stats.sellHidden} ẩn`,
     },
     {
       icon: Building, label: "Giỏ hàng thuê", value: stats.rent, new: null,
       href: "/admin/rent", color: "bg-gold",
-      sub: `${stats.rentVisible} hiện · ${stats.rentHidden} ẩn`,
+      sub: `${stats.rentVisible} hiện - ${stats.rentHidden} ẩn`,
     },
     { icon: Users, label: "Nhân sự", value: stats.staff, new: null, href: "/admin/staff", color: "bg-gold-dark", sub: null },
     { icon: Calendar, label: "Lịch hẹn", value: stats.appointments, new: stats.newAppointments, href: "/admin/appointments", color: "bg-navy-light", sub: null },
@@ -109,7 +117,7 @@ export default async function AdminDashboard() {
                 <div key={apt.id} className="flex items-center justify-between py-3 border-b border-gray-border last:border-0">
                   <div>
                     <div className="font-medium text-navy text-sm">{apt.fullName}</div>
-                    <div className="text-gray-muted text-xs">{apt.phone} · {formatDate(apt.createdAt)}</div>
+                    <div className="text-gray-muted text-xs">{apt.phone} - {formatDate(apt.createdAt)}</div>
                   </div>
                   <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-blue-50 text-blue-600">{apt.status}</span>
                 </div>
@@ -133,8 +141,8 @@ export default async function AdminDashboard() {
               {stats.recentLeads.map((lead) => (
                 <div key={lead.id} className="flex items-center justify-between py-3 border-b border-gray-border last:border-0">
                   <div>
-                    <div className="font-medium text-navy text-sm">{lead.phone ?? "Chưa có SĐT"}</div>
-                    <div className="text-gray-muted text-xs">{lead.need ?? "—"} · {lead.area ?? "—"} · {formatDate(lead.createdAt)}</div>
+                    <div className="font-medium text-navy text-sm">{lead.fullName ?? lead.phone ?? "Chưa có SĐT"}</div>
+                    <div className="text-gray-muted text-xs">{lead.need ?? "-"} - {lead.area ?? "-"} - {formatDate(lead.createdAt)}</div>
                   </div>
                   <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-blue-50 text-blue-600">{lead.status}</span>
                 </div>
@@ -145,4 +153,12 @@ export default async function AdminDashboard() {
       </div>
     </div>
   );
+}
+
+async function safe<T>(callback: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await callback();
+  } catch {
+    return fallback;
+  }
 }

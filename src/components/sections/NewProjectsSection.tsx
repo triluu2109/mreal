@@ -4,6 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, Calendar, ChevronRight, ArrowRight } from "lucide-react";
+import { siteImages } from "@/config/images";
+import { getImageUrl } from "@/lib/image";
+
+const q7Images = siteImages.project.q7SaigonRiverside;
 
 const projects = [
   {
@@ -15,7 +19,7 @@ const projects = [
     location: "Đường Đào Trí, Phường Phú Thuận, TP.HCM",
     startDate: "Bàn giao 2024",
     priceFrom: "Từ 2.1 tỷ",
-    image: "/assets/Q7 Riverside/images/hero-section/010_tt_duan.jpg",
+    image: q7Images.hero.overview,
     featured: true,
     tag: "Dự án nổi bật",
   },
@@ -28,7 +32,7 @@ const projects = [
     location: "Quận 2, TP.HCM",
     startDate: "Q2/2026",
     priceFrom: "Từ 55 triệu/m²",
-    image: "/assets/project/z7579009812832_25b90ef65c6c1ebb37910368cda901eb.jpg",
+    image: q7Images.gallery[4],
     featured: false,
     tag: "Mới ra mắt",
   },
@@ -41,7 +45,7 @@ const projects = [
     location: "Thủ Đức, TP.HCM",
     startDate: "Q1/2026",
     priceFrom: "Từ 48 triệu/m²",
-    image: "/assets/project/z7579009684644_5ab37388f9c9c255ade0123dc41546ac.jpg",
+    image: q7Images.gallery[2],
     featured: false,
     tag: "Hot",
   },
@@ -86,7 +90,7 @@ export default function NewProjectsSection() {
               >
                 <div className="relative rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 h-full min-h-[400px]">
                   <Image
-                    src={project.image}
+                    src={getImageUrl(project.image)}
                     alt={project.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -153,7 +157,7 @@ export default function NewProjectsSection() {
                     {/* Image */}
                     <div className="relative h-44 sm:w-40 sm:h-auto lg:w-full lg:h-44 flex-shrink-0 overflow-hidden">
                       <Image
-                        src={project.image}
+                        src={getImageUrl(project.image)}
                         alt={project.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

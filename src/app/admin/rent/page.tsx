@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Edit, Plus } from "lucide-react";
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import DeleteButton from "../properties/DeleteButton";
-import { deleteRent } from "@/app/actions/rent";
-import { buildListingTitle, formatLayout, formatRentPrice } from "@/lib/listing-utils";
+import { deleteRentalListing } from "@/app/actions/rent";
+import { buildListingTitle, formatLayout } from "@/lib/listing-utils";
+import ListingToggleButton from "@/app/admin/_components/ListingToggleButton";
 
 export const dynamic = "force-dynamic";
 
@@ -23,13 +24,13 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
   const where = typeFilters[type] ?? undefined;
   const orderBy =
     sort === "created_asc" ? { createdAt: "asc" as const } :
-    sort === "price_asc" ? { price: "asc" as const } :
-    sort === "price_desc" ? { price: "desc" as const } :
+    sort === "price_asc" ? { rentPrice: "asc" as const } :
+    sort === "price_desc" ? { rentPrice: "desc" as const } :
     { createdAt: "desc" as const };
 
   const [items, total] = await Promise.all([
-    prisma.rent.findMany({ where, orderBy, skip: (page - 1) * pageSize, take: pageSize }),
-    prisma.rent.count({ where }),
+    prisma.rentalListing.findMany({ where, orderBy, skip: (page - 1) * pageSize, take: pageSize }),
+    prisma.rentalListing.count({ where }),
   ]);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -53,35 +54,44 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
         <span className="ml-auto text-sm text-gray-text">{total} căn</span>
       </form>
 
-      <div className="bg-white rounded-lg border border-gray-border overflow-hidden">
+      <div className="bg-white rounded-lg border border-gray-border overflow-hidden overflow-x-auto">
         <table className="w-full text-left">
           <thead className="bg-gray-bg border-b border-gray-border text-sm text-gray-text font-medium">
             <tr>
+              <th className="px-6 py-4">Mã căn</th>
               <th className="px-6 py-4">Căn</th>
               <th className="px-6 py-4">Layout</th>
               <th className="px-6 py-4">Giá thuê</th>
-              <th className="px-6 py-4">Hiển thị</th>
+              <th className="px-6 py-4">Nội thất</th>
+              <th className="px-6 py-4">Trạng thái</th>
               <th className="px-6 py-4 text-right">Hành động</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-border">
             {items.length === 0 ? (
-              <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-muted">Chưa có căn thuê.</td></tr>
+              <tr><td colSpan={7} className="px-6 py-8 text-center text-gray-muted">Chưa có căn thuê.</td></tr>
             ) : items.map((item) => (
               <tr key={item.id} className="hover:bg-gray-bg/50">
+                <td className="px-6 py-4 font-mono text-sm text-navy whitespace-nowrap">{item.unitCode}</td>
                 <td className="px-6 py-4">
                   <div className="font-medium text-navy">{buildListingTitle(item.projectCode, item.unitCode, item.areaSqm.toString(), item.bedrooms, item.bathrooms)}</div>
-                  <div className="text-xs text-gray-muted mt-1">{item.sourceName ?? "Không nguồn"} · {item.availability ?? "Không tình trạng"}</div>
+                  <div className="text-xs text-gray-muted mt-1">{item.sourceName ?? "Không nguồn"} - {item.availability ?? "Không tình trạng"}</div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-text">{formatLayout(item.bedrooms, item.bathrooms)}</td>
-                <td className="px-6 py-4 text-sm font-bold text-gold">{formatRentPrice(item.price.toString())}</td>
-                <td className="px-6 py-4 text-sm text-gray-text">{item.isVisible ? "Có" : "Ẩn public"}</td>
+                <td className="px-6 py-4 text-sm text-gray-text whitespace-nowrap">{formatLayout(item.bedrooms, item.bathrooms)}</td>
+                <td className="px-6 py-4 text-sm font-bold text-gold whitespace-nowrap">{item.displayPrice}</td>
+                <td className="px-6 py-4 text-xs text-gray-text whitespace-nowrap">{FURNISHING_LABELS[item.furnishingStatus]}</td>
+                <td className="px-6 py-4 text-sm text-gray-text whitespace-nowrap">
+                  <div>{item.isVisible ? "Đang hiện" : "Đang ẩn"}</div>
+                  <div className={item.isFeatured ? "text-gold font-semibold" : "text-gray-muted"}>{item.isFeatured ? "Nổi bật" : "Thường"}</div>
+                </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center justify-end gap-2">
+                    <ListingToggleButton id={item.id} kind="rent" field="visible" value={item.isVisible} />
+                    <ListingToggleButton id={item.id} kind="rent" field="featured" value={item.isFeatured} />
                     <Link href={`/admin/rent/${item.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100" title="Sửa">
                       <Edit size={16} />
                     </Link>
-                    <DeleteButton id={item.id} action={deleteRent} />
+                    <DeleteButton id={item.id} action={deleteRentalListing} />
                   </div>
                 </td>
               </tr>
@@ -94,6 +104,12 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
     </div>
   );
 }
+
+const FURNISHING_LABELS: Record<string, string> = {
+  DEVELOPER_HANDOVER: "Hoàn thiện cơ bản",
+  BASIC_FURNISHED: "Nội thất cơ bản",
+  FULLY_FURNISHED: "Full nội thất",
+};
 
 function FilterSelect({ label, name, value, options }: { label: string; name: string; value: string; options: string[][] }) {
   return (

@@ -65,9 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="text-gray-text text-sm">
             Xin chào, <span className="font-semibold text-navy">Admin</span>
           </div>
-          <div className="text-gray-muted text-xs">
-            {new Date().toLocaleDateString("vi-VN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
-          </div>
+          <div className="text-gray-muted text-xs">Admin workspace</div>
         </header>
 
         <main className="flex-1 p-8 overflow-auto">{children}</main>

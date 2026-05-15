@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingButtons from "@/components/layout/FloatingButtons";
@@ -11,10 +11,11 @@ import TeamSection from "@/components/sections/TeamSection";
 import NewProjectsSection from "@/components/sections/NewProjectsSection";
 import NewsSection from "@/components/sections/NewsSection";
 import BookingFormSection from "@/components/sections/BookingFormSection";
-import { buildListingTitle, formatArea, formatLayout, formatRentPrice } from "@/lib/listing-utils";
+import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
+import { formatFurnishing } from "@/lib/furnishing";
 
 export const metadata: Metadata = {
-  title: "M-Real Estate — Bất động sản TP.HCM & Bình Dương",
+  title: "M-Real Estate",
   description:
     "M-Real Estate — Chuyên mua bán, cho thuê, ký gửi bất động sản tại TP.HCM và Bình Dương. Đội ngũ chuyên nghiệp, uy tín, đồng hành cùng bạn từ năm 2018.",
 };
@@ -24,15 +25,15 @@ export const revalidate = 3600; // ISR: revalidate mỗi giờ
 export default async function HomePage() {
   // Fetch song song để tối ưu performance
   const [saleProps, rentProps, staff] = await Promise.all([
-    prisma.sell.findMany({
+    prisma.saleListing.findMany({
       where: { isVisible: true },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ isFeatured: "desc" }, { sellingPrice: "asc" }, { createdAt: "desc" }],
       take: 6,
     }),
-    prisma.rent.findMany({
+    prisma.rentalListing.findMany({
       where: { isVisible: true },
-      orderBy: { createdAt: "desc" },
-      take: 4,
+      orderBy: [{ isFeatured: "desc" }, { rentPrice: "asc" }, { createdAt: "desc" }],
+      take: 6,
     }),
     prisma.staff.findMany({
       orderBy: { order: "asc" },
@@ -53,24 +54,26 @@ export default async function HomePage() {
             href: `/can-ho/ban/${property.id}`,
             title: buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms),
             type: formatLayout(property.bedrooms, property.bathrooms),
-            price: property.sellingPrice,
+            price: property.displayPrice,
             area: formatArea(Number(property.areaSqm)),
             beds: property.bedrooms,
             baths: property.bathrooms,
-            furniture: property.furnishing,
-            images: property.imageUrls,
+            furniture: formatFurnishing(property.furnishingNote, property.furnishingStatus),
+            images: property.imagePaths,
+            isFeatured: property.isFeatured,
           }))}
           rentProps={rentProps.map((property) => ({
             id: property.id,
             href: `/can-ho/thue/${property.id}`,
             title: buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms),
             type: formatLayout(property.bedrooms, property.bathrooms),
-            price: formatRentPrice(property.price.toString()),
+            price: property.displayPrice,
             area: formatArea(Number(property.areaSqm)),
             beds: property.bedrooms,
             baths: property.bathrooms,
-            furniture: property.furnishing,
-            images: property.imageUrls,
+            furniture: formatFurnishing(property.furnishingNote, property.furnishingStatus),
+            images: property.imagePaths,
+            isFeatured: property.isFeatured,
           }))}
         />
         <NewProjectsSection />

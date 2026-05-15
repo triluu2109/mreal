@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Bath, BedDouble, Maximize2 } from "lucide-react";
-import { prisma } from "@/prisma";
-import { buildListingTitle, formatArea, formatRentPrice } from "@/lib/listing-utils";
+import { prisma } from "@/server/db/prisma";
+import { buildListingTitle, formatArea } from "@/lib/listing-utils";
+import { resolveStorageUrl } from "@/server/storage/resolve-url";
 
 interface Props {
   currentId: string;
@@ -25,38 +26,38 @@ export default async function SimilarProperties({ currentId, type }: Props) {
 
   try {
     if (type === "sell") {
-      const sells = await prisma.sell.findMany({
+      const sells = await prisma.saleListing.findMany({
         where: { isVisible: true, NOT: { id: currentId } },
-        orderBy: { createdAt: "desc" },
+        orderBy: { sellingPrice: "asc" },
         take: 6,
       });
       items = sells.map((s) => ({
         id: s.id,
         href: `/can-ho/ban/${s.id}`,
         title: buildListingTitle(s.projectCode, s.unitCode, s.areaSqm.toString(), s.bedrooms, s.bathrooms),
-        price: s.sellingPrice ?? "Liên hệ",
+        price: s.displayPrice,
         area: formatArea(Number(s.areaSqm)),
         beds: s.bedrooms,
         baths: s.bathrooms,
-        image: s.imageUrls[0] ?? null,
+        image: s.imagePaths[0] ?? null,
         badge: "[Bán]",
         badgeColor: "text-gold",
       }));
     } else {
-      const rents = await prisma.rent.findMany({
+      const rents = await prisma.rentalListing.findMany({
         where: { isVisible: true, NOT: { id: currentId } },
-        orderBy: { createdAt: "desc" },
+        orderBy: { rentPrice: "asc" },
         take: 6,
       });
       items = rents.map((r) => ({
         id: r.id,
         href: `/can-ho/thue/${r.id}`,
         title: buildListingTitle(r.projectCode, r.unitCode, r.areaSqm.toString(), r.bedrooms, r.bathrooms),
-        price: formatRentPrice(Number(r.price)),
+        price: r.displayPrice,
         area: formatArea(Number(r.areaSqm)),
         beds: r.bedrooms,
         baths: r.bathrooms,
-        image: r.imageUrls[0] ?? null,
+        image: r.imagePaths[0] ?? null,
         badge: "[Thuê]",
         badgeColor: "text-navy",
       }));
@@ -92,7 +93,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
               <div className="relative h-40 bg-gray-100 overflow-hidden">
                 {item.image ? (
                   <Image
-                    src={item.image}
+                    src={resolveStorageUrl(item.image)}
                     alt={item.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"

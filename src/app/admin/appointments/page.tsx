@@ -1,116 +1,110 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { prisma } from "@/prisma";
+import { Calendar } from "lucide-react";
+import { prisma } from "@/server/db/prisma";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { DataTable } from "@/components/admin/DataTable";
+import { EmptyState } from "@/components/admin/EmptyState";
+import { SectionHeader } from "@/components/admin/SectionHeader";
+import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/WorkflowActions";
+import { workflowStatusOptions } from "@/components/admin/StatusBadge";
+import type { AppointmentStatus } from "@/generated/client/client";
 
 export const metadata: Metadata = { title: "Quản lý Lịch hẹn | Admin" };
 export const dynamic = "force-dynamic";
 
-const statusMap = {
-  new: { label: "Mới", style: "bg-blue-50 text-blue-600" },
-  contacted: { label: "Đã liên hệ", style: "bg-yellow-50 text-yellow-600" },
-  advised: { label: "Đã tư vấn", style: "bg-purple-50 text-purple-600" },
-  completed: { label: "Hoàn tất", style: "bg-green-50 text-green-600" },
-};
+const statusValues = new Set(["new", "contacted", "advised", "completed", "cancelled"]);
 
-type AppointmentRow = {
-  id: string;
-  fullName: string;
-  phone: string;
-  need: string | null;
-  budget: string | null;
-  status: keyof typeof statusMap;
-  createdAt: Date;
-};
+export default async function AppointmentsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string; q?: string }>;
+}) {
+  const params = await searchParams;
+  const status = statusValues.has(params.status ?? "") ? (params.status as AppointmentStatus) : undefined;
+  const q = params.q?.trim() ?? "";
+  const where = {
+    ...(status ? { status } : {}),
+    ...(q
+      ? {
+          OR: [
+            { fullName: { contains: q, mode: "insensitive" as const } },
+            { phone: { contains: q, mode: "insensitive" as const } },
+            { need: { contains: q, mode: "insensitive" as const } },
+            { budget: { contains: q, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
+  };
 
-export default async function AppointmentsAdminPage() {
-  let appointments: AppointmentRow[] = [];
-  let error: string | null = null;
-
-  try {
-    appointments = await prisma.appointment.findMany({
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        fullName: true,
-        phone: true,
-        need: true,
-        budget: true,
-        status: true,
-        createdAt: true,
-      },
-    });
-  } catch (err) {
-    error = err instanceof Error ? err.message : "Lỗi kết nối database.";
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-2xl p-10 text-center">
-        <p className="text-red-600 font-medium">Không thể tải dữ liệu lịch hẹn.</p>
-        <p className="text-red-400 text-sm mt-2">{error}</p>
-      </div>
-    );
-  }
+  const appointments = await prisma.appointment.findMany({
+    where,
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      fullName: true,
+      phone: true,
+      need: true,
+      budget: true,
+      appointmentTime: true,
+      contactMethod: true,
+      source: true,
+      status: true,
+      createdAt: true,
+    },
+  });
 
   return (
     <div>
-      <div className="mb-8 flex items-center gap-4">
-        <Link href="/admin" className="text-gray-text hover:text-navy">
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-navy">Lịch hẹn tư vấn</h1>
-          <p className="text-gray-text text-sm mt-1">{appointments.length} lịch hẹn tổng cộng</p>
-        </div>
-      </div>
+      <SectionHeader title="Lịch hẹn tư vấn" description={`${appointments.length} lịch hẹn theo bộ lọc hiện tại`} backHref="/admin" />
+
+      <form className="mb-5 flex flex-col gap-3 rounded-2xl border border-gray-border bg-white p-4 sm:flex-row sm:items-center">
+        <input
+          name="q"
+          defaultValue={q}
+          placeholder="Tìm theo tên, SĐT, nhu cầu..."
+          className="min-h-10 flex-1 rounded-lg border border-gray-border px-3 text-sm outline-none focus:border-gold"
+        />
+        <select name="status" defaultValue={status ?? "all"} className="min-h-10 rounded-lg border border-gray-border bg-white px-3 text-sm outline-none focus:border-gold">
+          {workflowStatusOptions.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <button type="submit" className="min-h-10 rounded-lg bg-navy px-4 text-sm font-semibold text-white hover:bg-navy-light">
+          Lọc
+        </button>
+      </form>
 
       {appointments.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-border p-16 text-center">
-          <p className="text-gray-text text-lg">Chưa có lịch hẹn nào.</p>
-        </div>
+        <EmptyState icon={Calendar} title="Chưa có lịch hẹn phù hợp" description="Thử đổi bộ lọc hoặc từ khóa tìm kiếm." />
       ) : (
-        <div className="bg-white rounded-2xl border border-gray-border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-border bg-gray-bg">
-                  {["Họ tên", "SĐT", "Nhu cầu", "Tài chính / ghi chú", "Trạng thái", "Ngày tạo"].map((h) => (
-                    <th key={h} className="text-left px-5 py-3.5 text-gray-text font-semibold text-xs uppercase tracking-wide whitespace-nowrap">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.map((apt) => {
-                  const status = statusMap[apt.status] ?? statusMap.new;
-                  return (
-                    <tr key={apt.id} className="border-b border-gray-border last:border-0 hover:bg-gray-bg/50 transition-colors">
-                      <td className="px-5 py-4 font-medium text-navy whitespace-nowrap">{apt.fullName}</td>
-                      <td className="px-5 py-4 text-gray-text">
-                        <a href={`tel:${apt.phone}`} className="hover:text-gold">{apt.phone}</a>
-                      </td>
-                      <td className="px-5 py-4 text-gray-text max-w-[200px]">
-                        <span className="line-clamp-2">{apt.need ?? "—"}</span>
-                      </td>
-                      <td className="px-5 py-4 text-gray-text max-w-[180px]">
-                        <span className="line-clamp-2">{apt.budget ?? "—"}</span>
-                      </td>
-                      <td className="px-5 py-4">
-                        <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${status.style}`}>
-                          {status.label}
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 text-gray-text whitespace-nowrap">{formatDate(apt.createdAt)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <DataTable headers={["Khách hàng", "Nhu cầu", "Lịch hẹn", "Nguồn", "Trạng thái", "Thao tác", "Ngày tạo"]}>
+          {appointments.map((apt) => (
+            <tr key={apt.id} className="transition-colors hover:bg-gray-bg/50">
+              <td className="px-5 py-4">
+                <div className="font-semibold text-navy">{apt.fullName}</div>
+                <a href={`tel:${apt.phone}`} className="text-sm text-gray-text hover:text-gold">{apt.phone}</a>
+              </td>
+              <td className="px-5 py-4 text-gray-text">
+                <div className="max-w-[240px] line-clamp-2">{apt.need ?? "-"}</div>
+                {apt.budget ? <div className="mt-1 text-xs text-gold-dark">{apt.budget}</div> : null}
+              </td>
+              <td className="px-5 py-4 text-sm text-gray-text">
+                <div>{apt.appointmentTime ?? "-"}</div>
+                {apt.contactMethod ? <div className="mt-1 text-xs text-gray-muted">{apt.contactMethod}</div> : null}
+              </td>
+              <td className="px-5 py-4 text-sm text-gray-text">{apt.source ?? "-"}</td>
+              {/* ── Trạng thái (riêng cột) ── */}
+              <td className="px-5 py-4">
+                <WorkflowStatusBadge status={apt.status} />
+              </td>
+              {/* ── Thao tác (riêng cột) ── */}
+              <td className="px-5 py-4">
+                <WorkflowActionButtons id={apt.id} kind="appointment" status={apt.status} />
+              </td>
+              <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-text">{formatDate(apt.createdAt)}</td>
+            </tr>
+          ))}
+        </DataTable>
       )}
     </div>
   );

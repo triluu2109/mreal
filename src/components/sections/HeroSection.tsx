@@ -6,10 +6,14 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { siteImages } from "@/config/images";
+import { getImageUrl } from "@/lib/image";
+
+const q7Images = siteImages.project.q7SaigonRiverside;
 
 const slides = [
   {
-    src: "/assets/project/z7579009750275_813cbc6e7e3e7f4eba39cccd71918150.jpg",
+    src: q7Images.gallery[3],
     title: "Bất động sản cao cấp",
     subtitle: "tại TP.HCM & Bình Dương",
     desc: "Đức Hưng Group — Đồng hành cùng bạn trên mọi hành trình bất động sản với đội ngũ chuyên nghiệp và tận tâm.",
@@ -17,7 +21,7 @@ const slides = [
     cta2: { label: "Liên hệ ngay", href: `tel:${siteConfig.phone}` },
   },
   {
-    src: "/assets/project/z7579009812832_25b90ef65c6c1ebb37910368cda901eb.jpg",
+    src: q7Images.gallery[4],
     title: "Dự án bất động sản",
     subtitle: "Chất lượng – Uy tín – Bền vững",
     desc: "Chúng tôi mang đến những dự án đẳng cấp, phù hợp với mọi nhu cầu và khả năng tài chính của khách hàng.",
@@ -25,7 +29,7 @@ const slides = [
     cta2: { label: "Tư vấn miễn phí", href: "#booking" },
   },
   {
-    src: "/assets/project/z7579009684644_5ab37388f9c9c255ade0123dc41546ac.jpg",
+    src: q7Images.gallery[2],
     title: "Cho thuê bất động sản",
     subtitle: "Đa dạng – Tiện ích – Giá tốt",
     desc: "Hàng trăm tin đăng cho thuê căn hộ, nhà phố, văn phòng được cập nhật liên tục theo ngày.",
@@ -33,7 +37,7 @@ const slides = [
     cta2: { label: "Đăng tin ngay", href: "/ky-gui" },
   },
   {
-    src: "/assets/project/z7579009853145_59f5e62df9e5574d59f3b3c3ccf7c38f.jpg",
+    src: q7Images.gallery[5],
     title: "Đầu tư sinh lời",
     subtitle: "An toàn – Hiệu quả – Minh bạch",
     desc: "Với kinh nghiệm hơn 7 năm trong ngành, chúng tôi tư vấn chiến lược đầu tư BĐS sinh lời bền vững.",
@@ -81,7 +85,7 @@ export default function HeroSection() {
           style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}
         >
           <Image
-            src={slide.src}
+            src={getImageUrl(slide.src)}
             alt={slide.title}
             fill
             className="object-cover"

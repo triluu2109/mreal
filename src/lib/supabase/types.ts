@@ -1,5 +1,5 @@
-export type AppointmentStatus = "new" | "contacted" | "advised" | "completed";
-export type LeadStatus = "new" | "contacted" | "done";
+export type AppointmentStatus = "new" | "contacted" | "advised" | "completed" | "cancelled";
+export type LeadStatus = "new" | "contacted" | "advised" | "completed" | "cancelled" | "done";
 
 export interface Appointment {
   id: string;

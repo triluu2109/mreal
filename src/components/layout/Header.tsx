@@ -7,6 +7,8 @@ import { Menu, X, Phone, Mail, MapPin, Search, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { siteImages } from "@/config/images";
+import { getImageUrl } from "@/lib/image";
 
 const navLinks = [
   { href: "/", label: "Trang chủ" },
@@ -46,7 +48,7 @@ export default function Header() {
   return (
     <>
       {/* Top Bar — Dark Navy */}
-      <div className="text-white text-xs hidden lg:block" style={{backgroundColor:"#0F1E4A"}}>
+      <div className="hidden bg-[#0F1E4A] text-xs text-white lg:block">
         <div className="container-site flex items-center justify-between py-2">
           <div className="flex items-center gap-6">
             <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-1.5 hover:text-gold transition-colors font-medium">
@@ -85,7 +87,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2 group">
             <Image
-              src="/assets/logo/logo-rectangle.png"
+              src={getImageUrl(siteImages.logo.rectangle)}
               alt="M-Real Estate"
               width={160}
               height={48}

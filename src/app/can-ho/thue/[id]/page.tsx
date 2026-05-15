@@ -4,18 +4,19 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Bath, BedDouble, Building2, Maximize2 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { prisma } from "@/prisma";
-import { buildListingTitle, formatArea, formatLayout, formatRentPrice } from "@/lib/listing-utils";
+import { prisma } from "@/server/db/prisma";
+import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
 import ImageGallery from "@/components/ui/ImageGallery";
 import SimilarProperties from "@/components/sections/SimilarProperties";
 import DetailBookingForm from "@/components/sections/DetailBookingForm";
+import { formatFurnishing } from "@/lib/furnishing";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function getListing(id: string) {
-  return prisma.rent.findFirst({ where: { id, isVisible: true } });
+  return prisma.rentalListing.findFirst({ where: { id, isVisible: true } });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const property = await getListing(id);
   if (!property) return { title: "Không tìm thấy căn hộ" };
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
-  const price = formatRentPrice(property.price.toString());
+  const price = property.displayPrice;
 
   return {
     title: `[Thuê] ${title} - ${price} | M-Real Estate`,
@@ -37,13 +38,13 @@ export default async function RentDetailPage({ params }: Props) {
   if (!property) notFound();
 
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
-  const price = formatRentPrice(property.price.toString());
+  const price = property.displayPrice;
   const specs = [
     { icon: <Maximize2 size={16} />, label: "Diện tích", value: formatArea(Number(property.areaSqm)) },
     { icon: <BedDouble size={16} />, label: "Phòng ngủ", value: `${property.bedrooms} phòng` },
     { icon: <Bath size={16} />, label: "Toilet", value: `${property.bathrooms} WC` },
     { icon: <BedDouble size={16} />, label: "Loại căn", value: formatLayout(property.bedrooms, property.bathrooms) },
-    property.furnishing && { icon: <Building2 size={16} />, label: "Nội thất", value: property.furnishing },
+    { icon: <Building2 size={16} />, label: "Nội thất", value: formatFurnishing(property.furnishingNote, property.furnishingStatus) },
     property.view && { icon: <Building2 size={16} />, label: "View", value: property.view },
     property.availability && { icon: <Building2 size={16} />, label: "Tình trạng", value: property.availability },
   ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string | null }[];
@@ -72,8 +73,7 @@ export default async function RentDetailPage({ params }: Props) {
                 Căn hộ cho thuê
               </Link>
 
-              {/* Gallery */}
-              <ImageGallery images={property.imageUrls} alt={title} />
+              <ImageGallery images={property.imagePaths} alt={title} />
 
               <div>
                 <h1 className="font-heading font-bold text-navy text-2xl md:text-3xl mb-3">{title}</h1>

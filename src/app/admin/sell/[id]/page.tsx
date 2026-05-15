@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { prisma } from "@/prisma";
-import SellForm from "../SellForm";
+import { prisma } from "@/server/db/prisma";
+import { serializePrisma } from "@/lib/serializers/prisma";
+import SellForm, { type SellFormInitialData } from "../SellForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditSellPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const item = await prisma.sell.findUnique({ where: { id } });
+  const item = await prisma.saleListing.findUnique({ where: { id } });
   if (!item) notFound();
 
   return (
@@ -19,7 +20,7 @@ export default async function EditSellPage({ params }: { params: Promise<{ id: s
         </Link>
         <h1 className="font-heading text-2xl font-bold text-navy">Cập nhật căn bán</h1>
       </div>
-      <SellForm initialData={item} />
+      <SellForm initialData={serializePrisma(item) as SellFormInitialData} />
     </div>
   );
 }

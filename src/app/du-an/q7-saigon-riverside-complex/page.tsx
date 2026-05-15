@@ -4,6 +4,10 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { siteConfig } from "@/config/site";
+import { siteImages } from "@/config/images";
+import { getImageUrl } from "@/lib/image";
+
+const q7Images = siteImages.project.q7SaigonRiverside;
 
 export const metadata: Metadata = {
   title: "Q7 Saigon Riverside Complex — Dự án bất động sản | M-Real Estate",
@@ -11,19 +15,19 @@ export const metadata: Metadata = {
 };
 
 const galleryImages = [
-  { src: "/assets/Q7 Riverside/images/hero-section/010_tt_duan.jpg", alt: "Toàn cảnh dự án" },
-  { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/360_hung-thinh-61bd45eff1a8b635.jpg", alt: "Hình ảnh thực tế dự án" },
-  { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/363_hung-thinh-6b97ab0e4f6a4916.jpg", alt: "Tiện ích nội khu" },
-  { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/367_hung-thinh-57676f093912a514.jpg", alt: "Không gian sống" },
-  { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/368_hung-thinh-100a1522ce72b672.jpg", alt: "View sông Sài Gòn" },
-  { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/anh-chup-thuc-te-du-an-bang-flycam.jpg", alt: "Toàn cảnh flycam" },
+  { src: q7Images.hero.overview, alt: "Toàn cảnh dự án" },
+  { src: q7Images.actual.image360, alt: "Hình ảnh thực tế dự án" },
+  { src: q7Images.actual.image363, alt: "Tiện ích nội khu" },
+  { src: q7Images.actual.image367, alt: "Không gian sống" },
+  { src: q7Images.actual.image368, alt: "View sông Sài Gòn" },
+  { src: q7Images.actual.flycam, alt: "Toàn cảnh flycam" },
 ];
 
 const interiorImages = [
-  { src: "/assets/Q7 Riverside/images/hero-section/359_hung-thinh-b7c5a2c2608ca343.jpg", alt: "Nội thất căn hộ" },
-  { src: "/assets/Q7 Riverside/images/hero-section/361_hung-thinh-c2f6ce5820f4f602.jpg", alt: "Phòng ngủ" },
-  { src: "/assets/Q7 Riverside/images/hero-section/362_hung-thinh-adb2023b2cba0852.jpg", alt: "Phòng bếp" },
-  { src: "/assets/Q7 Riverside/images/hero-section/364_hung-thinh-9fcd2a6254b48301.jpg", alt: "Phòng khách" },
+  { src: q7Images.hero.interior, alt: "Nội thất căn hộ" },
+  { src: q7Images.hero.bedroom, alt: "Phòng ngủ" },
+  { src: q7Images.hero.kitchen, alt: "Phòng bếp" },
+  { src: q7Images.hero.livingRoom, alt: "Phòng khách" },
 ];
 
 const specs = [
@@ -42,19 +46,19 @@ const unitTypes = [
     type: "1 Phòng ngủ+",
     area: "53,20 – 53,67 m²",
     desc: "Thiết kế thông minh, tối ưu ánh sáng tự nhiên và view sông",
-    image: "/assets/Q7 Riverside/images/mat-bang/111_block1.jpg",
+    image: q7Images.floorplan.block1,
   },
   {
     type: "2 Phòng ngủ",
     area: "66,66 – 73,49 m²",
     desc: "Nhiều layout đa dạng, ban công rộng, tầm nhìn thoáng đãng",
-    image: "/assets/Q7 Riverside/images/mat-bang/112_block3.jpg",
+    image: q7Images.floorplan.block3,
   },
   {
     type: "3 Phòng ngủ",
     area: "85,52 – 86,69 m²",
     desc: "Không gian sang trọng, đủ tiện nghi cho cả gia đình",
-    image: "/assets/Q7 Riverside/images/mat-bang/113_block4.jpg",
+    image: q7Images.floorplan.block4,
   },
 ];
 
@@ -73,7 +77,7 @@ export default function Q7RiversidePage() {
         {/* ── HERO ── */}
         <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
           <Image
-            src="/assets/Q7 Riverside/images/hero-section/010_tt_duan.jpg"
+            src={getImageUrl(q7Images.hero.overview)}
             alt="Q7 Saigon Riverside Complex"
             fill
             className="object-cover"
@@ -140,7 +144,7 @@ export default function Q7RiversidePage() {
               </div>
               <div className="relative h-[480px] rounded-3xl overflow-hidden shadow-hover">
                 <Image
-                  src="/assets/Q7 Riverside/images/vi-tri/074_locationmap.png"
+                  src={getImageUrl(q7Images.locationMap)}
                   alt="Vị trí dự án"
                   fill
                   className="object-cover"
@@ -167,7 +171,7 @@ export default function Q7RiversidePage() {
                   style={{ height: i === 0 ? "360px" : "200px" }}
                 >
                   <Image
-                    src={img.src}
+                    src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -196,7 +200,7 @@ export default function Q7RiversidePage() {
                 >
                   <div className="relative h-52 overflow-hidden">
                     <Image
-                      src={u.image}
+                      src={getImageUrl(u.image)}
                       alt={u.type}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -220,7 +224,7 @@ export default function Q7RiversidePage() {
               <h3 className="font-heading font-bold text-navy text-xl text-center mb-6">Mặt bằng tổng thể</h3>
               <div className="relative rounded-2xl overflow-hidden shadow-card" style={{ height: "400px" }}>
                 <Image
-                  src="/assets/Q7 Riverside/images/mat-bang/mat-bang-tong-the-5-dang-can-ho.jpg"
+                  src={getImageUrl(q7Images.floorplan.total)}
                   alt="Mặt bằng tổng thể Q7 Saigon Riverside Complex"
                   fill
                   className="object-contain bg-white"
@@ -276,7 +280,7 @@ export default function Q7RiversidePage() {
               {interiorImages.map((img, i) => (
                 <div key={i} className="relative rounded-2xl overflow-hidden group h-56">
                   <Image
-                    src={img.src}
+                    src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -288,14 +292,14 @@ export default function Q7RiversidePage() {
             {/* More project images */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               {[
-                { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/369_hung-thinh-5a04ed4487bd4893.jpg", alt: "Căn hộ mẫu" },
-                { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/372_hung-thinh-eeca1d0e15a0e851.jpg", alt: "Phòng bếp mẫu" },
-                { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/375_hung-thinh-d3735497d01aa269.jpg", alt: "Phòng ngủ mẫu" },
-                { src: "/assets/Q7 Riverside/images/hinh-anh-du-an/378_hung-thinh-cae0d04115703931.jpg", alt: "Ban công view sông" },
+                { src: q7Images.actual.model369, alt: "Căn hộ mẫu" },
+                { src: q7Images.actual.model372, alt: "Phòng bếp mẫu" },
+                { src: q7Images.actual.model375, alt: "Phòng ngủ mẫu" },
+                { src: q7Images.actual.model378, alt: "Ban công view sông" },
               ].map((img, i) => (
                 <div key={i} className="relative rounded-2xl overflow-hidden group h-56">
                   <Image
-                    src={img.src}
+                    src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

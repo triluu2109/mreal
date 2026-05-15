@@ -3,6 +3,7 @@ import { prisma } from "@/prisma";
 import { Plus, Edit } from "lucide-react";
 import DeleteButton from "./DeleteButton";
 import { deleteStaff } from "@/app/actions/staff";
+import { getImageUrl } from "@/lib/image";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +51,7 @@ export default async function StaffPage() {
                 <tr key={staff.id} className="hover:bg-gray-bg/50 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-3">
                     {staff.image ? (
-                      <img src={staff.image} alt={staff.name} className="w-10 h-10 rounded-full object-cover border border-gray-border" />
+                      <img src={getImageUrl(staff.image)} alt={staff.name} className="w-10 h-10 rounded-full object-cover border border-gray-border" />
                     ) : (
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gradient-to-br ${staff.color}`}>
                         {staff.initials}

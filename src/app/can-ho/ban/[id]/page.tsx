@@ -4,18 +4,19 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Bath, BedDouble, Building2, Maximize2 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
 import ImageGallery from "@/components/ui/ImageGallery";
 import SimilarProperties from "@/components/sections/SimilarProperties";
 import DetailBookingForm from "@/components/sections/DetailBookingForm";
+import { formatFurnishing } from "@/lib/furnishing";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function getListing(id: string) {
-  return prisma.sell.findFirst({ where: { id, isVisible: true } });
+  return prisma.saleListing.findFirst({ where: { id, isVisible: true } });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
 
   return {
-    title: `[Bán] ${title} - ${property.sellingPrice} | M-Real Estate`,
+    title: `[Bán] ${title} - ${property.displayPrice} | M-Real Estate`,
     description: `${title} tại Q7 Saigon Riverside Complex. Liên hệ M-Real Estate để được tư vấn.`,
   };
 }
@@ -41,10 +42,10 @@ export default async function SellDetailPage({ params }: Props) {
     { icon: <BedDouble size={16} />, label: "Phòng ngủ", value: `${property.bedrooms} phòng` },
     { icon: <Bath size={16} />, label: "Toilet", value: `${property.bathrooms} WC` },
     { icon: <BedDouble size={16} />, label: "Loại căn", value: formatLayout(property.bedrooms, property.bathrooms) },
-    property.furnishing && { icon: <Building2 size={16} />, label: "Nội thất", value: property.furnishing },
+    { icon: <Building2 size={16} />, label: "Nội thất", value: formatFurnishing(property.furnishingNote, property.furnishingStatus) },
     property.view && { icon: <Building2 size={16} />, label: "View", value: property.view },
     property.availability && { icon: <Building2 size={16} />, label: "Tình trạng", value: property.availability },
-    property.contractPrice && { icon: <Building2 size={16} />, label: "Giá HĐ", value: property.contractPrice },
+    property.contractPrice && { icon: <Building2 size={16} />, label: "Giá HĐ", value: `${(Number(property.contractPrice) / 1e9).toFixed(3).replace(/\.?0+$/, "")} tỷ` },
   ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string | null }[];
 
   return (
@@ -71,12 +72,11 @@ export default async function SellDetailPage({ params }: Props) {
                 Giỏ hàng mua bán
               </Link>
 
-              {/* Gallery */}
-              <ImageGallery images={property.imageUrls} alt={title} />
+              <ImageGallery images={property.imagePaths} alt={title} />
 
               <div>
                 <h1 className="font-heading font-bold text-navy text-2xl md:text-3xl mb-3">{title}</h1>
-                <div className="text-3xl font-heading font-bold text-gold mb-2">{property.sellingPrice}</div>
+                <div className="text-3xl font-heading font-bold text-gold mb-2">{property.displayPrice}</div>
                 <div className="text-gray-text text-sm">Q7 Saigon Riverside Complex, TP.HCM</div>
               </div>
 
@@ -97,7 +97,7 @@ export default async function SellDetailPage({ params }: Props) {
               <DetailBookingForm
                 listingTitle={title}
                 listingType="sell"
-                price={property.sellingPrice}
+                price={property.displayPrice}
                 source="listing-detail-sell"
               />
             </aside>

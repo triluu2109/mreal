@@ -5,7 +5,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createStaff, updateStaff } from "@/app/actions/staff";
 
-export default function StaffForm({ initialData = null }: { initialData?: any }) {
+export type StaffFormInitialData = {
+  id: string;
+  name: string;
+  role: string;
+  phone: string;
+  zalo: string | null;
+  image: string | null;
+  color: string;
+  speciality: string | null;
+  order: number;
+};
+
+export default function StaffForm({ initialData = null }: { initialData?: StaffFormInitialData | null }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -86,7 +98,7 @@ export default function StaffForm({ initialData = null }: { initialData?: any })
           <input 
             type="text" 
             name="zalo" 
-            defaultValue={initialData?.zalo}
+            defaultValue={initialData?.zalo ?? ""}
             className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
           />
         </div>
@@ -96,7 +108,7 @@ export default function StaffForm({ initialData = null }: { initialData?: any })
           <input 
             type="text" 
             name="speciality" 
-            defaultValue={initialData?.speciality}
+            defaultValue={initialData?.speciality ?? ""}
             className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
             placeholder="VD: Chuyên phân khu The Rainbow, The Origami"
           />
@@ -107,9 +119,9 @@ export default function StaffForm({ initialData = null }: { initialData?: any })
           <input 
             type="text" 
             name="image" 
-            defaultValue={initialData?.image}
+            defaultValue={initialData?.image ?? ""}
             className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-            placeholder="VD: /assets/team/person.jpg"
+            placeholder="VD: /images/staff/{staff-id}/avatar.webp"
           />
         </div>
 
