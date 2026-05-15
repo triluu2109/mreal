@@ -93,6 +93,7 @@ export default function NewProjectsSection() {
                     src={getImageUrl(project.image)}
                     alt={project.name}
                     fill
+                    sizes="(min-width: 1024px) 60vw, 100vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   {/* Overlay */}
@@ -160,6 +161,7 @@ export default function NewProjectsSection() {
                         src={getImageUrl(project.image)}
                         alt={project.name}
                         fill
+                        sizes="(min-width: 1024px) 40vw, (min-width: 640px) 160px, 100vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute top-3 left-3">

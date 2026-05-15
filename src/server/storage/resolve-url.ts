@@ -28,9 +28,12 @@ export function resolveStorageUrl(relativePath: string | null | undefined): stri
   if (!path) return "";
 
   switch (storageConfig.provider) {
+    case "supabase": {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+      const bucket = storageConfig.bucket;
+      return `${supabaseUrl}/storage/v1/object/public/${bucket}/${path}`;
+    }
     case "local":
-      return `${storageConfig.localRoot}/${path}`;
-    // Thêm case "s3" / "supabase" khi cần
     default:
       return `${storageConfig.localRoot}/${path}`;
   }

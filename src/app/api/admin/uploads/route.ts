@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
-import { writableStorageProvider } from "@/lib/storage/server-storage";
+import { writableStorageProvider } from "@/server/storage/provider";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif", "image/svg+xml"];
 
 export async function POST(request: Request) {
   try {
@@ -19,22 +22,27 @@ export async function POST(request: Request) {
 
     const urls: string[] = [];
     for (const [offset, file] of files.entries()) {
-      if (!file.type.startsWith("image/")) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
         return NextResponse.json({ error: "Only image uploads are supported" }, { status: 400 });
+      }
+
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json({ error: `File quá lớn (tối đa 10 MB)` }, { status: 400 });
       }
 
       const imageIndex = startIndex + offset;
       const fileName = imageIndex === 0 ? "cover.webp" : `${imageIndex}.webp`;
-      const url = await writableStorageProvider.uploadImage({
+      const storagePath = await writableStorageProvider.uploadImage({
         file,
         directory,
         fileName,
       });
-      urls.push(url);
+      urls.push(storagePath);
     }
 
     return NextResponse.json({ urls });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message ?? "Upload failed" }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Upload failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

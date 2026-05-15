@@ -80,6 +80,7 @@ export default function Q7RiversidePage() {
             src={getImageUrl(q7Images.hero.overview)}
             alt="Q7 Saigon Riverside Complex"
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -147,6 +148,7 @@ export default function Q7RiversidePage() {
                   src={getImageUrl(q7Images.locationMap)}
                   alt="Vị trí dự án"
                   fill
+                    sizes="(min-width: 768px) 33vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -174,6 +176,7 @@ export default function Q7RiversidePage() {
                     src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
+                    sizes="(min-width: 768px) 33vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/20 transition-colors duration-300" />
@@ -203,6 +206,7 @@ export default function Q7RiversidePage() {
                       src={getImageUrl(u.image)}
                       alt={u.type}
                       fill
+                    sizes="(min-width: 768px) 33vw, 50vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
@@ -227,6 +231,7 @@ export default function Q7RiversidePage() {
                   src={getImageUrl(q7Images.floorplan.total)}
                   alt="Mặt bằng tổng thể Q7 Saigon Riverside Complex"
                   fill
+                  sizes="(min-width: 1024px) 80vw, 100vw"
                   className="object-contain bg-white"
                 />
               </div>
@@ -283,6 +288,7 @@ export default function Q7RiversidePage() {
                     src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
+                    sizes="(min-width: 768px) 33vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -302,6 +308,7 @@ export default function Q7RiversidePage() {
                     src={getImageUrl(img.src)}
                     alt={img.alt}
                     fill
+                    sizes="(min-width: 768px) 33vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>

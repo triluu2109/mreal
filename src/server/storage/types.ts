@@ -16,4 +16,6 @@ export interface StorageProvider {
 
 export interface WritableStorageProvider extends StorageProvider {
   uploadImage(input: UploadImageInput): Promise<StoragePath>;
+  /** Xóa file khỏi storage (optional — local provider có thể bỏ qua) */
+  deleteFile?(path: StoragePath): Promise<void>;
 }

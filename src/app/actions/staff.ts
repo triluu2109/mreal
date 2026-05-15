@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
-import { normalizeImagePath } from "@/lib/image";
+import { normalizeStoragePath } from "@/server/storage/resolve-url";
 
 type StaffInput = {
   name: string;
@@ -20,7 +20,7 @@ export async function createStaff(data: StaffInput) {
     await prisma.staff.create({
       data: {
         ...data,
-        image: normalizeImagePath(data.image) || null,
+        image: normalizeStoragePath(data.image) || null,
         initials: getInitials(data.name),
       },
     });
@@ -39,7 +39,7 @@ export async function updateStaff(id: string, data: StaffInput) {
       where: { id },
       data: {
         ...data,
-        image: normalizeImagePath(data.image) || null,
+        image: normalizeStoragePath(data.image) || null,
         initials: getInitials(data.name),
       },
     });
