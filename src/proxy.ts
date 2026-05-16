@@ -1,40 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/proxy";
 
-export default function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (pathname.startsWith("/admin")) {
-    const authHeader = request.headers.get("authorization");
-
-    if (!authHeader || !authHeader.startsWith("Basic ")) {
-      return new NextResponse("Unauthorized", {
-        status: 401,
-        headers: {
-          "WWW-Authenticate": 'Basic realm="M-Real Estate Admin"',
-        },
-      });
-    }
-
-    const base64 = authHeader.slice("Basic ".length);
-    const decoded = Buffer.from(base64, "base64").toString("utf-8");
-    const [username, password] = decoded.split(":");
-
-    const expectedUser = process.env.ADMIN_USERNAME ?? "admin";
-    const expectedPass = process.env.ADMIN_PASSWORD ?? "admin123";
-
-    if (username !== expectedUser || password !== expectedPass) {
-      return new NextResponse("Unauthorized", {
-        status: 401,
-        headers: {
-          "WWW-Authenticate": 'Basic realm="M-Real Estate Admin"',
-        },
-      });
-    }
-  }
-
-  return NextResponse.next();
+export async function proxy(request: NextRequest) {
+  return updateSession(request);
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|ico)$).*)",
+  ],
 };

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Youtube, Instagram, Twitter, Linkedin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
-import { getImageUrl } from "@/lib/image";
 
 const navCol1 = [
   { label: "Chính sách bảo mật", href: "/chinh-sach-bao-mat" },
@@ -67,7 +66,7 @@ export default function Footer() {
             <div className="mb-5">
               {/* BW logo for dark footer — filter makes it fully white */}
               <Image
-                src={getImageUrl(siteImages.logo.rectangleBw)}
+                src={siteImages.logo.rectangleBw}
                 alt="M-Real Estate"
                 width={180}
                 height={54}

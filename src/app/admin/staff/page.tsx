@@ -1,23 +1,30 @@
 import Link from "next/link";
-import { prisma } from "@/prisma";
+import { prisma } from "@/server/db/prisma";
 import { Plus, Edit } from "lucide-react";
 import DeleteButton from "./DeleteButton";
 import { deleteStaff } from "@/app/actions/staff";
-import { getImageUrl } from "@/lib/image";
+import { requireMasterPage } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function StaffPage() {
-  const staffs = await prisma.staff.findMany({
-    orderBy: { order: "asc" },
+  await requireMasterPage();
+
+  const staffs = await prisma.adminProfile.findMany({
+    where: {
+      role: { not: "master" },
+      isActive: true,
+      deletedAt: null,
+    },
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "desc" }],
   });
 
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="font-heading text-3xl font-bold text-navy">Nhân sự</h1>
-          <p className="text-gray-text mt-1">Quản lý đội ngũ nhân viên kinh doanh</p>
+          <h1 className="font-heading text-3xl font-bold text-navy">Nhân sự admin</h1>
+          <p className="text-gray-text mt-1">Quản lý tài khoản, vai trò và quyền truy cập admin workspace</p>
         </div>
         <Link
           href="/admin/staff/create"
@@ -28,14 +35,14 @@ export default async function StaffPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-border overflow-hidden">
+      <div className="bg-white rounded-lg border border-gray-border overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-gray-bg border-b border-gray-border text-sm text-gray-text font-medium">
             <tr>
               <th className="px-6 py-4">Nhân sự</th>
-              <th className="px-6 py-4">Chức vụ</th>
+              <th className="px-6 py-4">Vai trò</th>
               <th className="px-6 py-4">Liên hệ</th>
-              <th className="px-6 py-4">Thứ tự</th>
+              <th className="px-6 py-4">Quyền</th>
               <th className="px-6 py-4 text-right">Hành động</th>
             </tr>
           </thead>
@@ -43,31 +50,29 @@ export default async function StaffPage() {
             {staffs.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-8 text-center text-gray-muted">
-                  Chưa có dữ liệu nhân sự.
+                  Chưa có tài khoản nhân sự đang hoạt động.
                 </td>
               </tr>
             ) : (
               staffs.map((staff) => (
                 <tr key={staff.id} className="hover:bg-gray-bg/50 transition-colors">
-                  <td className="px-6 py-4 flex items-center gap-3">
-                    {staff.image ? (
-                      <img src={getImageUrl(staff.image)} alt={staff.name} className="w-10 h-10 rounded-full object-cover border border-gray-border" />
-                    ) : (
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gradient-to-br ${staff.color}`}>
-                        {staff.initials}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-navy">
+                        {staff.initials ?? staff.fullName.slice(0, 2).toUpperCase()}
                       </div>
-                    )}
-                    <div>
-                      <div className="font-medium text-navy">{staff.name}</div>
-                      {staff.speciality && <div className="text-xs text-gray-muted">{staff.speciality}</div>}
+                      <div>
+                        <div className="font-medium text-navy">{staff.fullName}</div>
+                        <div className="text-xs text-gray-muted">{staff.position ?? staff.email}</div>
+                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-text">{staff.role}</td>
                   <td className="px-6 py-4">
-                    <div className="text-sm font-medium">{staff.phone}</div>
-                    {staff.zalo && <div className="text-xs text-gray-muted">Zalo: {staff.zalo}</div>}
+                    <div className="text-sm font-medium">{staff.email}</div>
+                    {staff.phone && <div className="text-xs text-gray-muted">{staff.phone}</div>}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-text">{staff.order}</td>
+                  <td className="px-6 py-4 text-sm text-gray-text">{staff.permissions.length} quyền</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link

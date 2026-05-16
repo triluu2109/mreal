@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import RentForm from "../RentForm";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
-export default function CreateRentPage() {
+export default async function CreateRentPage() {
+  await requirePagePermission("listings.create");
+
   return (
     <div>
       <div className="mb-6">

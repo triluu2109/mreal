@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
 import type { FurnishingStatus } from "@prisma/client";
+import { actionError, requirePermission } from "@/lib/admin/auth";
 
 type RentalListingInput = {
   id?: string;
@@ -29,6 +30,7 @@ type RentalListingInput = {
 
 export async function createRentalListing(data: RentalListingInput) {
   try {
+    await requirePermission("listings.create");
     await prisma.rentalListing.create({ data: buildRentalData(data, true) });
     revalidateRentalPaths();
     return { success: true };
@@ -40,6 +42,7 @@ export async function createRentalListing(data: RentalListingInput) {
 
 export async function updateRentalListing(id: string, data: RentalListingInput) {
   try {
+    await requirePermission("listings.update");
     await prisma.rentalListing.update({ where: { id }, data: buildRentalData(data, false) });
     revalidateRentalPaths();
     return { success: true };
@@ -51,7 +54,11 @@ export async function updateRentalListing(id: string, data: RentalListingInput) 
 
 export async function deleteRentalListing(id: string) {
   try {
-    await prisma.rentalListing.delete({ where: { id } });
+    await requirePermission("listings.delete_soft");
+    await prisma.rentalListing.update({
+      where: { id },
+      data: { deletedAt: new Date(), isVisible: false },
+    });
     revalidateRentalPaths();
     return { success: true };
   } catch (error) {
@@ -66,6 +73,7 @@ export const deleteRent = deleteRentalListing;
 
 export async function toggleRentalListingVisibility(id: string, isVisible: boolean) {
   try {
+    await requirePermission("listings.update");
     await prisma.rentalListing.update({ where: { id }, data: { isVisible } });
     revalidateRentalPaths();
     return { success: true };
@@ -77,6 +85,7 @@ export async function toggleRentalListingVisibility(id: string, isVisible: boole
 
 export async function toggleRentalListingFeatured(id: string, isFeatured: boolean) {
   try {
+    await requirePermission("listings.update");
     await prisma.rentalListing.update({ where: { id }, data: { isFeatured } });
     revalidateRentalPaths();
     return { success: true };
@@ -127,8 +136,4 @@ function normalizeImagePaths(paths: string[] | undefined | null): string[] {
 function formatRentDisplayPrice(priceVnd: number): string {
   const millions = priceVnd / 1_000_000;
   return `${Number.isInteger(millions) ? millions : millions.toFixed(1)} triệu/tháng`;
-}
-
-function actionError(error: unknown, fallback: string) {
-  return error instanceof Error ? error.message : fallback;
 }

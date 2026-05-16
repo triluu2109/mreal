@@ -17,7 +17,7 @@ export const revalidate = 3600;
 async function getNews() {
   try {
     return await prisma.newsPost.findMany({
-      where: { published: true },
+      where: { published: true, deletedAt: null },
       orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
       select: {
         id: true,

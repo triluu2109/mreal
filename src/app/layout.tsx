@@ -3,7 +3,6 @@ import { Inter, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import ChatbotClientWrapper from "@/components/chatbot/ChatbotClientWrapper";
 import { siteImages } from "@/config/images";
-// import { getImageUrl } from "@/lib/image";
 import "./globals.css";
 
 const inter = Inter({

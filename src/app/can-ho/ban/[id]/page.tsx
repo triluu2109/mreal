@@ -16,7 +16,7 @@ interface Props {
 }
 
 async function getListing(id: string) {
-  return prisma.saleListing.findFirst({ where: { id, isVisible: true } });
+  return prisma.saleListing.findFirst({ where: { id, isVisible: true, deletedAt: null } });
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

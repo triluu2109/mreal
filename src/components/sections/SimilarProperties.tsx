@@ -27,7 +27,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
   try {
     if (type === "sell") {
       const sells = await prisma.saleListing.findMany({
-        where: { isVisible: true, NOT: { id: currentId } },
+        where: { isVisible: true, deletedAt: null, NOT: { id: currentId } },
         orderBy: { sellingPrice: "asc" },
         take: 6,
       });
@@ -45,7 +45,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
       }));
     } else {
       const rents = await prisma.rentalListing.findMany({
-        where: { isVisible: true, NOT: { id: currentId } },
+        where: { isVisible: true, deletedAt: null, NOT: { id: currentId } },
         orderBy: { rentPrice: "asc" },
         take: 6,
       });

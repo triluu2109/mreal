@@ -5,12 +5,15 @@ import { Mail, Phone } from "lucide-react";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { SectionHeader } from "@/components/admin/SectionHeader";
 import { ContactRowActions } from "@/components/admin/ContactRowActions";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const metadata: Metadata = { title: "Quản lý Liên hệ | Admin" };
 export const dynamic = "force-dynamic";
 
 export default async function ContactsAdminPage() {
+  await requirePagePermission("contacts.manage");
   const contacts = await prisma.contact.findMany({
+    where: { deletedAt: null },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,

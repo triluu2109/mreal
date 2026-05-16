@@ -48,6 +48,7 @@ export default async function ThueNhaPage({ searchParams }: { searchParams: Prom
 
   const where: any = {
     isVisible: true,
+    deletedAt: null,
     ...(typeFilters[type] ?? {}),
     ...(furnishing !== "all" ? { furnishingStatus: furnishing as FurnishingStatus } : {}),
     ...(minPrice || maxPrice

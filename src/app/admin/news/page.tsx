@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/admin/EmptyState";
 import { SectionHeader } from "@/components/admin/SectionHeader";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { NewsRowActions } from "./NewsRowActions";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const metadata: Metadata = { title: "Quản lý Bài viết | Admin" };
 export const dynamic = "force-dynamic";
@@ -16,11 +17,13 @@ export default async function NewsAdminPage({
 }: {
   searchParams: Promise<{ q?: string; published?: string; featured?: string }>;
 }) {
+  await requirePagePermission("news.manage");
   const params = await searchParams;
   const q = params.q?.trim() ?? "";
   const published = params.published === "true" ? true : params.published === "false" ? false : undefined;
   const featured = params.featured === "true" ? true : params.featured === "false" ? false : undefined;
   const where = {
+    deletedAt: null,
     ...(published !== undefined ? { published } : {}),
     ...(featured !== undefined ? { featured } : {}),
     ...(q ? { title: { contains: q, mode: "insensitive" as const } } : {}),

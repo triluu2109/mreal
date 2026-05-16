@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
-import { getImageUrl } from "@/lib/image";
 
 const navLinks = [
   { href: "/", label: "Trang chủ" },
@@ -87,7 +86,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2 group">
             <Image
-              src={getImageUrl(siteImages.logo.rectangle)}
+              src={siteImages.logo.rectangle}
               alt="M-Real Estate"
               width={160}
               height={48}

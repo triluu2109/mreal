@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic news pages
   try {
     const posts = await prisma.newsPost.findMany({
-      where: { published: true },
+      where: { published: true, deletedAt: null },
       select: { slug: true, publishedAt: true, createdAt: true },
       orderBy: { publishedAt: "desc" },
     });

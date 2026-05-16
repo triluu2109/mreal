@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/admin/SectionHeader";
 import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/WorkflowActions";
 import { workflowStatusOptions } from "@/components/admin/StatusBadge";
 import type { AppointmentStatus } from "@prisma/client";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const metadata: Metadata = { title: "Quản lý Lịch hẹn | Admin" };
 export const dynamic = "force-dynamic";
@@ -19,10 +20,12 @@ export default async function AppointmentsAdminPage({
 }: {
   searchParams: Promise<{ status?: string; q?: string }>;
 }) {
+  await requirePagePermission("appointments.manage");
   const params = await searchParams;
   const status = statusValues.has(params.status ?? "") ? (params.status as AppointmentStatus) : undefined;
   const q = params.q?.trim() ?? "";
   const where = {
+    deletedAt: null,
     ...(status ? { status } : {}),
     ...(q
       ? {

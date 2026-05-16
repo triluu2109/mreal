@@ -5,6 +5,8 @@ import DeleteButton from "../properties/DeleteButton";
 import { deleteRentalListing } from "@/app/actions/rent";
 import { buildListingTitle, formatLayout } from "@/lib/listing-utils";
 import ListingToggleButton from "@/app/admin/_components/ListingToggleButton";
+import { requirePagePermission } from "@/lib/admin/auth";
+import { hasPermission } from "@/lib/admin/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -17,11 +19,15 @@ const typeFilters: Record<string, { bedrooms: number; bathrooms: number }> = {
 };
 
 export default async function RentPage({ searchParams }: { searchParams: Promise<{ page?: string; type?: string; sort?: string }> }) {
+  const admin = await requirePagePermission("listings.read");
+  const canCreate = hasPermission(admin.role, admin.permissions, "listings.create");
+  const canUpdate = hasPermission(admin.role, admin.permissions, "listings.update");
+  const canDelete = hasPermission(admin.role, admin.permissions, "listings.delete_soft");
   const params = await searchParams;
   const page = Math.max(1, Number(params.page) || 1);
   const type = params.type ?? "all";
   const sort = params.sort ?? "created_desc";
-  const where = typeFilters[type] ?? undefined;
+  const where = { ...(typeFilters[type] ?? {}), deletedAt: null };
   const orderBy =
     sort === "created_asc" ? { createdAt: "asc" as const } :
     sort === "price_asc" ? { rentPrice: "asc" as const } :
@@ -41,10 +47,10 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
           <h1 className="font-heading text-3xl font-bold text-navy">Giỏ hàng thuê</h1>
           <p className="text-gray-text mt-1">Quản lý danh sách căn hộ cho thuê.</p>
         </div>
-        <Link href="/admin/rent/create" className="bg-navy hover:bg-navy-light text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2">
+        {canCreate ? <Link href="/admin/rent/create" className="bg-navy hover:bg-navy-light text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2">
           <Plus size={18} />
           Thêm căn thuê
-        </Link>
+        </Link> : null}
       </div>
 
       <form className="mb-4 flex flex-wrap items-center gap-3">
@@ -86,12 +92,12 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center justify-end gap-2">
-                    <ListingToggleButton id={item.id} kind="rent" field="visible" value={item.isVisible} />
-                    <ListingToggleButton id={item.id} kind="rent" field="featured" value={item.isFeatured} />
-                    <Link href={`/admin/rent/${item.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100" title="Sửa">
+                    {canUpdate ? <ListingToggleButton id={item.id} kind="rent" field="visible" value={item.isVisible} /> : null}
+                    {canUpdate ? <ListingToggleButton id={item.id} kind="rent" field="featured" value={item.isFeatured} /> : null}
+                    {canUpdate ? <Link href={`/admin/rent/${item.id}`} className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100" title="Sửa">
                       <Edit size={16} />
-                    </Link>
-                    <DeleteButton id={item.id} action={deleteRentalListing} />
+                    </Link> : null}
+                    {canDelete ? <DeleteButton id={item.id} action={deleteRentalListing} /> : null}
                   </div>
                 </td>
               </tr>

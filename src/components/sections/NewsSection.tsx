@@ -23,7 +23,7 @@ type HomeNewsPost = {
 async function getHomeNews(): Promise<HomeNewsPost[]> {
   try {
     return await prisma.newsPost.findMany({
-      where: { published: true },
+      where: { published: true, deletedAt: null },
       orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
       take: 6,
       select: {

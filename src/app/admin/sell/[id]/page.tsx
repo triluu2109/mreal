@@ -4,12 +4,14 @@ import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/server/db/prisma";
 import { serializePrisma } from "@/lib/serializers/prisma";
 import SellForm, { type SellFormInitialData } from "../SellForm";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditSellPage({ params }: { params: Promise<{ id: string }> }) {
+  await requirePagePermission("listings.update");
   const { id } = await params;
-  const item = await prisma.saleListing.findUnique({ where: { id } });
+  const item = await prisma.saleListing.findFirst({ where: { id, deletedAt: null } });
   if (!item) notFound();
 
   return (

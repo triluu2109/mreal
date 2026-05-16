@@ -26,16 +26,17 @@ export default async function HomePage() {
   // Fetch song song để tối ưu performance
   const [saleProps, rentProps, staff] = await Promise.all([
     prisma.saleListing.findMany({
-      where: { isVisible: true },
+      where: { isVisible: true, deletedAt: null },
       orderBy: [{ isFeatured: "desc" }, { sellingPrice: "asc" }, { createdAt: "desc" }],
       take: 6,
     }),
     prisma.rentalListing.findMany({
-      where: { isVisible: true },
+      where: { isVisible: true, deletedAt: null },
       orderBy: [{ isFeatured: "desc" }, { rentPrice: "asc" }, { createdAt: "desc" }],
       take: 6,
     }),
     prisma.staff.findMany({
+      where: { isActive: true, deletedAt: null },
       orderBy: { order: "asc" },
     }),
   ]);

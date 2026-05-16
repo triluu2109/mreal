@@ -18,8 +18,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await prisma.newsPost.findUnique({
-    where: { slug, published: true },
+  const post = await prisma.newsPost.findFirst({
+    where: { slug, published: true, deletedAt: null },
     select: { title: true, excerpt: true, thumbnailPath: true, seoTitle: true, seoDescription: true },
   });
 
@@ -49,11 +49,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function NewsDetailPage({ params }: Props) {
   const { slug } = await params;
-  const post = await prisma.newsPost.findUnique({ where: { slug, published: true } });
+  const post = await prisma.newsPost.findFirst({ where: { slug, published: true, deletedAt: null } });
   if (!post) notFound();
 
   const relatedPosts = await prisma.newsPost.findMany({
-    where: { published: true, slug: { not: slug }, OR: [{ tags: { hasSome: post.tags } }, { featured: true }] },
+    where: { published: true, deletedAt: null, slug: { not: slug }, OR: [{ tags: { hasSome: post.tags } }, { featured: true }] },
     orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
     take: 3,
     select: { id: true, title: true, slug: true, excerpt: true, thumbnailPath: true, publishedAt: true, createdAt: true },

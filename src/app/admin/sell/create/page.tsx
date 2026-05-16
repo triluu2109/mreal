@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import SellForm from "../SellForm";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
-export default function CreateSellPage() {
+export default async function CreateSellPage() {
+  await requirePagePermission("listings.create");
+
   return (
     <div>
       <div className="mb-6">

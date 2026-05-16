@@ -48,6 +48,7 @@ export default async function MuaNhaPage({ searchParams }: { searchParams: Promi
 
   const where: any = {
     isVisible: true,
+    deletedAt: null,
     ...(typeFilters[type] ?? {}),
     ...(furnishing !== "all" ? { furnishingStatus: furnishing as FurnishingStatus } : {}),
     ...(minPrice || maxPrice

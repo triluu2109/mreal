@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
+import { actionError, requirePermission } from "@/lib/admin/auth";
 
 const CONTACT_STATUSES = new Set(["new", "contacted", "consulting", "closed", "cancelled"]);
 
@@ -34,7 +35,9 @@ export async function updateContactStatus(id: string, status: string) {
   if (!CONTACT_STATUSES.has(status)) {
     return { success: false, error: "Trạng thái không hợp lệ" };
   }
+
   try {
+    await requirePermission("contacts.manage");
     await prisma.contact.update({
       where: { id },
       data: {
@@ -47,18 +50,19 @@ export async function updateContactStatus(id: string, status: string) {
     return { success: true };
   } catch (error) {
     console.error("Contact status update error:", error);
-    return { success: false, error: "Không cập nhật được trạng thái" };
+    return { success: false, error: actionError(error, "Không cập nhật được trạng thái") };
   }
 }
 
 export async function deleteContact(id: string) {
   try {
-    await prisma.contact.delete({ where: { id } });
+    await requirePermission("contacts.manage");
+    await prisma.contact.update({ where: { id }, data: { deletedAt: new Date() } });
     revalidatePath("/admin/contacts");
     revalidatePath("/admin");
     return { success: true };
   } catch (error) {
     console.error("Contact delete error:", error);
-    return { success: false, error: "Không xoá được liên hệ" };
+    return { success: false, error: actionError(error, "Không xoá được liên hệ") };
   }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { writableStorageProvider } from "@/server/storage/provider";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
+import { requirePermission } from "@/lib/admin/auth";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif", "image/svg+xml"];
@@ -18,6 +19,14 @@ export async function POST(request: Request) {
 
     if (!directory || directory.includes("..")) {
       return NextResponse.json({ error: "Invalid upload directory" }, { status: 400 });
+    }
+
+    if (directory.startsWith("news/")) {
+      await requirePermission("news.manage");
+    } else if (directory.startsWith("listings/")) {
+      await requirePermission("listings.update");
+    } else {
+      return NextResponse.json({ error: "Upload directory is not allowed" }, { status: 403 });
     }
 
     const urls: string[] = [];

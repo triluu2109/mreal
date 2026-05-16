@@ -1,9 +1,9 @@
 export const siteImages = {
   logo: {
-    square: "/images/logo/logo.webp",
-    rectangle: "/images/logo/logo-rectangle.webp",
-    rectangleBw: "/images/logo/logo-rectangle-bw.webp",
-    favicon: "favicon.ico",
+    square: "/logo/logo-square.webp",
+    rectangle: "/logo/logo-rectangle.webp",
+    rectangleBw: "/logo/logo-rectangle-bw.webp",
+    favicon: "/favicon.ico",
   },
   project: {
     q7SaigonRiverside: {

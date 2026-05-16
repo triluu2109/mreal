@@ -4,12 +4,14 @@ import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/server/db/prisma";
 import { serializePrisma } from "@/lib/serializers/prisma";
 import RentForm, { type RentFormInitialData } from "../RentForm";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditRentPage({ params }: { params: Promise<{ id: string }> }) {
+  await requirePagePermission("listings.update");
   const { id } = await params;
-  const item = await prisma.rentalListing.findUnique({ where: { id } });
+  const item = await prisma.rentalListing.findFirst({ where: { id, deletedAt: null } });
   if (!item) notFound();
 
   return (

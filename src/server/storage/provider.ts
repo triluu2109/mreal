@@ -16,7 +16,6 @@ export const writableStorageProvider: WritableStorageProvider = (() => {
   switch (storageConfig.provider) {
     case "supabase": {
       // Dynamic require để tránh bundle vào client
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { supabaseWritableProvider } = require("./supabase-provider") as {
         supabaseWritableProvider: WritableStorageProvider;
       };

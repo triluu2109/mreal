@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
 import { slugify } from "@/lib/utils";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
+import { actionError, requirePermission } from "@/lib/admin/auth";
 
 function getString(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -59,6 +60,7 @@ export async function createNewsPost(formData: FormData) {
   if (!parsed.success) return parsed;
 
   try {
+    await requirePermission("news.manage");
     await prisma.newsPost.create({
       data: {
         ...parsed.data,
@@ -71,7 +73,7 @@ export async function createNewsPost(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Create news error:", error);
-    return { success: false, error: "Slug đã tồn tại hoặc có lỗi xảy ra" };
+    return { success: false, error: actionError(error, "Slug đã tồn tại hoặc có lỗi xảy ra") };
   }
 }
 
@@ -80,6 +82,7 @@ export async function updateNewsPost(id: string, formData: FormData) {
   if (!parsed.success) return parsed;
 
   try {
+    await requirePermission("news.manage");
     const current = await prisma.newsPost.findUnique({ where: { id }, select: { slug: true, publishedAt: true } });
     const publishedAt = parsed.data.published ? current?.publishedAt ?? new Date() : null;
 
@@ -96,23 +99,29 @@ export async function updateNewsPost(id: string, formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Update news error:", error);
-    return { success: false, error: "Có lỗi xảy ra khi cập nhật" };
+    return { success: false, error: actionError(error, "Có lỗi xảy ra khi cập nhật") };
   }
 }
 
 export async function deleteNewsPost(id: string) {
   try {
-    const post = await prisma.newsPost.delete({ where: { id }, select: { slug: true } });
+    await requirePermission("news.manage");
+    const post = await prisma.newsPost.update({
+      where: { id },
+      data: { deletedAt: new Date(), published: false },
+      select: { slug: true },
+    });
     revalidateNewsPaths(post.slug);
     return { success: true };
   } catch (error) {
     console.error("Delete news error:", error);
-    return { success: false, error: "Không xoá được bài viết" };
+    return { success: false, error: actionError(error, "Không xoá được bài viết") };
   }
 }
 
 export async function toggleNewsPostPublished(id: string, published: boolean) {
   try {
+    await requirePermission("news.manage");
     const post = await prisma.newsPost.update({
       where: { id },
       data: { published, publishedAt: published ? new Date() : null },
@@ -122,12 +131,13 @@ export async function toggleNewsPostPublished(id: string, published: boolean) {
     return { success: true };
   } catch (error) {
     console.error("Toggle news published error:", error);
-    return { success: false, error: "Không cập nhật được trạng thái xuất bản" };
+    return { success: false, error: actionError(error, "Không cập nhật được trạng thái xuất bản") };
   }
 }
 
 export async function toggleNewsPostFeatured(id: string, featured: boolean) {
   try {
+    await requirePermission("news.manage");
     const post = await prisma.newsPost.update({
       where: { id },
       data: { featured },
@@ -137,7 +147,7 @@ export async function toggleNewsPostFeatured(id: string, featured: boolean) {
     return { success: true };
   } catch (error) {
     console.error("Toggle news featured error:", error);
-    return { success: false, error: "Không cập nhật được trạng thái nổi bật" };
+    return { success: false, error: actionError(error, "Không cập nhật được trạng thái nổi bật") };
   }
 }
 

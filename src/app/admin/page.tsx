@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/server/db/prisma";
 import { Building, Calendar, FileText, Mail, MessageSquare, TrendingUp, Users } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const metadata: Metadata = { title: "Admin Dashboard | M-Real Estate" };
 export const dynamic = "force-dynamic";
@@ -23,27 +24,29 @@ async function getStats() {
     sellVisible,
     rentVisible,
   ] = await Promise.all([
-    safe(() => prisma.appointment.count(), 0),
-    safe(() => prisma.chatbotLead.count(), 0),
-    safe(() => prisma.newsPost.count(), 0),
-    safe(() => prisma.contact.count(), 0),
-    safe(() => prisma.saleListing.count(), 0),
-    safe(() => prisma.rentalListing.count(), 0),
-    safe(() => prisma.staff.count(), 0),
-    safe(() => prisma.appointment.count({ where: { status: "new" } }), 0),
-    safe(() => prisma.chatbotLead.count({ where: { status: "new" } }), 0),
+    safe(() => prisma.appointment.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.chatbotLead.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.newsPost.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.contact.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.saleListing.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.rentalListing.count({ where: { deletedAt: null } }), 0),
+    safe(() => prisma.adminProfile.count({ where: { role: { not: "master" }, isActive: true, deletedAt: null } }), 0),
+    safe(() => prisma.appointment.count({ where: { status: "new", deletedAt: null } }), 0),
+    safe(() => prisma.chatbotLead.count({ where: { status: "new", deletedAt: null } }), 0),
     safe(() => prisma.appointment.findMany({
       take: 5,
+      where: { deletedAt: null },
       orderBy: { createdAt: "desc" },
       select: { id: true, fullName: true, phone: true, status: true, createdAt: true },
     }), []),
     safe(() => prisma.chatbotLead.findMany({
       take: 5,
+      where: { deletedAt: null },
       orderBy: { createdAt: "desc" },
       select: { id: true, fullName: true, phone: true, need: true, area: true, status: true, createdAt: true },
     }), []),
-    safe(() => prisma.saleListing.count({ where: { isVisible: true } }), 0),
-    safe(() => prisma.rentalListing.count({ where: { isVisible: true } }), 0),
+    safe(() => prisma.saleListing.count({ where: { isVisible: true, deletedAt: null } }), 0),
+    safe(() => prisma.rentalListing.count({ where: { isVisible: true, deletedAt: null } }), 0),
   ]);
 
   return {
@@ -57,6 +60,7 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
+  await requireAdmin();
   const stats = await getStats();
 
   const cards = [

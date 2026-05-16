@@ -10,6 +10,7 @@ import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/W
 import { workflowStatusOptions } from "@/components/admin/StatusBadge";
 import { ChatHistoryButton } from "@/components/admin/ChatHistoryModal";
 import type { LeadStatus } from "@prisma/client";
+import { requirePagePermission } from "@/lib/admin/auth";
 
 export const metadata: Metadata = { title: "Chatbot Leads | Admin" };
 export const dynamic = "force-dynamic";
@@ -22,11 +23,13 @@ export default async function ChatbotLeadsPage({
 }: {
   searchParams: Promise<{ page?: string; status?: string; q?: string }>;
 }) {
+  await requirePagePermission("leads.manage");
   const params = await searchParams;
   const page = Math.max(1, Number(params.page) || 1);
   const status = statusValues.has(params.status ?? "") ? (params.status as LeadStatus) : undefined;
   const q = params.q?.trim() ?? "";
   const where = {
+    deletedAt: null,
     ...(status ? { status } : {}),
     ...(q
       ? {

@@ -1,71 +1,60 @@
-import { storageConfig } from "./config";
+const SUPABASE_STORAGE_PUBLIC_SEGMENT = "/storage/v1/object/public/";
+const DEFAULT_PUBLIC_STORAGE_BUCKET = "mreal-assets";
 
 /**
- * Convert một relative storage path thành URL công khai.
+ * Convert a dynamic storage path into the canonical public image URL.
  *
- * Database chỉ lưu relative path, ví dụ:
- *   "listings/rent/RENT-001/cover.webp"
- *   "news/co-nen-thue-can-ho-q7/thumbnail.webp"
- *
- * Local provider trả về:
- *   "/storage/listings/rent/RENT-001/cover.webp"
- *
- * Khi đổi sang Supabase Storage / S3, chỉ cần đổi STORAGE_PROVIDER
- * và hàm này sẽ trả về URL tương ứng.
- *
- * TUYỆT ĐỐI không nối chuỗi storage URL trực tiếp trong component.
- * Luôn dùng hàm này.
+ * Dynamic content must render as a Supabase public Storage URL on both SSR and
+ * CSR so React never sees a different src/srcSet during hydration. Branding
+ * assets are local public files and should use /logo/* or /favicon.ico directly.
  */
 export function resolveStorageUrl(relativePath: string | null | undefined): string {
   if (!relativePath) return "";
 
-  // Nếu là URL đầy đủ (http/https), trả nguyên (legacy data)
-  if (relativePath.startsWith("http://") || relativePath.startsWith("https://")) {
-    return relativePath;
-  }
-
   const path = normalizePath(relativePath);
   if (!path) return "";
 
-  switch (storageConfig.provider) {
-    case "supabase": {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-      const bucket = storageConfig.bucket;
-      return `${supabaseUrl}/storage/v1/object/public/${bucket}/${path}`;
-    }
-    case "local":
-    default:
-      return `${storageConfig.localRoot}/${path}`;
-  }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/+$/, "") ?? "";
+  if (!supabaseUrl) return "";
+
+  return `${supabaseUrl}${SUPABASE_STORAGE_PUBLIC_SEGMENT}${getPublicStorageBucket()}/${path}`;
 }
 
 /**
- * Normalize một input path (có thể có prefix cũ) thành relative path sạch.
- * Dùng khi cần lưu vào database.
+ * Normalize any legacy image input into a bucket-relative path for persistence.
  *
- * Ví dụ:
- *   "/storage/listings/rent/x/main.webp"  → "listings/rent/x/main.webp"
- *   "/images/listings/rent/x/main.webp"   → "listings/rent/x/main.webp"
- *   "listings/rent/x/main.webp"           → "listings/rent/x/main.webp"
+ * Examples:
+ * - https://x.supabase.co/storage/v1/object/public/mreal-assets/a.webp -> a.webp
+ * - /storage/listings/rent/x/main.webp -> listings/rent/x/main.webp
+ * - /images/projects/q7/a.webp -> projects/q7/a.webp
+ * - listings/rent/x/main.webp -> listings/rent/x/main.webp
  */
 export function normalizeStoragePath(path: string | null | undefined): string {
   if (!path) return "";
 
   let p = path.trim().replace(/\\/g, "/");
+  if (!p) return "";
 
-  // Strip domain nếu có
   try {
     const url = new URL(p);
     p = url.pathname;
   } catch {
-    // Không phải URL đầy đủ — giữ nguyên
+    // Not an absolute URL.
   }
 
-  // Bỏ các prefix cũ
+  const publicStorageIndex = p.indexOf(SUPABASE_STORAGE_PUBLIC_SEGMENT);
+  if (publicStorageIndex >= 0) {
+    p = p.slice(publicStorageIndex + SUPABASE_STORAGE_PUBLIC_SEGMENT.length);
+    const bucket = getPublicStorageBucket();
+    if (p === bucket) return "";
+    if (p.startsWith(`${bucket}/`)) p = p.slice(bucket.length + 1);
+  }
+
   p = p
     .replace(/^\/storage\//, "")
     .replace(/^\/images\/listings\//, "listings/")
     .replace(/^\/images\/news\//, "news/")
+    .replace(/^\/images\/projects\//, "projects/")
     .replace(/^\/images\//, "")
     .replace(/^\/public\//, "")
     .replace(/^\/+/, "");
@@ -73,7 +62,11 @@ export function normalizeStoragePath(path: string | null | undefined): string {
   return p;
 }
 
-/** Alias cho backward compat */
+/** Backward-compatible alias. */
 export function normalizePath(path: string): string {
   return normalizeStoragePath(path);
+}
+
+function getPublicStorageBucket() {
+  return process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET ?? DEFAULT_PUBLIC_STORAGE_BUCKET;
 }

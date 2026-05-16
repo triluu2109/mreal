@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
 import type { FurnishingStatus } from "@prisma/client";
+import { actionError, requirePermission } from "@/lib/admin/auth";
 
 type SaleListingInput = {
   id?: string;
@@ -29,6 +30,7 @@ type SaleListingInput = {
 
 export async function createSaleListing(data: SaleListingInput) {
   try {
+    await requirePermission("listings.create");
     await prisma.saleListing.create({ data: buildSaleData(data, true) });
     revalidateSalePaths();
     return { success: true };
@@ -40,6 +42,7 @@ export async function createSaleListing(data: SaleListingInput) {
 
 export async function updateSaleListing(id: string, data: SaleListingInput) {
   try {
+    await requirePermission("listings.update");
     await prisma.saleListing.update({ where: { id }, data: buildSaleData(data, false) });
     revalidateSalePaths();
     return { success: true };
@@ -51,7 +54,11 @@ export async function updateSaleListing(id: string, data: SaleListingInput) {
 
 export async function deleteSaleListing(id: string) {
   try {
-    await prisma.saleListing.delete({ where: { id } });
+    await requirePermission("listings.delete_soft");
+    await prisma.saleListing.update({
+      where: { id },
+      data: { deletedAt: new Date(), isVisible: false },
+    });
     revalidateSalePaths();
     return { success: true };
   } catch (error) {
@@ -66,6 +73,7 @@ export const deleteSell = deleteSaleListing;
 
 export async function toggleSaleListingVisibility(id: string, isVisible: boolean) {
   try {
+    await requirePermission("listings.update");
     await prisma.saleListing.update({ where: { id }, data: { isVisible } });
     revalidateSalePaths();
     return { success: true };
@@ -77,6 +85,7 @@ export async function toggleSaleListingVisibility(id: string, isVisible: boolean
 
 export async function toggleSaleListingFeatured(id: string, isFeatured: boolean) {
   try {
+    await requirePermission("listings.update");
     await prisma.saleListing.update({ where: { id }, data: { isFeatured } });
     revalidateSalePaths();
     return { success: true };
@@ -133,8 +142,4 @@ function formatSaleDisplayPrice(priceVnd: number): string {
   }
   const million = priceVnd / 1_000_000;
   return `${million} triệu`;
-}
-
-function actionError(error: unknown, fallback: string) {
-  return error instanceof Error ? error.message : fallback;
 }

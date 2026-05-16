@@ -1,59 +1,59 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createStaff, updateStaff } from "@/app/actions/staff";
-import ImageUploadField from "@/app/admin/_components/ImageUploadField";
+import {
+  ADMIN_PERMISSIONS,
+  PERMISSION_LABELS,
+  type AdminRoleValue,
+} from "@/lib/admin/permissions";
 
 export type StaffFormInitialData = {
   id: string;
-  name: string;
-  role: string;
-  phone: string;
-  zalo: string | null;
-  image: string | null;
-  color: string;
-  speciality: string | null;
-  order: number;
+  email: string;
+  fullName: string;
+  phone: string | null;
+  role: AdminRoleValue;
+  permissions: string[];
+  position: string | null;
+  specialty: string | null;
+  avatarUrl: string | null;
+  displayOrder: number;
+  isActive: boolean;
 };
 
 export default function StaffForm({ initialData = null }: { initialData?: StaffFormInitialData | null }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  // Dùng UUID ổn định cho thư mục upload, giống SellForm/RentForm
-  const [staffId] = useState(() => initialData?.id ?? crypto.randomUUID());
-  // imagePaths là mảng, Staff chỉ dùng ảnh đầu tiên làm avatar
-  const [imagePaths, setImagePaths] = useState<string[]>(() =>
-    initialData?.image ? [initialData.image] : []
-  );
+  const isEditing = Boolean(initialData?.id);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     const data = {
-      name: formData.get("name") as string,
-      role: formData.get("role") as string,
-      phone: formData.get("phone") as string,
-      zalo: (formData.get("zalo") as string) || null,
-      // Chỉ lưu path ảnh đầu tiên (avatar)
-      image: imagePaths[0] ?? null,
-      color: formData.get("color") as string,
-      speciality: (formData.get("speciality") as string) || null,
-      order: parseInt(formData.get("order") as string) || 0,
+      email: String(formData.get("email") ?? ""),
+      password: String(formData.get("password") ?? "") || null,
+      fullName: String(formData.get("fullName") ?? ""),
+      phone: String(formData.get("phone") ?? "") || null,
+      role: String(formData.get("role") ?? "staff") as AdminRoleValue,
+      permissions: formData.getAll("permissions").map(String),
+      position: String(formData.get("position") ?? "") || null,
+      specialty: String(formData.get("specialty") ?? "") || null,
+      avatarUrl: String(formData.get("avatarUrl") ?? "") || null,
+      displayOrder: Number(formData.get("displayOrder") ?? 0),
+      isActive: formData.get("isActive") === "on",
     };
 
     startTransition(async () => {
-      let res;
-      if (initialData?.id) {
-        res = await updateStaff(initialData.id, data);
-      } else {
-        res = await createStaff(data);
-      }
+      const res = isEditing && initialData
+        ? await updateStaff(initialData.id, data)
+        : await createStaff(data);
 
       if (res.success) {
-        toast.success(initialData?.id ? "Cập nhật thành công!" : "Tạo mới thành công!");
+        toast.success(isEditing ? "Đã cập nhật nhân sự" : "Đã tạo nhân sự");
         router.push("/admin/staff");
         router.refresh();
       } else {
@@ -63,104 +63,88 @@ export default function StaffForm({ initialData = null }: { initialData?: StaffF
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-border p-6 lg:p-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-border p-6 lg:p-8 max-w-5xl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Field label="Họ và tên *">
+          <input name="fullName" required defaultValue={initialData?.fullName ?? ""} className={inputClass} />
+        </Field>
 
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Họ và Tên *</label>
+        <Field label="Email đăng nhập *">
+          <input name="email" type="email" required defaultValue={initialData?.email ?? ""} className={inputClass} />
+        </Field>
+
+        <Field label={isEditing ? "Mật khẩu mới (để trống nếu không đổi)" : "Mật khẩu tạm *"}>
           <input
-            type="text"
-            name="name"
-            required
-            defaultValue={initialData?.name}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-            placeholder="VD: Nguyễn Văn A"
+            name="password"
+            type="password"
+            required={!isEditing}
+            minLength={8}
+            className={inputClass}
+            placeholder="Tối thiểu 8 ký tự"
           />
-        </div>
+        </Field>
 
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Chức vụ *</label>
-          <input
-            type="text"
-            name="role"
-            required
-            defaultValue={initialData?.role}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-            placeholder="VD: Chuyên viên Tư vấn"
-          />
-        </div>
+        <Field label="Số điện thoại">
+          <input name="phone" defaultValue={initialData?.phone ?? ""} className={inputClass} />
+        </Field>
 
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Số điện thoại *</label>
-          <input
-            type="text"
-            name="phone"
-            required
-            defaultValue={initialData?.phone}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Số Zalo</label>
-          <input
-            type="text"
-            name="zalo"
-            defaultValue={initialData?.zalo ?? ""}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-          />
-        </div>
-
-        <div className="col-span-1 md:col-span-2">
-          <label className="block text-sm font-medium text-navy mb-2">Chuyên môn / Điểm mạnh</label>
-          <input
-            type="text"
-            name="speciality"
-            defaultValue={initialData?.speciality ?? ""}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-            placeholder="VD: Chuyên phân khu The Rainbow, The Origami"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Thứ tự hiển thị</label>
-          <input
-            type="number"
-            name="order"
-            defaultValue={initialData?.order || 0}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-navy mb-2">Màu nền Avatar *</label>
-          <select
-            name="color"
-            defaultValue={initialData?.color || "from-navy to-navy-light"}
-            className="w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold bg-white"
-          >
-            <option value="from-navy to-navy-light">Xanh Navy (Mặc định)</option>
-            <option value="from-gold to-gold-light">Vàng Gold</option>
-            <option value="from-blue-600 to-blue-400">Xanh dương nhạt</option>
-            <option value="from-emerald-600 to-emerald-400">Xanh lá</option>
-            <option value="from-purple-600 to-purple-400">Tím</option>
-            <option value="from-orange-500 to-orange-400">Cam</option>
-            <option value="from-gray-700 to-gray-500">Xám</option>
+        <Field label="Vai trò *">
+          <select name="role" required defaultValue={initialData?.role ?? "staff"} className={inputClass}>
+            <option value="admin">Admin</option>
+            <option value="telesale">Telesale</option>
+            <option value="staff">Nhân viên thường</option>
           </select>
-        </div>
+        </Field>
 
-        {/* Ảnh đại diện — dùng Supabase Storage */}
-        <div className="col-span-1 md:col-span-2">
-          <ImageUploadField
-            value={imagePaths}
-            onChange={setImagePaths}
-            directory={`staff/${staffId}`}
+        <Field label="Chức danh">
+          <input name="position" defaultValue={initialData?.position ?? ""} className={inputClass} />
+        </Field>
+
+        <Field label="Thứ tự hiển thị">
+          <input name="displayOrder" type="number" defaultValue={initialData?.displayOrder ?? 0} className={inputClass} />
+        </Field>
+
+        <Field label="Avatar URL">
+          <input name="avatarUrl" defaultValue={initialData?.avatarUrl ?? ""} className={inputClass} />
+        </Field>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-navy mb-2">Mô tả/chuyên môn</label>
+          <textarea
+            name="specialty"
+            defaultValue={initialData?.specialty ?? ""}
+            rows={3}
+            className={`${inputClass} resize-none`}
           />
-          <p className="mt-1 text-xs text-gray-muted">
-            Upload ảnh đại diện (chỉ dùng ảnh đầu tiên). Để trống nếu dùng chữ tắt.
-          </p>
         </div>
 
+        <div className="md:col-span-2 rounded-lg border border-gray-border p-5">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div>
+              <h2 className="font-heading font-bold text-navy">Phân quyền</h2>
+              <p className="mt-1 text-sm text-gray-text">Master có toàn quyền mặc định; các vai trò khác chỉ có quyền được bật.</p>
+            </div>
+            <label className="flex items-center gap-2 text-sm text-gray-text">
+              <input name="isActive" type="checkbox" defaultChecked={initialData?.isActive ?? true} className="h-4 w-4 accent-navy" />
+              Đang hoạt động
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {ADMIN_PERMISSIONS.map((permission) => (
+              <label key={permission} className="flex items-center gap-3 rounded-lg border border-gray-border px-4 py-3 text-sm text-gray-text">
+                <input
+                  type="checkbox"
+                  name="permissions"
+                  value={permission}
+                  defaultChecked={initialData?.permissions.includes(permission)}
+                  className="h-4 w-4 accent-navy"
+                />
+                {PERMISSION_LABELS[permission]}
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="mt-8 flex items-center justify-end gap-4 border-t border-gray-border pt-6">
@@ -174,11 +158,22 @@ export default function StaffForm({ initialData = null }: { initialData?: StaffF
         <button
           type="submit"
           disabled={isPending}
-          className={`bg-navy hover:bg-navy-light text-white px-8 py-2.5 rounded-lg font-medium transition-colors ${isPending ? "opacity-70 cursor-not-allowed" : ""}`}
+          className="bg-navy hover:bg-navy-light text-white px-8 py-2.5 rounded-lg font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {isPending ? "Đang lưu..." : initialData?.id ? "Cập nhật" : "Tạo mới"}
+          {isPending ? "Đang lưu..." : isEditing ? "Cập nhật" : "Tạo mới"}
         </button>
       </div>
     </form>
   );
 }
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-navy mb-2">{label}</label>
+      {children}
+    </div>
+  );
+}
+
+const inputClass = "w-full border border-gray-border rounded-lg px-4 py-2.5 focus:outline-none focus:border-gold transition-colors bg-white";
