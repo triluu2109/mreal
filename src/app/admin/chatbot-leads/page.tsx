@@ -9,7 +9,7 @@ import { SectionHeader } from "@/components/admin/SectionHeader";
 import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/WorkflowActions";
 import { workflowStatusOptions } from "@/components/admin/StatusBadge";
 import { ChatHistoryButton } from "@/components/admin/ChatHistoryModal";
-import type { LeadStatus } from "@/generated/client/client";
+import type { LeadStatus } from "@prisma/client";
 
 export const metadata: Metadata = { title: "Chatbot Leads | Admin" };
 export const dynamic = "force-dynamic";

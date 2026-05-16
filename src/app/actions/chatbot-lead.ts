@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
-import type { LeadStatus } from "@/generated/client/client";
+import type { LeadStatus } from "@prisma/client";
 
 // All valid statuses from the LeadStatus DB enum
 const LEAD_STATUSES = new Set<LeadStatus>(["new", "contacted", "advised", "completed", "cancelled", "done"]);

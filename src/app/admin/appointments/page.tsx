@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/admin/EmptyState";
 import { SectionHeader } from "@/components/admin/SectionHeader";
 import { WorkflowStatusBadge, WorkflowActionButtons } from "@/components/admin/WorkflowActions";
 import { workflowStatusOptions } from "@/components/admin/StatusBadge";
-import type { AppointmentStatus } from "@/generated/client/client";
+import type { AppointmentStatus } from "@prisma/client";
 
 export const metadata: Metadata = { title: "Quản lý Lịch hẹn | Admin" };
 export const dynamic = "force-dynamic";

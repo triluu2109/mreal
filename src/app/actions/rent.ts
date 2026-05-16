@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
 import { normalizeStoragePath } from "@/server/storage/resolve-url";
-import type { FurnishingStatus } from "@/generated/client/client";
+import type { FurnishingStatus } from "@prisma/client";
 
 type RentalListingInput = {
   id?: string;

@@ -8,7 +8,7 @@ import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils
 import { siteImages } from "@/config/images";
 import { formatFurnishing } from "@/lib/furnishing";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
-import type { FurnishingStatus } from "@/generated/client/client";
+import type { FurnishingStatus } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Giỏ hàng Mua bán - M-Real Estate",

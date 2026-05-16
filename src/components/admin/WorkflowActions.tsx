@@ -4,7 +4,7 @@ import { useOptimistic, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, MessageCircle, PhoneCall, Trash2, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import type { AppointmentStatus, LeadStatus } from "@/generated/client/client";
+import type { AppointmentStatus, LeadStatus } from "@prisma/client";
 import { updateAppointmentStatus } from "@/app/actions/appointment";
 import { deleteChatbotLead, updateChatbotLeadStatus } from "@/app/actions/chatbot-lead";
 import { StatusBadge } from "./StatusBadge";

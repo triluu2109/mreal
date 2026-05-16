@@ -2,7 +2,7 @@
 
 import { prisma } from "@/server/db/prisma";
 import { revalidatePath } from "next/cache";
-import type { AppointmentStatus } from "@/generated/client/client";
+import type { AppointmentStatus } from "@prisma/client";
 
 const workflowStatuses = new Set<AppointmentStatus>(["new", "contacted", "advised", "completed", "cancelled"]);
 
