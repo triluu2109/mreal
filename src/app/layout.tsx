@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import ChatbotClientWrapper from "@/components/chatbot/ChatbotClientWrapper";
+import FloatingClientWrapper from "@/components/layout/FloatingClientWrapper";
 import { siteImages } from "@/config/images";
 import "./globals.css";
 
@@ -59,11 +60,13 @@ export default function RootLayout({
     <html
       lang="vi"
       className={`${inter.variable} ${montserrat.variable}`}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <body className="antialiased">
         {children}
         <ChatbotClientWrapper />
+        <FloatingClientWrapper />
         <Toaster richColors position="top-right" />
       </body>
     </html>

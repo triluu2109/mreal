@@ -90,9 +90,8 @@ export default function StaffForm({ initialData = null }: { initialData?: StaffF
 
         <Field label="Vai trò *">
           <select name="role" required defaultValue={initialData?.role ?? "staff"} className={inputClass}>
-            <option value="admin">Admin</option>
-            <option value="telesale">Telesale</option>
-            <option value="staff">Nhân viên thường</option>
+            <option value="admin">ADMIN</option>
+            <option value="staff">STAFF</option>
           </select>
         </Field>
 

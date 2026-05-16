@@ -53,21 +53,21 @@ export default async function SellDetailPage({ params }: Props) {
       <Header />
       <main>
         <div className="bg-gray-bg border-b border-gray-border">
-          <div className="container-site py-3">
-            <div className="flex items-center gap-2 text-sm text-gray-text">
-              <Link href="/" className="hover:text-gold transition-colors">Trang chủ</Link>
+          <div className="container-site py-3 sm:py-4">
+            <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-text">
+              <Link href="/" className="shrink-0 hover:text-gold transition-colors">Trang chủ</Link>
               <span>/</span>
-              <Link href="/mua-nha" className="hover:text-gold transition-colors">Giỏ hàng mua bán</Link>
+              <Link href="/gio-hang-ban" className="shrink-0 hover:text-gold transition-colors">Giỏ hàng mua bán</Link>
               <span>/</span>
-              <span className="text-navy font-medium line-clamp-1">{title}</span>
-            </div>
+              <span className="min-w-0 flex-1 truncate text-navy font-medium">{title}</span>
+            </nav>
           </div>
         </div>
 
         <div className="container-site py-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div className="lg:col-span-2 space-y-8">
-              <Link href="/mua-nha" className="inline-flex items-center gap-2 text-sm text-gray-text hover:text-gold transition-colors">
+              <Link href="/gio-hang-ban" className="inline-flex items-center gap-2 text-sm text-gray-text hover:text-gold transition-colors">
                 <ArrowLeft size={16} />
                 Giỏ hàng mua bán
               </Link>

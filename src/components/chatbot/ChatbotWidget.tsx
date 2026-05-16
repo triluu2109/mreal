@@ -188,18 +188,18 @@ export default function ChatbotWidget() {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+      <div className="fixed bottom-6 right-6 z-50 flex flex-row items-center gap-3">
         <AnimatePresence>
           {!isOpen && messages.length > 0 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-white rounded-2xl rounded-br-sm shadow-lg border border-gray-border px-4 py-3 max-w-56 cursor-pointer"
+              className="bg-white rounded-2xl rounded-br-sm shadow-lg border border-gray-border px-4 py-3 max-w-52 cursor-pointer"
               onClick={() => setIsOpen(true)}
             >
-              <p className="text-navy text-sm font-medium leading-snug">
-                Tư vấn Q7 Saigon Riverside
+              <p className="text-navy text-sm font-medium leading-snug whitespace-nowrap">
+                🤖 Tư vấn cùng AI
               </p>
             </motion.div>
           )}

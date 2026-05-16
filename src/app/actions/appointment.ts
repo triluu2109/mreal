@@ -35,6 +35,9 @@ export async function submitAppointment(formData: FormData) {
             .filter(Boolean)
             .join(" | ") || null,
         budget,
+        appointmentTime,
+        contactMethod,
+        source,
       },
       select: { id: true },
     });

@@ -3,25 +3,26 @@ import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Youtube, Instagram, Twitter, Linkedin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
+import vi from "@/locales/vi.json";
 
 const navCol1 = [
-  { label: "Chính sách bảo mật", href: "/chinh-sach-bao-mat" },
-  { label: "Về chúng tôi", href: "/gioi-thieu" },
-  { label: "Quy định", href: "/quy-dinh" },
-  { label: "Liên hệ", href: "/contact" },
+  { label: vi.footer.columns.col1.links[0].label, href: vi.footer.columns.col1.links[0].href },
+  { label: vi.footer.columns.col1.links[1].label, href: vi.footer.columns.col1.links[1].href },
+  { label: vi.footer.columns.col1.links[2].label, href: vi.footer.columns.col1.links[2].href },
+  { label: vi.footer.columns.col1.links[3].label, href: vi.footer.columns.col1.links[3].href },
 ];
 
 const navCol2 = [
-  { label: "Câu hỏi thường gặp", href: "/faq" },
-  { label: "Hướng dẫn sử dụng", href: "/huong-dan" },
-  { label: "Lợi ích thành viên", href: "/loi-ich" },
-  { label: "Tin tức", href: "/news" },
+  { label: vi.footer.columns.col2.links[0].label, href: vi.footer.columns.col2.links[0].href },
+  { label: vi.footer.columns.col2.links[1].label, href: vi.footer.columns.col2.links[1].href },
+  { label: vi.footer.columns.col2.links[2].label, href: vi.footer.columns.col2.links[2].href },
+  { label: vi.footer.columns.col2.links[3].label, href: vi.footer.columns.col2.links[3].href },
 ];
 
 const navCol3 = [
-  { label: "Mua bán căn hộ", href: "/mua-nha" },
-  { label: "Cho thuê căn hộ", href: "/thue-nha" },
-  { label: "Dự án Q7 Riverside", href: "/du-an/q7-saigon-riverside-complex" },
+  { label: vi.footer.columns.col3.links[0].label, href: vi.footer.columns.col3.links[0].href },
+  { label: vi.footer.columns.col3.links[1].label, href: vi.footer.columns.col3.links[1].href },
+  { label: vi.footer.columns.col3.links[2].label, href: vi.footer.columns.col3.links[2].href },
 ];
 
 // Địa chỉ động từ config
@@ -35,10 +36,10 @@ export default function Footer() {
       <div className="bg-navy py-12">
         <div className="container-site text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-white mb-3">
-            Sẵn sàng tìm kiếm bất động sản lý tưởng?
+            {vi.footer.cta.title}
           </h2>
           <p className="text-white/80 mb-6 max-w-xl mx-auto">
-            Đội ngũ chuyên viên của chúng tôi luôn sẵn sàng tư vấn miễn phí và đồng hành cùng bạn.
+            {vi.footer.cta.desc}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
@@ -52,7 +53,7 @@ export default function Footer() {
               href="/#booking"
               className="inline-flex items-center gap-2 bg-gold border-2 border-gold text-white font-heading font-semibold px-8 py-3 rounded-lg hover:bg-gold-dark transition-colors"
             >
-              Đặt lịch tư vấn ngay
+              {vi.common.book_appointment}
             </Link>
           </div>
         </div>
@@ -71,23 +72,18 @@ export default function Footer() {
                 width={180}
                 height={54}
                 className="h-14 w-auto object-contain"
-                style={{ filter: "brightness(0) invert(1)" }}
+                style={{ filter: "invert(1)", mixBlendMode: "screen", width: "auto" }}
                 priority
               />
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-5 max-w-sm">
-              M-Real Estate thành lập năm 2018, chuyên kinh doanh bất động sản tại TP.HCM và Bình
-              Dương. Với hơn 7 năm kinh nghiệm, chúng tôi cung cấp dịch vụ mua bán, cho thuê và tư
-              vấn đầu tư bất động sản chuyên nghiệp, uy tín.
+              {vi.footer.company_desc}
             </p>
             {/* Social links */}
             <div className="flex gap-2.5">
               {[
                 { href: siteConfig.social.facebook, icon: Facebook, label: "Facebook" },
                 { href: siteConfig.social.instagram, icon: Instagram, label: "Instagram" },
-                { href: siteConfig.social.twitter, icon: Twitter, label: "Twitter" },
-                { href: siteConfig.social.linkedin, icon: Linkedin, label: "LinkedIn" },
-                { href: siteConfig.social.youtube, icon: Youtube, label: "YouTube" },
               ].map(({ href, icon: Icon, label }) => (
                 <a
                   key={label}
@@ -106,11 +102,11 @@ export default function Footer() {
           {/* Column: Giới thiệu */}
           <div>
             <h3 className="font-heading font-semibold text-xs uppercase tracking-widest text-gold mb-4">
-              Giới thiệu
+              {vi.footer.columns.col1.title}
             </h3>
             <ul className="space-y-2.5">
               {navCol1.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link href={link.href} className="text-white/60 hover:text-gold transition-colors text-sm">
                     {link.label}
                   </Link>
@@ -122,11 +118,11 @@ export default function Footer() {
           {/* Column: Hỗ trợ */}
           <div>
             <h3 className="font-heading font-semibold text-xs uppercase tracking-widest text-gold mb-4">
-              Hỗ trợ
+              {vi.footer.columns.col2.title}
             </h3>
             <ul className="space-y-2.5">
               {navCol2.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link href={link.href} className="text-white/60 hover:text-gold transition-colors text-sm">
                     {link.label}
                   </Link>
@@ -138,11 +134,11 @@ export default function Footer() {
           {/* Column: Sản phẩm */}
           <div>
             <h3 className="font-heading font-semibold text-xs uppercase tracking-widest text-gold mb-4">
-              Sản phẩm
+              {vi.footer.columns.col3.title}
             </h3>
             <ul className="space-y-2.5">
               {navCol3.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link href={link.href} className="text-white/60 hover:text-gold transition-colors text-sm">
                     {link.label}
                   </Link>
@@ -155,13 +151,13 @@ export default function Footer() {
         {/* Office + Map */}
         <div className="mt-12 pt-10 border-t border-white/10">
           <h3 className="font-heading font-semibold text-xs uppercase tracking-widest text-gold mb-6">
-            Văn phòng & Bản đồ
+            {vi.footer.office.title}
           </h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Address info */}
             <div className="space-y-5">
               <div className="bg-white/5 rounded-xl p-5">
-                <h4 className="font-heading font-semibold text-white text-sm mb-3">Văn phòng chính</h4>
+                <h4 className="font-heading font-semibold text-white text-sm mb-3">Văn phòng</h4>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2.5 text-white/60 text-xs">
                     <MapPin size={13} className="text-gold flex-shrink-0 mt-0.5" />
@@ -211,9 +207,8 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="container-site py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-white/40 text-xs">
-          <p>Copyright {new Date().getFullYear()} © mrealestate.vn. Bảo lưu mọi quyền.</p>
-          <p>Thiết kế bởi M-Real Estate Team</p>
+        <div className="container-site py-5 flex flex-col sm:flex-row items-center justify-center gap-3 text-white/40 text-xs">
+          <p>{vi.common.copyright.replace("{year}", new Date().getFullYear().toString())}</p>
         </div>
       </div>
     </footer>

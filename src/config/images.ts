@@ -1,8 +1,8 @@
 export const siteImages = {
   logo: {
-    square: "/logo/logo-square.webp",
-    rectangle: "/logo/logo-rectangle.webp",
-    rectangleBw: "/logo/logo-rectangle-bw.webp",
+    square: "/logo/logo-square.png",
+    rectangle: "/logo/logo-rectangle-small.png",
+    rectangleBw: "/logo/logo-rectangle-bw.png",
     favicon: "/favicon.ico",
   },
   project: {

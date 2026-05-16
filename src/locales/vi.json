@@ -1,0 +1,210 @@
+{
+  "common": {
+    "brand": "M-Real Estate",
+    "hotline": "Hotline:",
+    "contact_us": "Liên hệ ngay",
+    "view_more": "Khám phá thêm",
+    "free_consultation": "Tư vấn miễn phí",
+    "book_appointment": "Đặt lịch tư vấn",
+    "send_listing": "Gửi bán & Cho thuê",
+    "search_placeholder": "Tìm kiếm không gian sống...",
+    "copyright": "© {year} M-Real Estate. All rights reserved"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "projects": "Dự án",
+    "about_us": "Về chúng tôi",
+    "listings": "Giỏ hàng",
+    "buy": "Bán",
+    "rent": "Thuê",
+    "news": "Tin tức",
+    "contact": "Liên hệ"
+  },
+  "filters": {
+    "all": "Tất cả",
+    "bedrooms": "Phòng ngủ",
+    "bathrooms": "Phòng tắm",
+    "price": "Khoảng giá",
+    "furnishing": "Nội thất",
+    "sort": "Sắp xếp",
+    "page_size": "Mỗi trang",
+    "apply": "Áp dụng",
+    "price_ranges": {
+      "rent": {
+        "all": "Mọi mức giá",
+        "under_5": "Dưới 5 triệu",
+        "5_10": "5 - 10 triệu",
+        "10_15": "10 - 15 triệu",
+        "15_20": "15 - 20 triệu",
+        "over_20": "Trên 20 triệu"
+      },
+      "buy": {
+        "all": "Mọi mức giá",
+        "under_2": "Dưới 2 tỷ",
+        "2_3": "2 - 3 tỷ",
+        "3_5": "3 - 5 tỷ",
+        "5_10": "5 - 10 tỷ",
+        "over_10": "Trên 10 tỷ"
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "M-Real Estate | Tư vấn và môi giới bất động sản TP.HCM",
+      "description": "M-Real Estate là đơn vị tư vấn và môi giới bất động sản tại TP.HCM, tập trung vào mua bán, cho thuê, ký gửi và tư vấn căn hộ, hiện ưu tiên dự án Q7 Saigon Riverside Complex."
+    },
+    "hero": {
+      "slides": [
+        {
+          "title": "Tư vấn bất động sản minh bạch tại TP.HCM",
+          "subtitle": "Mua bán, cho thuê và ký gửi căn hộ",
+          "desc": "M-Real Estate đồng hành cùng khách hàng trong từng quyết định giao dịch căn hộ, từ khảo sát nhu cầu, chọn sản phẩm phù hợp đến hỗ trợ thông tin trước khi ký kết.",
+          "cta1": "Xem dự án nổi bật",
+          "cta2": "Liên hệ tư vấn"
+        },
+        {
+          "title": "Q7 Saigon Riverside Complex",
+          "subtitle": "Nguồn căn hộ được cập nhật theo nhu cầu thực",
+          "desc": "Website hiện ưu tiên thông tin mua bán và cho thuê tại Q7 Saigon Riverside Complex, giúp khách hàng dễ so sánh giỏ hàng, vị trí, diện tích và mức giá tham khảo.",
+          "cta1": "Xem giỏ hàng",
+          "cta2": "Nhận tư vấn căn hộ"
+        },
+        {
+          "title": "Dịch vụ cho thuê căn hộ",
+          "subtitle": "Rõ thông tin, sát nhu cầu, tiết kiệm thời gian",
+          "desc": "Chúng tôi hỗ trợ khách thuê tìm căn phù hợp và hỗ trợ chủ nhà tiếp cận khách hàng có nhu cầu ở thật, thuê dài hạn hoặc thuê theo ngân sách cụ thể.",
+          "cta1": "Xem căn cho thuê",
+          "cta2": "Ký gửi cho thuê"
+        },
+        {
+          "title": "Ký gửi và tư vấn giao dịch",
+          "subtitle": "Giải pháp thực tế cho chủ nhà và người mua",
+          "desc": "M-Real Estate tiếp nhận ký gửi, tư vấn giá chào, truyền thông sản phẩm và kết nối khách hàng phù hợp trên cơ sở thông tin rõ ràng, đúng nhu cầu thị trường.",
+          "cta1": "Tìm hiểu dịch vụ",
+          "cta2": "Gửi thông tin căn hộ"
+        }
+      ]
+    },
+    "about": {
+      "label": "Về M-Real Estate",
+      "title": "TƯ VẤN",
+      "title_highlight": "M-REAL ESTATE",
+      "p1": "là đơn vị tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM.",
+      "p2": "Chúng tôi tập trung vào nhu cầu mua bán, cho thuê, ký gửi và tư vấn căn hộ, đặc biệt tại khu vực Nam Sài Gòn và dự án Q7 Saigon Riverside Complex.",
+      "p3": "Mỗi giao dịch được tiếp cận bằng thông tin rõ ràng, tư vấn thực tế và quy trình làm việc có trách nhiệm, giúp khách hàng ra quyết định dựa trên dữ liệu phù hợp thay vì kỳ vọng cảm tính.",
+      "stats": [
+        { "value": "2025", "label": "Thành lập" },
+        { "value": "Nam Sài Gòn", "label": "Thị trường" },
+        { "value": "100%", "label": "Minh bạch" }
+      ]
+    },
+    "vision": {
+      "label": "Định hướng dịch vụ",
+      "title": "MINH BẠCH - THỰC TẾ",
+      "desc": "Những nguyên tắc giúp M-Real Estate xây dựng niềm tin trong từng giao dịch bất động sản",
+      "cards": [
+        {
+          "title": "Sứ mệnh",
+          "content": "Cung cấp dịch vụ tư vấn và môi giới bất động sản rõ ràng, có trách nhiệm, giúp khách hàng mua, bán, thuê và ký gửi căn hộ với thông tin đầy đủ hơn trước khi ra quyết định."
+        },
+        {
+          "title": "Tầm nhìn",
+          "content": "Phát triển M-Real Estate thành đơn vị tư vấn bất động sản đáng tin cậy tại TP.HCM, bắt đầu từ các khu vực và dự án mà đội ngũ có khả năng theo sát nguồn hàng, nhu cầu thuê mua và biến động thị trường."
+        },
+        {
+          "title": "Giá trị cốt lõi",
+          "content": "Chuyên nghiệp, minh bạch, thực tế và trách nhiệm. Đây là nền tảng trong cách chúng tôi tiếp nhận thông tin, tư vấn phương án và đồng hành cùng khách hàng trong quá trình giao dịch."
+        }
+      ]
+    }
+  },
+  "about_page": {
+    "meta": {
+      "title": "Về chúng tôi | M-Real Estate",
+      "description": "CÔNG TY TNHH M - REAL ESTATE là đơn vị tư vấn và môi giới bất động sản tại TP.HCM, tập trung vào mua bán, cho thuê, ký gửi và tư vấn căn hộ."
+    },
+    "hero": {
+      "label": "Về chúng tôi",
+      "title": "M-REAL ESTATE",
+      "title_highlight": "Tư vấn bất động sản minh bạch tại TP.HCM",
+      "desc": "CÔNG TY TNHH M - REAL ESTATE cung cấp dịch vụ tư vấn, môi giới, ký gửi, mua bán và cho thuê căn hộ, với trọng tâm là thông tin rõ ràng và phương án phù hợp nhu cầu thực tế."
+    },
+    "story": {
+      "label": "Câu chuyện của chúng tôi",
+      "title": "Đồng hành cùng",
+      "title_highlight": "nhu cầu thực",
+      "p1": "M-Real Estate ra đời với mong muốn tạo ra một kênh giao dịch bất động sản rõ ràng, chuyên nghiệp và thiết thực. Chúng tôi hiểu rằng mỗi quyết định an cư hay đầu tư đều mang ý nghĩa lớn đối với khách hàng.",
+      "p2": "Với văn phòng đặt tại trung tâm khu Nam Sài Gòn, chúng tôi chọn hướng đi tập trung và am hiểu chuyên sâu thay vì dàn trải. Sự nắm bắt tường tận từng nhịp đập của thị trường giúp đội ngũ M-Real Estate luôn đưa ra những lời khuyên sát thực tế.",
+      "p3": "Dù bạn đang tìm kiếm một tổ ấm, một sản phẩm sinh lời, hay đang cần tìm khách hàng cho bất động sản của mình, chúng tôi luôn ở đây để lắng nghe, san sẻ áp lực và giúp bạn tìm ra phương án tối ưu nhất."
+    },
+    "timeline": {
+      "title": "Định hướng hoạt động",
+      "events": [
+        { "year": "01/2025", "event": "M-Real Estate bắt đầu hoạt động với định hướng tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM." },
+        { "year": "2025", "event": "Tập trung xây dựng quy trình tiếp nhận nhu cầu mua, bán, thuê và ký gửi căn hộ theo hướng rõ thông tin, đúng nhu cầu và dễ theo dõi." },
+        { "year": "2025", "event": "Phát triển kênh tư vấn cho chủ nhà cần ký gửi bán hoặc cho thuê, bao gồm tư vấn giá chào, hình ảnh, nội dung và kết nối khách phù hợp." },
+        { "year": "Hiện tại", "event": "Duy trì hoạt động tư vấn dựa trên thông tin minh bạch, phạm vi dịch vụ rõ ràng và sự đồng hành thực tế trong từng giao dịch." }
+      ]
+    },
+    "values": {
+      "label": "Giá trị cốt lõi",
+      "title": "Cam kết",
+      "title_highlight": "từ M-Real Estate",
+      "items": [
+        { "title": "Thông tin rõ ràng", "desc": "Cung cấp thông tin căn hộ, giá chào, tình trạng giao dịch và điều kiện làm việc một cách dễ hiểu để khách hàng có cơ sở cân nhắc." },
+        { "title": "Tư vấn theo nhu cầu", "desc": "Lắng nghe mục tiêu ở thực, cho thuê, bán lại hoặc ký gửi để đề xuất phương án phù hợp với ngân sách, thời gian và kỳ vọng của từng khách hàng." },
+        { "title": "Am hiểu khu vực", "desc": "Theo sát nguồn căn, nhu cầu thuê mua và mặt bằng giá tại các khu vực trọng tâm, đặc biệt là Nam Sài Gòn và Q7 Saigon Riverside Complex." },
+        { "title": "Làm việc có trách nhiệm", "desc": "Đồng hành trong quá trình trao đổi, xem căn, thương lượng và chuẩn bị thông tin giao dịch trong phạm vi dịch vụ môi giới, không thay thế tư vấn pháp luật." }
+      ]
+    },
+    "team": {
+      "label": "Nhân sự",
+      "title": "Đội ngũ",
+      "title_highlight": "tư vấn",
+      "desc": "Đội ngũ M-Real Estate làm việc theo hướng thực tế, tôn trọng thông tin và đặt nhu cầu khách hàng làm trọng tâm. Mỗi tư vấn viên tập trung hỗ trợ khách hàng hiểu rõ sản phẩm, bối cảnh thị trường và các bước cần chuẩn bị trước giao dịch."
+    },
+    "cta": {
+      "title": "Bạn cần tư vấn mua bán, cho thuê hoặc ký gửi căn hộ?",
+      "desc": "Liên hệ M-Real Estate để trao đổi trực tiếp về nhu cầu của bạn và nhận phương án tư vấn rõ ràng, phù hợp với thị trường TP.HCM."
+    }
+  },
+  "footer": {
+    "cta": {
+      "title": "Trao đổi nhu cầu bất động sản cùng M-Real Estate",
+      "desc": "Kết nối với chúng tôi để được tư vấn mua bán, cho thuê, ký gửi căn hộ và cập nhật nguồn hàng phù hợp tại TP.HCM."
+    },
+    "company_desc": "M-Real Estate là người bạn đồng hành tin cậy trong lĩnh vực tư vấn và môi giới bất động sản tại TP.HCM. Bằng sự tận tâm và am hiểu thị trường, chúng tôi mang đến những giải pháp mua bán, cho thuê và quản lý căn hộ tối ưu nhất.",
+    "columns": {
+      "col1": {
+        "title": "Giới thiệu",
+        "links": [
+          { "label": "Chính sách bảo mật", "href": "/coming-soon" },
+          { "label": "Thông tin doanh nghiệp", "href": "/gioi-thieu" },
+          { "label": "Quy định hoạt động", "href": "/coming-soon" },
+          { "label": "Thông tin liên hệ", "href": "/contact" }
+        ]
+      },
+      "col2": {
+        "title": "Khách hàng",
+        "links": [
+          { "label": "Câu hỏi thường gặp", "href": "/coming-soon" },
+          { "label": "Quy trình giao dịch", "href": "/coming-soon" },
+          { "label": "Lợi ích ký gửi", "href": "/coming-soon" },
+          { "label": "Tin tức thị trường", "href": "/news" }
+        ]
+      },
+      "col3": {
+        "title": "Dịch vụ",
+        "links": [
+          { "label": "Mua bán căn hộ", "href": "/gio-hang-ban" },
+          { "label": "Cho thuê căn hộ", "href": "/gio-hang-thue" },
+          { "label": "Ký gửi bán và cho thuê", "href": "/ky-gui" }
+        ]
+      }
+    },
+    "office": {
+      "title": "Địa chỉ liên hệ"
+    }
+  }
+}

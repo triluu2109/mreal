@@ -20,7 +20,7 @@ type StaffInput = {
   isActive?: boolean;
 };
 
-const MANAGED_ROLES = new Set<AdminRoleValue>(["admin", "telesale", "staff"]);
+const MANAGED_ROLES = new Set<AdminRoleValue>(["admin", "staff"]);
 
 export async function createStaff(data: StaffInput) {
   try {
@@ -178,7 +178,7 @@ export async function updateOwnProfile(data: { fullName: string; phone?: string 
 }
 
 function normalizeStaffInput(data: StaffInput) {
-  const role = data.role === "admin" || data.role === "telesale" || data.role === "staff" ? data.role : "staff";
+  const role = data.role === "admin" || data.role === "staff" ? data.role : "staff";
   const permissionSet = new Set(ADMIN_PERMISSIONS);
   return {
     email: data.email.trim().toLowerCase(),

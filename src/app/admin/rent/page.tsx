@@ -11,23 +11,17 @@ import { hasPermission } from "@/lib/admin/permissions";
 export const dynamic = "force-dynamic";
 
 const pageSize = 20;
-const typeFilters: Record<string, { bedrooms: number; bathrooms: number }> = {
-  "1PN1": { bedrooms: 1, bathrooms: 1 },
-  "2PN1": { bedrooms: 2, bathrooms: 1 },
-  "2PN2": { bedrooms: 2, bathrooms: 2 },
-  "3PN2": { bedrooms: 3, bathrooms: 2 },
-};
 
-export default async function RentPage({ searchParams }: { searchParams: Promise<{ page?: string; type?: string; sort?: string }> }) {
+export default async function RentPage({ searchParams }: { searchParams: Promise<{ page?: string; bedrooms?: string; sort?: string }> }) {
   const admin = await requirePagePermission("listings.read");
   const canCreate = hasPermission(admin.role, admin.permissions, "listings.create");
   const canUpdate = hasPermission(admin.role, admin.permissions, "listings.update");
   const canDelete = hasPermission(admin.role, admin.permissions, "listings.delete_soft");
   const params = await searchParams;
   const page = Math.max(1, Number(params.page) || 1);
-  const type = params.type ?? "all";
+  const bedrooms = params.bedrooms && params.bedrooms !== "all" ? Number(params.bedrooms) : undefined;
   const sort = params.sort ?? "created_desc";
-  const where = { ...(typeFilters[type] ?? {}), deletedAt: null };
+  const where = { ...(bedrooms ? { bedrooms } : {}), deletedAt: null };
   const orderBy =
     sort === "created_asc" ? { createdAt: "asc" as const } :
     sort === "price_asc" ? { rentPrice: "asc" as const } :
@@ -54,7 +48,7 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
       </div>
 
       <form className="mb-4 flex flex-wrap items-center gap-3">
-        <FilterSelect label="Loại căn" name="type" value={type} options={[["all", "Tất cả"], ...Object.keys(typeFilters).map((item) => [item, item])]} />
+        <FilterSelect label="Số PN" name="bedrooms" value={params.bedrooms || "all"} options={[["all", "Tất cả"], ["1", "1 PN"], ["2", "2 PN"], ["3", "3 PN"], ["4", "4+ PN"]]} />
         <FilterSelect label="Sắp xếp" name="sort" value={sort} options={[["created_desc", "Mới nhất"], ["created_asc", "Cũ nhất"], ["price_asc", "Giá thấp - cao"], ["price_desc", "Giá cao - thấp"]]} />
         <button type="submit" className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Áp dụng</button>
         <span className="ml-auto text-sm text-gray-text">{total} căn</span>
@@ -106,7 +100,7 @@ export default async function RentPage({ searchParams }: { searchParams: Promise
         </table>
       </div>
 
-      <Pagination page={page} totalPages={totalPages} type={type} sort={sort} />
+      <Pagination page={page} totalPages={totalPages} bedrooms={params.bedrooms || "all"} sort={sort} />
     </div>
   );
 }
@@ -128,12 +122,12 @@ function FilterSelect({ label, name, value, options }: { label: string; name: st
   );
 }
 
-function Pagination({ page, totalPages, type, sort }: { page: number; totalPages: number; type: string; sort: string }) {
+function Pagination({ page, totalPages, bedrooms, sort }: { page: number; totalPages: number; bedrooms: string; sort: string }) {
   if (totalPages <= 1) return null;
   return (
     <div className="mt-6 flex justify-center gap-2">
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-        <Link key={pageNumber} href={`/admin/rent?page=${pageNumber}&type=${type}&sort=${sort}`} className={`rounded-lg px-3 py-2 text-sm font-semibold ${pageNumber === page ? "bg-gold text-white" : "bg-white border border-gray-border text-gray-text"}`}>
+        <Link key={pageNumber} href={`/admin/rent?page=${pageNumber}&bedrooms=${bedrooms}&sort=${sort}`} className={`rounded-lg px-3 py-2 text-sm font-semibold ${pageNumber === page ? "bg-gold text-white" : "bg-white border border-gray-border text-gray-text"}`}>
           {pageNumber}
         </Link>
       ))}

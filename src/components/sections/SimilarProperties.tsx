@@ -76,7 +76,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-heading font-bold text-navy text-xl">{heading}</h2>
           <Link
-            href={type === "sell" ? "/mua-nha" : "/thue-nha"}
+            href={type === "sell" ? "/gio-hang-ban" : "/gio-hang-thue"}
             className="text-gold text-sm font-semibold hover:underline"
           >
             Xem tất cả →

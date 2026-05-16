@@ -2,27 +2,26 @@
 
 import { motion } from "framer-motion";
 import { BarChart2, Lightbulb, Diamond } from "lucide-react";
+import vi from "@/locales/vi.json";
 
 const cards = [
   {
     icon: BarChart2,
-    title: "Sứ mệnh",
-    content:
-      "Kết nối khách hàng với những bất động sản phù hợp nhất, mang lại giá trị thực và trải nghiệm giao dịch minh bạch, nhanh chóng, an toàn. Chúng tôi đặt lợi ích khách hàng lên hàng đầu trong mọi hoạt động.",
+    title: vi.home.vision.cards[0].title,
+    content: vi.home.vision.cards[0].content,
   },
   {
     icon: Lightbulb,
-    title: "Tầm nhìn",
-    content:
-      "Trở thành đơn vị môi giới bất động sản uy tín hàng đầu tại TP.HCM và các tỉnh thành lân cận, được khách hàng tin tưởng và lựa chọn hàng đầu trong các quyết định đầu tư và an cư.",
+    title: vi.home.vision.cards[1].title,
+    content: vi.home.vision.cards[1].content,
   },
   {
     icon: Diamond,
-    title: "Giá trị cốt lõi",
-    content:
-      "Uy tín — Minh bạch — Tận tâm — Chuyên nghiệp. Bốn giá trị này là kim chỉ nam cho mọi hoạt động của M-Real Estate, từ tư vấn đến hoàn tất giao dịch và chăm sóc sau bán hàng.",
+    title: vi.home.vision.cards[2].title,
+    content: vi.home.vision.cards[2].content,
   },
 ];
+
 
 export default function VisionMissionSection() {
   return (
@@ -60,13 +59,13 @@ export default function VisionMissionSection() {
           className="text-center mb-14"
         >
           <span className="inline-block bg-white/25 text-white text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-            Giá trị của chúng tôi
+            {vi.home.vision.label}
           </span>
           <h2 className="font-heading font-bold text-white mb-3" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
-            TẦM NHÌN - SỨ MỆNH
+            {vi.home.vision.title}
           </h2>
           <p className="text-white/80 max-w-xl mx-auto text-sm">
-            Những giá trị định hướng mọi hoạt động và quyết định của M-Real Estate
+            {vi.home.vision.desc}
           </p>
         </motion.div>
 

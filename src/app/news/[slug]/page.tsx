@@ -52,14 +52,25 @@ export default async function NewsDetailPage({ params }: Props) {
   const post = await prisma.newsPost.findFirst({ where: { slug, published: true, deletedAt: null } });
   if (!post) notFound();
 
-  const relatedPosts = await prisma.newsPost.findMany({
-    where: { published: true, deletedAt: null, slug: { not: slug }, OR: [{ tags: { hasSome: post.tags } }, { featured: true }] },
-    orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
-    take: 3,
-    select: { id: true, title: true, slug: true, excerpt: true, thumbnailPath: true, publishedAt: true, createdAt: true },
-  });
+  const tagMatchedPosts = post.tags.length > 0
+    ? await prisma.newsPost.findMany({
+        where: { published: true, deletedAt: null, slug: { not: slug }, tags: { hasSome: post.tags } },
+        orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+        take: 3,
+        select: { id: true, title: true, slug: true, excerpt: true, thumbnailPath: true, publishedAt: true, createdAt: true },
+      })
+    : [];
+  const fallbackPosts = tagMatchedPosts.length < 3
+    ? await prisma.newsPost.findMany({
+        where: { published: true, deletedAt: null, slug: { not: slug }, id: { notIn: tagMatchedPosts.map((item) => item.id) } },
+        orderBy: [{ featured: "desc" }, { publishedAt: "desc" }, { createdAt: "desc" }],
+        take: 3 - tagMatchedPosts.length,
+        select: { id: true, title: true, slug: true, excerpt: true, thumbnailPath: true, publishedAt: true, createdAt: true },
+      })
+    : [];
+  const relatedPosts = [...tagMatchedPosts, ...fallbackPosts];
 
-  const thumbnailUrl = resolveStorageUrl(post.thumbnailPath);
+  const thumbnailUrl = post.thumbnailPath ? resolveStorageUrl(post.thumbnailPath) : null;
   const publishedDate = post.publishedAt ?? post.createdAt;
   const articleUrl = `/news/${post.slug}`;
   const jsonLd = {
@@ -84,12 +95,12 @@ export default async function NewsDetailPage({ params }: Props) {
         <section className="bg-navy pt-8 pb-10">
           <div className="mx-auto max-w-[860px] px-4 sm:px-6">
             {/* Breadcrumb */}
-            <nav className="mb-5 flex flex-wrap items-center gap-1.5 text-xs text-white/55">
-              <Link href="/" className="hover:text-gold transition-colors">Trang chủ</Link>
+            <nav aria-label="Breadcrumb" className="mb-5 flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-white/55">
+              <Link href="/" className="shrink-0 hover:text-gold transition-colors">Trang chủ</Link>
               <span>/</span>
-              <Link href="/news" className="hover:text-gold transition-colors">Tin tức</Link>
+              <Link href="/news" className="shrink-0 hover:text-gold transition-colors">Tin tức</Link>
               <span>/</span>
-              <span className="line-clamp-1 text-white/75">{post.title}</span>
+              <span className="min-w-0 flex-1 truncate text-white/75">{post.title}</span>
             </nav>
 
             {/* Back link */}
@@ -134,22 +145,6 @@ export default async function NewsDetailPage({ params }: Props) {
             ) : null}
           </div>
         </section>
-
-        {/* ── Cover Image ── */}
-        {thumbnailUrl ? (
-          <div className="mx-auto max-w-[860px] px-4 sm:px-6 -mt-4">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl shadow-xl">
-              <Image
-                src={thumbnailUrl}
-                alt={post.title}
-                fill
-                priority
-                sizes="(min-width: 900px) 860px, 100vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
-        ) : null}
 
         {/* ── Article body ── */}
         <div className="mx-auto max-w-[860px] px-4 py-10 sm:px-6 sm:py-12">

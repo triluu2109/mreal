@@ -97,6 +97,7 @@ export async function toggleRentalListingFeatured(id: string, isFeatured: boolea
 
 function revalidateRentalPaths() {
   revalidatePath("/");
+  revalidatePath("/gio-hang-thue");
   revalidatePath("/thue-nha");
   revalidatePath("/admin/rent");
 }

@@ -43,10 +43,10 @@ export default async function NewsPage() {
     <>
       <Header />
       <main>
-        <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light pt-32 pb-20">
+        <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light pt-24 pb-12">
           <div className="container-site text-center">
             <span className="section-label">Blog</span>
-            <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-white mt-4 mb-4">
+            <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-white mt-3 mb-3">
               Tin tức & <span className="text-gradient-gold">Kiến thức</span>
             </h1>
             <p className="text-white/70 text-lg max-w-xl mx-auto">

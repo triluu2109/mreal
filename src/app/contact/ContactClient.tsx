@@ -28,10 +28,10 @@ export default function ContactClient() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light pt-32 pb-20">
+        <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light pt-24 pb-12">
           <div className="container-site text-center">
             <span className="section-label">Liên hệ</span>
-            <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-white mt-4 mb-4">
+            <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-white mt-3 mb-3">
               Liên hệ với <span className="text-gradient-gold">chúng tôi</span>
             </h1>
             <p className="text-white/70 text-lg max-w-xl mx-auto">
@@ -53,7 +53,7 @@ export default function ContactClient() {
                       { icon: MapPin, label: "Địa chỉ", value: siteConfig.address },
                       { icon: Phone, label: "Hotline", value: siteConfig.phoneDisplay, href: `tel:${siteConfig.phone}` },
                       { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
-                      { icon: Clock, label: "Giờ làm việc", value: "T2–T7: 8:00–17:30\nCN: 8:00–12:00" },
+                      { icon: Clock, label: "Giờ làm việc", value: "Luôn sẵn sàng hỗ trợ 24/7" },
                     ].map((item) => (
                       <div key={item.label} className="flex items-start gap-4">
                         <div className="w-10 h-10 bg-navy rounded-xl flex items-center justify-center shrink-0">
@@ -74,20 +74,6 @@ export default function ContactClient() {
                       </div>
                     ))}
                   </div>
-                </div>
-
-                {/* Map */}
-                <div className="rounded-2xl overflow-hidden border border-gray-border h-56">
-                  <iframe
-                    src={siteConfig.mapsEmbedUrl}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="M-Real Estate map"
-                  />
                 </div>
               </div>
 

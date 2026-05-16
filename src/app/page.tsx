@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import { prisma } from "@/server/db/prisma";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import FloatingButtons from "@/components/layout/FloatingButtons";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import VisionMissionSection from "@/components/sections/VisionMissionSection";
 import CombinedListingsSection from "@/components/sections/CombinedListingsSection";
-import TeamSection from "@/components/sections/TeamSection";
 import NewProjectsSection from "@/components/sections/NewProjectsSection";
 import NewsSection from "@/components/sections/NewsSection";
 import BookingFormSection from "@/components/sections/BookingFormSection";
@@ -24,7 +22,7 @@ export const revalidate = 3600; // ISR: revalidate mỗi giờ
 
 export default async function HomePage() {
   // Fetch song song để tối ưu performance
-  const [saleProps, rentProps, staff] = await Promise.all([
+  const [saleProps, rentProps] = await Promise.all([
     prisma.saleListing.findMany({
       where: { isVisible: true, deletedAt: null },
       orderBy: [{ isFeatured: "desc" }, { sellingPrice: "asc" }, { createdAt: "desc" }],
@@ -34,10 +32,6 @@ export default async function HomePage() {
       where: { isVisible: true, deletedAt: null },
       orderBy: [{ isFeatured: "desc" }, { rentPrice: "asc" }, { createdAt: "desc" }],
       take: 6,
-    }),
-    prisma.staff.findMany({
-      where: { isActive: true, deletedAt: null },
-      orderBy: { order: "asc" },
     }),
   ]);
 
@@ -78,12 +72,10 @@ export default async function HomePage() {
           }))}
         />
         <NewProjectsSection />
-        <TeamSection staff={staff} />
         <NewsSection />
         <BookingFormSection />
       </main>
       <Footer />
-      <FloatingButtons />
     </>
   );
 }

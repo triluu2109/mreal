@@ -8,41 +8,42 @@ import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
 import { getImageUrl } from "@/lib/image";
+import vi from "@/locales/vi.json";
 
 const q7Images = siteImages.project.q7SaigonRiverside;
 
 const slides = [
   {
     src: q7Images.gallery[3],
-    title: "Bất động sản cao cấp",
-    subtitle: "tại TP.HCM & Bình Dương",
-    desc: "Đức Hưng Group — Đồng hành cùng bạn trên mọi hành trình bất động sản với đội ngũ chuyên nghiệp và tận tâm.",
-    cta1: { label: "Xem giỏ hàng", href: "#listings" },
-    cta2: { label: "Liên hệ ngay", href: `tel:${siteConfig.phone}` },
+    title: vi.home.hero.slides[0].title,
+    subtitle: vi.home.hero.slides[0].subtitle,
+    desc: vi.home.hero.slides[0].desc,
+    cta1: { label: vi.home.hero.slides[0].cta1, href: "#listings" },
+    cta2: { label: vi.home.hero.slides[0].cta2, href: `tel:${siteConfig.phone}` },
   },
   {
     src: q7Images.gallery[4],
-    title: "Dự án bất động sản",
-    subtitle: "Chất lượng – Uy tín – Bền vững",
-    desc: "Chúng tôi mang đến những dự án đẳng cấp, phù hợp với mọi nhu cầu và khả năng tài chính của khách hàng.",
-    cta1: { label: "Xem dự án", href: "#projects" },
-    cta2: { label: "Tư vấn miễn phí", href: "#booking" },
+    title: vi.home.hero.slides[1].title,
+    subtitle: vi.home.hero.slides[1].subtitle,
+    desc: vi.home.hero.slides[1].desc,
+    cta1: { label: vi.home.hero.slides[1].cta1, href: "#projects" },
+    cta2: { label: vi.home.hero.slides[1].cta2, href: "#booking" },
   },
   {
     src: q7Images.gallery[2],
-    title: "Cho thuê bất động sản",
-    subtitle: "Đa dạng – Tiện ích – Giá tốt",
-    desc: "Hàng trăm tin đăng cho thuê căn hộ, nhà phố, văn phòng được cập nhật liên tục theo ngày.",
-    cta1: { label: "Xem cho thuê", href: "#rental" },
-    cta2: { label: "Đăng tin ngay", href: "/ky-gui" },
+    title: vi.home.hero.slides[2].title,
+    subtitle: vi.home.hero.slides[2].subtitle,
+    desc: vi.home.hero.slides[2].desc,
+    cta1: { label: vi.home.hero.slides[2].cta1, href: "#rental" },
+    cta2: { label: vi.home.hero.slides[2].cta2, href: "/ky-gui" },
   },
   {
     src: q7Images.gallery[5],
-    title: "Đầu tư sinh lời",
-    subtitle: "An toàn – Hiệu quả – Minh bạch",
-    desc: "Với kinh nghiệm hơn 7 năm trong ngành, chúng tôi tư vấn chiến lược đầu tư BĐS sinh lời bền vững.",
-    cta1: { label: "Xem tư vấn", href: "/contact" },
-    cta2: { label: "Gặp chuyên gia", href: "#booking" },
+    title: vi.home.hero.slides[3].title,
+    subtitle: vi.home.hero.slides[3].subtitle,
+    desc: vi.home.hero.slides[3].desc,
+    cta1: { label: vi.home.hero.slides[3].cta1, href: "/gioi-thieu" },
+    cta2: { label: vi.home.hero.slides[3].cta2, href: "#booking" },
   },
 ];
 
@@ -112,7 +113,7 @@ export default function HeroSection() {
               {/* Category badge */}
               <div className="inline-flex items-center gap-2 bg-navy/90 text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-5 uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 bg-gold rounded-full" />
-                M-Real Estate
+                {vi.common.brand}
               </div>
 
               <h1 className="font-heading font-extrabold text-white leading-tight mb-2" style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}>

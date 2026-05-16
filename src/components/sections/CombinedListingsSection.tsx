@@ -26,14 +26,19 @@ interface Props {
   rentProps: Property[];
 }
 
-const tabs = ["Tất cả", "1PN1", "2PN1", "2PN2", "3PN2"];
+const tabs = [
+  { label: "Tất cả", value: "all" as const },
+  { label: "1 Phòng ngủ", value: 1 },
+  { label: "2 Phòng ngủ", value: 2 },
+  { label: "3 Phòng ngủ", value: 3 },
+];
 
 export default function CombinedListingsSection({ saleProps, rentProps }: Props) {
-  const [activeTab, setActiveTab] = useState("Tất cả");
+  const [activeTab, setActiveTab] = useState<string | number>("all");
 
-  const filtered = activeTab === "Tất cả"
+  const filtered = activeTab === "all"
     ? saleProps
-    : saleProps.filter((p) => p.type === activeTab);
+    : saleProps.filter((p) => p.beds === activeTab);
 
   return (
     <section className="section-padding bg-gray-bg" id="listings">
@@ -48,7 +53,7 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
                 Giỏ hàng <span className="text-gold">giá tốt</span>
               </h2>
             </div>
-            <Link href="/mua-nha" className="inline-flex items-center gap-1 text-gold text-sm font-semibold hover:gap-2 transition-all whitespace-nowrap">
+            <Link href="/gio-hang-ban" className="inline-flex items-center gap-1 text-gold text-sm font-semibold hover:gap-2 transition-all whitespace-nowrap">
               Xem tất cả <ChevronRight size={16} />
             </Link>
           </div>
@@ -57,11 +62,11 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
           <div className="flex gap-2 mb-6 flex-wrap">
             {tabs.map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeTab === tab ? "bg-gold text-white shadow-sm" : "bg-white text-gray-text hover:text-gold border border-gray-200"}`}
+                key={tab.label}
+                onClick={() => setActiveTab(tab.value)}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${activeTab === tab.value ? "bg-gold text-white shadow-sm" : "bg-white text-gray-text hover:text-gold border border-gray-200"}`}
               >
-                {tab}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -101,7 +106,7 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
           </div>
 
           <div className="pt-6 text-center">
-            <Link href="/mua-nha" className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-white font-heading font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
+            <Link href="/gio-hang-ban" className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-white font-heading font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
               Xem tất cả giỏ hàng <ChevronRight size={16} />
             </Link>
           </div>
@@ -119,7 +124,7 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
                 Căn hộ <span className="text-gold">cho thuê</span>
               </h2>
             </div>
-            <Link href="/thue-nha" className="inline-flex items-center gap-1 text-gold text-sm font-semibold hover:gap-2 transition-all whitespace-nowrap">
+            <Link href="/gio-hang-thue" className="inline-flex items-center gap-1 text-gold text-sm font-semibold hover:gap-2 transition-all whitespace-nowrap">
               Xem tất cả <ChevronRight size={16} />
             </Link>
           </div>
@@ -159,7 +164,7 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
           </div>
 
           <div className="pt-6 text-center">
-            <Link href="/thue-nha" className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-white font-heading font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
+            <Link href="/gio-hang-thue" className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-white font-heading font-semibold px-8 py-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
               Xem tất cả cho thuê <ChevronRight size={16} />
             </Link>
           </div>
@@ -169,3 +174,4 @@ export default function CombinedListingsSection({ saleProps, rentProps }: Props)
     </section>
   );
 }
+

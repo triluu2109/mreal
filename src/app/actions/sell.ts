@@ -97,6 +97,7 @@ export async function toggleSaleListingFeatured(id: string, isFeatured: boolean)
 
 function revalidateSalePaths() {
   revalidatePath("/");
+  revalidatePath("/gio-hang-ban");
   revalidatePath("/mua-nha");
   revalidatePath("/admin/sell");
 }

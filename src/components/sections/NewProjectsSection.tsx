@@ -16,7 +16,7 @@ const projects = [
     developer: "Hưng Thịnh Corp",
     status: "Đang mở bán",
     statusColor: "bg-gold",
-    location: "Đường Đào Trí, Phường Phú Thuận, TP.HCM",
+    location: "04 Đào Trí, Phường Phú Thuận, TP.HCM",
     startDate: "Bàn giao 2024",
     priceFrom: "Từ 2.1 tỷ",
     image: q7Images.hero.overview,
