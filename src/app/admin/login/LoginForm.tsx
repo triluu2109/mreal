@@ -57,7 +57,7 @@ export default function LoginForm() {
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3.5 text-sm font-bold text-white shadow-navy transition hover:bg-navy-light disabled:cursor-not-allowed disabled:opacity-70"
       >
         {isPending ? <Loader2 size={18} className="animate-spin" /> : <LockKeyhole size={18} />}
-        Dang nhap admin
+        Đăng nhập
       </button>
     </form>
   );

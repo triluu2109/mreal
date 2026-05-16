@@ -32,12 +32,12 @@ const floorplans = [
   },
 ];
 
-// Section 2 — Mặt bằng tổng thể (U / M / S / V)
+// Section 2 — Mặt bằng tổng thể (S / V / U / M)
 const blockPlans = [
-  { block: "Block U", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-U.webp`) },
-  { block: "Block M", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-M.webp`) },
   { block: "Block S", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-S.webp`) },
   { block: "Block V", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-V.webp`) },
+  { block: "Block U", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-U.webp`) },
+  { block: "Block M", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-M.webp`) },
 ];
 
 // Section 3 — Tiện ích (1 ảnh tổng hợp)
@@ -284,7 +284,7 @@ export default function Q7RiversidePage() {
             </div>
 
             {/* Single amenities map image */}
-            <div className="mx-auto max-w-4xl rounded-2xl overflow-hidden shadow-hover border border-gray-border">
+            <div className="mx-auto max-w-6xl rounded-2xl overflow-hidden shadow-hover border border-gray-border">
               <div className="relative w-full" style={{ paddingBottom: "66.66%" }}>
                 <Image
                   src={TIEN_ICH_SRC}

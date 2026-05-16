@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { Building2, ShieldCheck, Sparkles } from "lucide-react";
 import { getCurrentAdmin } from "@/lib/admin/auth";
 import LoginForm from "./LoginForm";
+import { siteImages } from "@/config/images";
 
-export const metadata: Metadata = { title: "Dang nhap Admin | M-Real Estate" };
+export const metadata: Metadata = { title: "Đăng nhập Admin | M-Real Estate" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminLoginPage() {
@@ -20,12 +21,13 @@ export default async function AdminLoginPage() {
           <div className="relative z-10">
             <div className="inline-flex rounded-xl bg-white px-5 py-3 shadow-[0_18px_60px_rgba(0,0,0,0.18)]">
               <Image
-                src="/logo/logo-rectangle.webp"
+                src={siteImages.logo.rectangle}
                 alt="M-Real Estate"
                 width={200}
                 height={60}
                 priority
                 className="h-20 w-auto"
+                style={{ width: "auto" }}
               />
             </div>
           </div>
@@ -36,11 +38,11 @@ export default async function AdminLoginPage() {
               Premium admin workspace
             </div>
             <h1 className="max-w-xl font-heading text-5xl font-bold leading-tight text-white">
-              Quan tri van hanh bat dong san voi do tin cay cao.
+              Quản trị vận hành bất động sản với độ tin cậy cao.
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-7 text-white/68">
-              Workspace danh cho doi ngu M-Real Estate quan ly ro hang, khach hang,
-              lich hen, tin tuc va phan quyen noi bo.
+              Không gian làm việc dành cho đội ngũ M-Real Estate quản lý giỏ hàng, khách hàng,
+              lịch hẹn, tin tức và phân quyền nội bộ.
             </p>
             <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
               {[
@@ -79,9 +81,9 @@ export default async function AdminLoginPage() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold">
                   Admin access
                 </p>
-                <h2 className="font-heading text-3xl font-bold text-navy">Dang nhap</h2>
+                <h2 className="font-heading text-3xl font-bold text-navy">Đăng nhập</h2>
                 <p className="mt-3 text-sm leading-6 text-gray-text">
-                  Su dung email va mat khau duoc cap quyen de truy cap he thong quan tri.
+                  Sử dụng email và mật khẩu được cấp quyền để truy cập hệ thống quản trị.
                 </p>
               </div>
               <LoginForm />
@@ -89,7 +91,7 @@ export default async function AdminLoginPage() {
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-muted">
               <Building2 size={14} className="text-gold" />
-              <span>M-Real Estate internal workspace</span>
+              <span>Không gian làm việc nội bộ M-Real Estate</span>
             </div>
           </div>
         </section>

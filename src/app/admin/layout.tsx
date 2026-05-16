@@ -28,9 +28,9 @@ const navItems = [
   { href: "/admin/chatbot-leads", label: "Chat Leads", icon: MessageSquare, permission: "leads.manage" },
   { href: "/admin/sell", label: "Giỏ hàng bán", icon: Building, permission: "listings.read" },
   { href: "/admin/rent", label: "Giỏ hàng thuê", icon: KeyRound, permission: "listings.read" },
-  { href: "/admin/staff", label: "Nhân sự", icon: Users, masterOnly: true },
   { href: "/admin/news", label: "Bài viết", icon: FileText, permission: "news.manage" },
   { href: "/admin/contacts", label: "Liên hệ", icon: Mail, permission: "contacts.manage" },
+  { href: "/admin/staff", label: "Nhân sự", icon: Users, masterOnly: true },
   { href: "/admin/account", label: "Tài khoản", icon: UserCircle },
 ] satisfies Array<{
   href: string;

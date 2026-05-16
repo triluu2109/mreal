@@ -74,11 +74,11 @@ export default async function AdminDashboard() {
       href: "/admin/rent", color: "bg-gold",
       sub: `${stats.rentVisible} hiện - ${stats.rentHidden} ẩn`,
     },
-    { icon: Users, label: "Nhân sự", value: stats.staff, new: null, href: "/admin/staff", color: "bg-gold-dark", sub: null },
     { icon: Calendar, label: "Lịch hẹn", value: stats.appointments, new: stats.newAppointments, href: "/admin/appointments", color: "bg-navy-light", sub: null },
     { icon: MessageSquare, label: "Chat leads", value: stats.leads, new: stats.newLeads, href: "/admin/chatbot-leads", color: "bg-gold-dark", sub: null },
     { icon: FileText, label: "Bài viết", value: stats.news, new: null, href: "/admin/news", color: "bg-navy", sub: null },
     { icon: Mail, label: "Liên hệ", value: stats.contacts, new: null, href: "/admin/contacts", color: "bg-gold", sub: null },
+    { icon: Users, label: "Nhân sự", value: stats.staff, new: null, href: "/admin/staff", color: "bg-gold-dark", sub: null },
   ];
 
   return (
