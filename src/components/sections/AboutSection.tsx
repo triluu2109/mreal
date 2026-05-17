@@ -7,9 +7,11 @@ import { getImageUrl } from "@/lib/image";
 const q7Images = siteImages.project.q7SaigonRiverside;
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import vi from "@/locales/vi.json";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 export default function AboutSection() {
+  const { dict: vi } = useI18n();
+
   return (
     <section className="section-padding bg-white" id="about">
       <div className="container-site">
@@ -42,19 +44,17 @@ export default function AboutSection() {
           <div>
             <span className="section-label mb-3 block">{vi.home.about.label}</span>
             <h2
-              className="font-heading font-bold text-[#1C1C2E] mb-5 leading-tight"
+              className="font-heading font-bold text-navy mb-5 leading-tight"
               style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}
             >
-              {vi.home.about.title} <span className="text-navy">{vi.home.about.title_highlight}</span>
+              {vi.home.about.title} <span className="text-navy">{vi.home.about.title_highlight}</span>{" "}
+              <span className="text-gold">{vi.home.about.title_highlight_gold}</span>
             </h2>
 
             <div className="w-12 h-1 bg-gold rounded mb-6" />
 
             <div className="space-y-4 text-gray-text leading-relaxed text-[15px]">
-              <p>
-                <strong className="text-[#1C1C2E]">{vi.common.brand}</strong>{" "}
-                {vi.home.about.p1}
-              </p>
+              <p>{vi.home.about.p1}</p>
               <p>{vi.home.about.p2}</p>
               <p>{vi.home.about.p3}</p>
             </div>

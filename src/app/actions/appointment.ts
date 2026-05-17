@@ -4,10 +4,13 @@ import { prisma } from "@/server/db/prisma";
 import { revalidatePath } from "next/cache";
 import type { AppointmentStatus } from "@prisma/client";
 import { actionError, requirePermission } from "@/lib/admin/auth";
+import { getI18n } from "@/lib/i18n/server";
 
 const workflowStatuses = new Set<AppointmentStatus>(["new", "contacted", "advised", "completed", "cancelled"]);
 
 export async function submitAppointment(formData: FormData) {
+  const { dict: vi } = await getI18n();
+
   try {
     const fullName = formData.get("fullName") as string;
     const phone = formData.get("phone") as string;
@@ -18,7 +21,7 @@ export async function submitAppointment(formData: FormData) {
     const source = (formData.get("source") as string) || null;
 
     if (!fullName || !phone) {
-      return { success: false, error: "Vui lòng điền đầy đủ thông tin bắt buộc" };
+      return { success: false, error: vi.form_actions.required_appointment };
     }
 
     await prisma.appointment.create({
@@ -28,9 +31,9 @@ export async function submitAppointment(formData: FormData) {
         need:
           [
             need,
-            appointmentTime && `Thời gian hẹn: ${appointmentTime}`,
-            contactMethod && `Cách liên hệ: ${contactMethod}`,
-            source && `Nguồn: ${source}`,
+            appointmentTime && `${vi.form_actions.appointment_time}: ${appointmentTime}`,
+            contactMethod && `${vi.form_actions.contact_method}: ${contactMethod}`,
+            source && `${vi.form_actions.source}: ${source}`,
           ]
             .filter(Boolean)
             .join(" | ") || null,
@@ -51,7 +54,7 @@ export async function submitAppointment(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Appointment submission error:", error);
-    return { success: false, error: "Có lỗi xảy ra. Vui lòng thử lại." };
+    return { success: false, error: vi.form_actions.generic_error };
   }
 }
 

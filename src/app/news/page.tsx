@@ -6,11 +6,16 @@ import { Calendar } from "lucide-react";
 import { prisma } from "@/server/db/prisma";
 import { formatDate } from "@/lib/utils";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Tin tức bất động sản | M-Real Estate",
-  description: "Cập nhật tin tức, phân tích thị trường và kinh nghiệm thuê bán căn hộ tại Q7 Saigon Riverside Complex, Quận 7 và khu Nam Sài Gòn.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
+
+  return {
+    title: vi.news_page.meta.title,
+    description: vi.news_page.meta.description,
+  };
+}
 
 export const revalidate = 3600;
 
@@ -37,6 +42,7 @@ async function getNews() {
 }
 
 export default async function NewsPage() {
+  const { dict: vi } = await getI18n();
   const posts = await getNews();
 
   return (
@@ -45,12 +51,12 @@ export default async function NewsPage() {
       <main>
         <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light pt-24 pb-12">
           <div className="container-site text-center">
-            <span className="section-label">Blog</span>
+            <span className="section-label">{vi.news_page.hero.label}</span>
             <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-white mt-3 mb-3">
-              Tin tức & <span className="text-gradient-gold">Kiến thức</span>
+              {vi.news_page.hero.title} <span className="text-gradient-gold">{vi.news_page.hero.title_highlight}</span>
             </h1>
             <p className="text-white/70 text-lg max-w-xl mx-auto">
-              Cập nhật thị trường, kinh nghiệm thuê bán căn hộ và góc nhìn chuyên sâu từ đội ngũ M-Real Estate.
+              {vi.news_page.hero.desc}
             </p>
           </div>
         </section>
@@ -59,7 +65,7 @@ export default async function NewsPage() {
           <div className="container-site">
             {posts.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-gray-text text-lg">Chưa có bài viết nào. Vui lòng quay lại sau.</p>
+                <p className="text-gray-text text-lg">{vi.news_page.empty}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -82,7 +88,7 @@ export default async function NewsPage() {
                       <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/30 to-transparent" />
                       {post.featured ? (
                         <span className="absolute left-3 top-3 rounded-full bg-gold px-3 py-1 text-xs font-bold text-white shadow-sm">
-                          Nổi bật
+                          {vi.common.featured}
                         </span>
                       ) : null}
                     </div>
@@ -111,7 +117,7 @@ export default async function NewsPage() {
                         href={`/news/${post.slug}`}
                         className="text-gold font-semibold text-sm hover:underline flex items-center gap-1"
                       >
-                        Đọc thêm
+                        {vi.common.read_more}
                       </Link>
                     </div>
                   </article>

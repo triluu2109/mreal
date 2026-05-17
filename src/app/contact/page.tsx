@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import ContactPageClient from "./ContactClient";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Liên hệ",
-  description: "Liên hệ M-Real Estate để nhận tư vấn miễn phí về mua bán, cho thuê, đầu tư bất động sản TP.HCM. Hotline: 0901 234 567.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
+
+  return {
+    title: vi.contact_page.meta.title,
+    description: vi.contact_page.meta.description,
+  };
+}
 
 export default function ContactPage() {
   return <ContactPageClient />;

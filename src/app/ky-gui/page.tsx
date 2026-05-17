@@ -3,18 +3,25 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ConsignmentForm from "./ConsignmentForm";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
+import { getI18n } from "@/lib/i18n/server";
 
 // Confirmed path in storage.objects
 const HERO_BG = resolveStorageUrl(
   "projects/q7-saigon-riverside/hero-section/364_hung-thinh-9fcd2a6254b48301.webp"
 );
 
-export const metadata: Metadata = {
-  title: "Ký gửi bán và cho thuê - M-Real Estate",
-  description: "Ký gửi căn hộ cần bán hoặc cho thuê với M-Real Estate.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
 
-export default function KyGuiPage() {
+  return {
+    title: vi.consignment_page.meta.title,
+    description: vi.consignment_page.meta.description,
+  };
+}
+
+export default async function KyGuiPage() {
+  const { dict: vi } = await getI18n();
+
   return (
     <>
       <Header />
@@ -35,13 +42,13 @@ export default function KyGuiPage() {
 
           <div className="container-site relative z-10 text-center">
             <span className="mb-5 inline-block rounded-full border border-gold/30 bg-gold/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-gold">
-              Ký gửi tài sản
+              {vi.consignment_page.hero.label}
             </span>
             <h1 className="font-heading text-3xl font-bold text-white md:text-5xl">
-              Ký gửi căn hộ
+              {vi.consignment_page.hero.title}
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-white/70 md:text-lg">
-              Gửi thông tin căn cần bán hoặc cho thuê. Đội ngũ M-Real Estate sẽ thẩm định giá, tư vấn pháp lý và kết nối khách phù hợp.
+              {vi.consignment_page.hero.desc}
             </p>
           </div>
         </section>

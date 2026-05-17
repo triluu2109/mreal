@@ -2,28 +2,29 @@
 
 import { motion } from "framer-motion";
 import { BarChart2, Lightbulb, Diamond } from "lucide-react";
-import vi from "@/locales/vi.json";
-
-const cards = [
-  {
-    icon: BarChart2,
-    title: vi.home.vision.cards[0].title,
-    content: vi.home.vision.cards[0].content,
-  },
-  {
-    icon: Lightbulb,
-    title: vi.home.vision.cards[1].title,
-    content: vi.home.vision.cards[1].content,
-  },
-  {
-    icon: Diamond,
-    title: vi.home.vision.cards[2].title,
-    content: vi.home.vision.cards[2].content,
-  },
-];
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 
 export default function VisionMissionSection() {
+  const { dict: vi } = useI18n();
+  const cards = [
+    {
+      icon: BarChart2,
+      title: vi.home.vision.cards[0].title,
+      content: vi.home.vision.cards[0].content,
+    },
+    {
+      icon: Lightbulb,
+      title: vi.home.vision.cards[1].title,
+      content: vi.home.vision.cards[1].content,
+    },
+    {
+      icon: Diamond,
+      title: vi.home.vision.cards[2].title,
+      content: vi.home.vision.cards[2].content,
+    },
+  ];
+
   return (
     <section className="relative py-20 overflow-hidden" id="vision">
       {/* Gold gradient background */}

@@ -1,0 +1,786 @@
+{
+  "common": {
+    "brand": "M-Real Estate",
+    "hotline": "Hotline:",
+    "contact_us": "Contact Us",
+    "view_more": "Explore More",
+    "free_consultation": "Free Consultation",
+    "book_appointment": "Book Consultation",
+    "send_listing": "Submit Listing",
+    "search_placeholder": "Search for your dream living space...",
+    "copyright": "© {year} M-Real Estate. All rights reserved",
+    "call_prefix": "Call:",
+    "view_all": "View All",
+    "view_details": "View Details",
+    "loading_send": "Sending...",
+    "featured": "Featured",
+    "sale_badge": "[Sale]",
+    "rent_badge": "[Rent]",
+    "bed_short": "BR",
+    "bath_short": "BA",
+    "no_image": "No Image Available",
+    "project_name": "Q7 Saigon Riverside Complex",
+    "project_location_short": "Q7 Saigon Riverside Complex, HCMC",
+    "full_name": "Full Name",
+    "phone_number": "Phone Number",
+    "email": "Email",
+    "note": "Note",
+    "close": "Close",
+    "search": "Search",
+    "results": "results",
+    "read_more": "Read More",
+    "read_next": "Read Next",
+    "read_minutes": "min read",
+    "share": "Share",
+    "copy_link": "Copy Link",
+    "home": "Home"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "about_us": "About Us",
+    "listings": "Listings",
+    "buy": "Buy",
+    "rent": "Rent",
+    "news": "News",
+    "contact": "Contact"
+  },
+  "filters": {
+    "all": "All",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "price": "Price Range",
+    "furnishing": "Furnishing",
+    "sort": "Sort By",
+    "page_size": "Items per page",
+    "apply": "Apply Filters",
+    "price_ranges": {
+      "rent": {
+        "all": "All Prices",
+        "under_5": "Under 5M VND",
+        "5_10": "5M - 10M VND",
+        "10_15": "10M - 15M VND",
+        "15_20": "15M - 20M VND",
+        "over_20": "Over 20M VND"
+      },
+      "buy": {
+        "all": "All Prices",
+        "under_2": "Under 2B VND",
+        "2_3": "2B - 3B VND",
+        "3_5": "3B - 5B VND",
+        "5_10": "5B - 10B VND",
+        "over_10": "Over 10B VND"
+      }
+    },
+    "label": "Filters",
+    "close_filters": "Close Filters",
+    "previous_page": "Previous",
+    "next_page": "Next",
+    "no_results_title": "No Matching Apartments Found",
+    "no_results_desc": "Please adjust your filters or contact our advisors directly.",
+    "furnishing_options": {
+      "developer_handover": "Basic handover",
+      "basic_furnished": "Partially furnished",
+      "fully_furnished": "Fully furnished"
+    },
+    "sort_options": {
+      "featured": "Featured first",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low",
+      "created_desc": "Newest"
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "M-Real Estate | Transparent Consulting & Brokerage in HCMC",
+      "description": "M-Real Estate provides premium real estate consulting and brokerage in HCMC, focusing on buy, sell, rent, consignment, and specialized advisory at Q7 Saigon Riverside Complex.",
+      "title_short": "M-Real Estate",
+      "description_legacy": "M-Real Estate - Specialized in buying, selling, leasing, and consigning real estate in HCMC and Binh Duong. Professional and reliable support."
+    },
+    "hero": {
+      "slides": [
+        {
+          "title": "Transparent Real Estate Advisory in HCMC",
+          "subtitle": "Buy, Sell, Rent & Consign Apartments",
+          "desc": "M-Real Estate guides you through every step of your real estate decisions, from research to picking the perfect apartment and final agreement support.",
+          "cta1": "Explore Featured Projects",
+          "cta2": "Get Consultation"
+        },
+        {
+          "title": "Q7 Saigon Riverside Complex",
+          "subtitle": "Real-Time Listings Driven by Real Needs",
+          "desc": "We prioritize active listings at Q7 Saigon Riverside Complex, making it easy to compare pricing, layouts, views, and contract conditions.",
+          "cta1": "Browse Listings",
+          "cta2": "Get Property Consultation"
+        },
+        {
+          "title": "Apartment Rental Services",
+          "subtitle": "Accurate Listings, Direct Support, Time-Saving",
+          "desc": "We match tenants with verified spaces and help landlords reach high-quality, long-term tenants seeking real homes.",
+          "cta1": "View Rentals",
+          "cta2": "Submit Rental Property"
+        },
+        {
+          "title": "Consignment & Transaction Advisory",
+          "subtitle": "Practical Solutions for Landlords & Buyers",
+          "desc": "M-Real Estate accepts consignments, analyzes market pricing, manages listing promotion, and connects verified buyers based on real market data.",
+          "cta1": "Learn About Our Services",
+          "cta2": "Submit Property Details"
+        }
+      ]
+    },
+    "about": {
+      "label": "Driven by Sincerity & Transparency",
+      "title": "",
+      "title_highlight": "M-REAL",
+      "title_highlight_gold": "ESTATE",
+      "p1": "M-Real Estate is proud to be a professional real estate consulting and brokerage agency in HCMC, creating safe, reliable, and optimized transaction solutions.",
+      "p2": "We focus on buying, selling, renting, consigning, and advising on residential apartments, specializing in South Saigon and the Q7 Saigon Riverside Complex project.",
+      "p3": "Every transaction is approached with transparent listings, realistic valuation, and responsible processes, helping clients make data-backed decisions instead of emotional gambles.",
+      "stats": [
+        {
+          "value": "2025",
+          "label": "Established"
+        },
+        {
+          "value": "South Saigon",
+          "label": "Primary Market"
+        },
+        {
+          "value": "100%",
+          "label": "Transparent"
+        }
+      ]
+    },
+    "vision": {
+      "label": "Our Values",
+      "title": "TRANSPARENT & PRACTICAL",
+      "desc": "The core principles that guide M-Real Estate in building trust in every transaction",
+      "cards": [
+        {
+          "title": "Our Mission",
+          "content": "To deliver responsible, clear, and high-quality consulting and brokerage services, empowering clients with complete, verified information before any real estate decision."
+        },
+        {
+          "title": "Our Vision",
+          "content": "To build M-Real Estate into the most trusted boutique agency in HCMC, focusing on key areas and projects where we can fully verify active inventories and actual demand."
+        },
+        {
+          "title": "Core Values",
+          "content": "Professionalism, absolute transparency, practical advice, and complete accountability. This is the foundation of how we serve our clients every single day."
+        }
+      ]
+    },
+    "listings": {
+      "tabs": {
+        "all": "All",
+        "one_bed": "1 Bedroom",
+        "two_bed": "2 Bedrooms",
+        "three_bed": "3 Bedrooms"
+      },
+      "sale_label": "Buying & Selling",
+      "sale_title": "Best Value",
+      "sale_title_highlight": "Listings",
+      "sale_view_all": "View All Properties",
+      "rent_label": "For Rent",
+      "rent_title": "Featured",
+      "rent_title_highlight": "Rentals",
+      "rent_view_all": "View All Rentals",
+      "hot": "Hot"
+    },
+    "projects": {
+      "label": "Boutique Properties",
+      "title": "New",
+      "title_highlight": "Projects",
+      "price_from_label": "Pricing starts from",
+      "view_detail": "View Project Details",
+      "items": [
+        {
+          "id": "q7-saigon-riverside-complex",
+          "name": "Q7 SAIGON RIVERSIDE COMPLEX",
+          "developer": "Hung Thinh Corp",
+          "status": "Active Listings",
+          "location": "04 Dao Tri Street, Phu Thuan Ward, District 7, HCMC",
+          "start_date": "Handover 2024",
+          "price_from": "From 55 Million VND/m²",
+          "tag": "Featured Project"
+        }
+      ]
+    },
+    "news": {
+      "label": "Blog & Insights",
+      "title": "Latest",
+      "title_highlight": "Articles"
+    },
+    "booking": {
+      "validation": {
+        "full_name": "Please enter your full name",
+        "phone": "Please enter a valid phone number"
+      },
+      "label": "Schedule Consultation",
+      "title": "Get Free",
+      "title_highlight": "Consultation",
+      "title_suffix": "Today",
+      "desc_prefix": "Submit your details, and a dedicated M-Real Estate advisor will contact you within",
+      "desc_emphasis": "30 minutes",
+      "desc_suffix": "to share the best-priced listings and recommend the most optimal approach.",
+      "benefits": [
+        {
+          "title": "Tailored Advisory",
+          "desc": "We listen to your goals and propose the most fitting solution."
+        },
+        {
+          "title": "Rapid Response",
+          "desc": "An advisor will reach out to you within 30 business minutes."
+        },
+        {
+          "title": "Privacy Guaranteed",
+          "desc": "Your personal details are securely managed and fully protected."
+        }
+      ],
+      "success_title": "Consultation Scheduled Successfully!",
+      "success_desc": "Thank you for reaching out. Our advisor will call you within 30 minutes.",
+      "success_reset": "Schedule Another Request",
+      "form_title": "Consultation Request Form",
+      "full_name_placeholder": "John Doe",
+      "phone_placeholder": "0901 234 567",
+      "need_label": "Your Needs (Rent / Buy / Sell)",
+      "need_placeholder": "e.g., Looking to rent a 2BR apartment, or buy for investment...",
+      "budget_label": "Estimated Budget",
+      "budget_placeholder": "e.g., Around 3 Billion VND, or 12 Million VND/month...",
+      "submit": "Request Free Consultation Now",
+      "consent": "By submitting this form, you agree to let M-Real Estate contact you for consulting."
+    }
+  },
+  "about_page": {
+    "meta": {
+      "title": "About Us | M-Real Estate",
+      "description": "M-REAL ESTATE CO., LTD. is a professional real estate consulting and brokerage agency in HCMC, specializing in buying, selling, leasing, and consigning residential properties."
+    },
+    "hero": {
+      "label": "About Us",
+      "title": "M-REAL ESTATE",
+      "title_highlight": "Transparent Real Estate Advisory in HCMC",
+      "desc": "M-REAL ESTATE CO., LTD. delivers top-tier consulting, brokerage, consignment, sales, and leasing services with a deep commitment to transparent information and realistic transaction strategies."
+    },
+    "story": {
+      "label": "Our Story",
+      "title": "Partnering with",
+      "title_highlight": "Your Real Needs",
+      "p1": "<strong>M-Real Estate</strong> was founded with the goal of creating a clear, professional, and practical channel for real estate transactions. We understand that every home purchase, sale, or lease is a major life decision for our clients.",
+      "p2": "Headquartered in South Saigon, we choose depth and focus over horizontal expansion. Staying close to the actual market pulse allows the M-Real Estate team to provide highly practical, reliable advice.",
+      "p3": "Whether you are searching for your dream home, an income-generating asset, or trying to find the perfect buyer/tenant for your property, we are always here to listen, simplify the process, and deliver the best possible outcome."
+    },
+    "timeline": {
+      "title": "Our Journey & Goals",
+      "events": [
+        {
+          "year": "01/2025",
+          "event": "M-Real Estate began operations with a dedicated focus on professional real estate advisory and brokerage in HCMC."
+        },
+        {
+          "year": "2025",
+          "event": "Standardized our client onboarding and intake process to ensure clear info, precise matchmaking, and transparent tracking."
+        },
+        {
+          "year": "2025",
+          "event": "Developed our robust landlord consignment channel, offering accurate pricing valuations, media packages, and targeted buyer matching."
+        },
+        {
+          "year": "Present",
+          "event": "Continuing to deliver honest consulting, transparent scopes of service, and dedicated personal support for every real estate transaction."
+        }
+      ]
+    },
+    "values": {
+      "label": "Core Values",
+      "title": "Our Commitment",
+      "title_highlight": "to You",
+      "items": [
+        {
+          "title": "Clear Information",
+          "desc": "Providing easy-to-understand apartment details, realistic asking prices, and transaction conditions so you can make informed choices."
+        },
+        {
+          "title": "Tailored Advisory",
+          "desc": "Listening to your target timeline, budget, and goals to propose transaction strategies that perfectly fit your expectations."
+        },
+        {
+          "title": "Local Neighborhood Expertise",
+          "desc": "Tracking real-time inventory, pricing trends, and market dynamics in our core locations, particularly South Saigon and Q7 Saigon Riverside."
+        },
+        {
+          "title": "Accountable & Responsible Service",
+          "desc": "Guiding you through property tours, negotiations, and contract preparations responsibly within our professional brokerage scope."
+        }
+      ]
+    },
+    "team": {
+      "label": "Our People",
+      "title": "Consulting",
+      "title_highlight": "Team",
+      "desc": "The M-Real Estate team operates with a practical mindset, honoring factual data and placing client needs at the center of every conversation. Our advisors focus on helping clients fully understand the neighborhood dynamics, active inventory, and necessary preparations before closing.",
+      "section_label": "Meet Our Team",
+      "heading": "Expert",
+      "heading_highlight": "Advisors",
+      "summary": "A team of highly experienced, dedicated advisors with deep HCMC market expertise, ready to accompany you."
+    },
+    "cta": {
+      "title": "Need advisory for buying, selling, leasing, or consigning?",
+      "desc": "Connect with M-Real Estate today to discuss your goals and receive a highly professional, practical consultation matching HCMC market realities."
+    }
+  },
+  "footer": {
+    "cta": {
+      "title": "Discuss Your Property Needs with M-Real Estate",
+      "desc": "Get in touch with us to receive trusted consulting for buying, selling, renting, or consigning, and receive the latest HCMC market updates."
+    },
+    "company_desc": "M-Real Estate is your trusted companion in real estate consulting and brokerage in HCMC. With a deep commitment to service and neighborhood expertise, we deliver optimal solutions for buying, selling, leasing, and managing apartments.",
+    "columns": {
+      "col1": {
+        "title": "About",
+        "links": [
+          {
+            "label": "Privacy Policy",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Company Profile",
+            "href": "/gioi-thieu"
+          },
+          {
+            "label": "Terms of Service",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Contact Details",
+            "href": "/contact"
+          }
+        ]
+      },
+      "col2": {
+        "title": "Client Resources",
+        "links": [
+          {
+            "label": "Frequently Asked Questions",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Transaction Guide",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Consignment Benefits",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Market Blog",
+            "href": "/news"
+          }
+        ]
+      },
+      "col3": {
+        "title": "Services",
+        "links": [
+          {
+            "label": "Buy Apartments",
+            "href": "/gio-hang-ban"
+          },
+          {
+            "label": "Rent Apartments",
+            "href": "/gio-hang-thue"
+          },
+          {
+            "label": "Property Consignment",
+            "href": "/ky-gui"
+          }
+        ]
+      }
+    },
+    "office": {
+      "title": "Contact Office",
+      "name": "Office",
+      "view_on_maps": "View on Google Maps",
+      "map_title": "M-Real Estate Office Location"
+    }
+  },
+  "header": {
+    "search_aria": "Search",
+    "search_placeholder": "Search for properties...",
+    "toggle_menu": "Toggle Menu"
+  },
+  "layout": {
+    "metadata": {
+      "default_title": "M-Real Estate | Premium Real Estate in HCMC",
+      "title_template": "%s | M-Real Estate",
+      "description": "M-Real Estate - Specialized in buying, selling, renting, and consigning residential properties in HCMC. Professional team, transparent consulting.",
+      "og_description": "Specialized in buying, selling, leasing, and consigning real estate in HCMC.",
+      "keywords": [
+        "HCMC real estate",
+        "buy sell apartment",
+        "rent apartment",
+        "M-Real Estate",
+        "Binh Chanh apartment",
+        "best value property"
+      ]
+    }
+  },
+  "contact_page": {
+    "meta": {
+      "title": "Contact Us",
+      "description": "Get in touch with M-Real Estate for free, premium consulting on buying, selling, leasing, and investing in HCMC. Hotline: 0901 234 567."
+    },
+    "hero": {
+      "label": "Contact",
+      "title": "Get in",
+      "title_highlight": "Touch",
+      "desc": "We are here to provide free consultations and support you 24/7."
+    },
+    "info_title": "Contact Info",
+    "info": {
+      "address": "Address",
+      "hotline": "Hotline",
+      "email": "Email",
+      "hours": "Working Hours",
+      "hours_value": "Always available 24/7"
+    },
+    "success_title": "Message Sent Successfully!",
+    "success_desc": "Thank you for reaching out. We will get back to you as soon as possible.",
+    "send_another": "Send Another Message",
+    "form_title": "Send Us a Message",
+    "message_label": "Message",
+    "message_placeholder": "Please describe your question or request...",
+    "submit": "Send Message"
+  },
+  "consignment_page": {
+    "meta": {
+      "title": "Property Consignment - M-Real Estate",
+      "description": "Consign your apartment for sale or lease with M-Real Estate's professional team."
+    },
+    "hero": {
+      "label": "Consign Property",
+      "title": "Property Consignment",
+      "desc": "Submit your property details. The M-Real Estate team will conduct property valuation, handle listing media, and connect verified buyers/tenants."
+    },
+    "success_title": "Consignment Info Received",
+    "success_desc": "Our advisor will contact you to verify property details and recommend the most effective sale or lease strategy.",
+    "send_another": "Submit Another Property",
+    "fields": {
+      "intent": "Property Needs",
+      "bedrooms": "Bedrooms",
+      "area": "Area (Sqm)",
+      "furnishing": "Furnishing",
+      "expected_price": "Asking Price"
+    },
+    "options": {
+      "sell": "Sale",
+      "rent": "Lease",
+      "sell_or_rent": "Sale or Lease",
+      "not_selected": "Not selected"
+    },
+    "placeholders": {
+      "bedrooms": "e.g., 2BR2BA",
+      "area": "e.g., 68",
+      "furnishing": "e.g., Fully furnished",
+      "expected_price": "e.g., 4.2 Billion VND or 15 Million VND/month",
+      "note": "Block, floor, view, ownership papers status..."
+    },
+    "detail_labels": {
+      "need": "Property Needs",
+      "bedrooms": "Bedrooms",
+      "area": "Area (Sqm)",
+      "furnishing": "Furnishing",
+      "expected_price": "Asking Price",
+      "note": "Note"
+    },
+    "error": "Failed to submit consignment. Please try again.",
+    "submit": "Submit Consignment Info"
+  },
+  "news_page": {
+    "meta": {
+      "title": "Real Estate Blog & News | M-Real Estate",
+      "description": "Stay updated with news, market trends, and practical guides on buying, selling, or renting properties in South Saigon, District 7, and Q7 Saigon Riverside Complex."
+    },
+    "hero": {
+      "label": "Blog",
+      "title": "News &",
+      "title_highlight": "Insights",
+      "desc": "Market updates, practical tips for leasing/selling, and professional viewpoints from the M-Real Estate team."
+    },
+    "empty": "No articles found. Please check back later."
+  },
+  "news_detail": {
+    "not_found_title": "Article Not Found | M-Real Estate",
+    "breadcrumb_news": "Blog",
+    "back_to_news": "Back to Blog",
+    "share_facebook_title": "Share on Facebook",
+    "content_updating": "Content is currently being updated.",
+    "more_posts": "View More Articles",
+    "related_posts": "Related Articles"
+  },
+  "listing_page": {
+    "titles": {
+      "buy": "Properties for Sale",
+      "rent": "Properties for Rent"
+    },
+    "detail": {
+      "not_found": "Apartment not found",
+      "metadata_contact": "Contact M-Real Estate for dedicated advisory.",
+      "buy_breadcrumb": "Properties for Sale",
+      "rent_breadcrumb": "Properties for Rent",
+      "specs": {
+        "area": "Area",
+        "bedrooms": "Bedrooms",
+        "toilet": "Bathrooms",
+        "layout": "Unit Type",
+        "furnishing": "Furnishing",
+        "view": "View",
+        "availability": "Availability",
+        "contract_price": "Contract Price"
+      },
+      "room_suffix": "rooms",
+      "billion_suffix": "B"
+    },
+    "similar": {
+      "sell_heading": "Similar Properties for Sale",
+      "rent_heading": "Similar Properties for Rent",
+      "view_all": "View All"
+    },
+    "meta": {
+      "buy_title": "Properties for Sale - M-Real Estate",
+      "buy_description": "Active list of premium apartments for sale at Q7 Saigon Riverside Complex.",
+      "rent_title": "Properties for Rent - M-Real Estate",
+      "rent_description": "Active list of verified apartments for rent at Q7 Saigon Riverside Complex."
+    }
+  },
+  "detail_booking": {
+    "need_prefix": "Consultation for",
+    "buy_action": "buying",
+    "rent_action": "renting",
+    "price_label": "Price",
+    "error": "Failed to submit booking request. Please try again.",
+    "success_title": "Request Received Successfully",
+    "success_desc": "Our advisor will contact you shortly to confirm a viewing and consulting schedule for this unit.",
+    "send_another": "Submit Another Request",
+    "title": "Schedule View & Consulting",
+    "appointment_time": "Preferred Time",
+    "contact_method": "Preferred Contact",
+    "contact_methods": {
+      "phone": "Phone Call",
+      "zalo": "Zalo",
+      "sms": "SMS",
+      "email": "Email"
+    },
+    "budget": "Budget",
+    "budget_placeholder_sell": "e.g., 3 Billion VND",
+    "budget_placeholder_rent": "e.g., 15 Million VND/month",
+    "note_placeholder": "Your specific requirements, preferred dates to view...",
+    "submit": "Submit Consulting Request",
+    "consent": "This request is sent directly to our advisory department."
+  },
+  "project_q7": {
+    "meta": {
+      "title": "Q7 Saigon Riverside Complex - Premium Project | M-Real Estate",
+      "description": "Q7 Saigon Riverside Complex - Prestigious riverside living along Dao Tri Street, Phu Thuan Ward, District 7, HCMC. 5 Towers, 34 Floors, 3,580 Units."
+    },
+    "hero": {
+      "label": "Featured Project",
+      "title": "Q7 SAIGON",
+      "title_highlight": "RIVERSIDE COMPLEX",
+      "desc": "Luxury riverside lifestyle along Dao Tri Street, Phu Thuan Ward, District 7, HCMC",
+      "gallery_cta": "View Gallery",
+      "alt": "Q7 Saigon Riverside Complex View"
+    },
+    "floorplans": [
+      {
+        "type": "1 Bedroom+",
+        "area": "53.20 - 53.67 Sqm",
+        "desc": "Includes a multi-functional expansion zone, maximizing natural sunlight and panoramic views"
+      },
+      {
+        "type": "2 Bedrooms",
+        "area": "66.66 - 73.49 Sqm",
+        "desc": "Features 3 flexible layouts, including two large-area corner configurations"
+      },
+      {
+        "type": "3 Bedrooms",
+        "area": "85.52 - 86.69 Sqm",
+        "desc": "All units are premium corner layouts with stunning river views, spacious and luxurious for families"
+      }
+    ],
+    "sample_image_alt": "Model Unit Photo {index}",
+    "floorplan_alt": "{type} Layout Floorplan",
+    "block_plan_alt": "{block} Tower Floorplan",
+    "amenities_alt": "Q7 Saigon Riverside Complex Amenities Master Plan",
+    "specs": [
+      {
+        "label": "Location",
+        "value": "Dao Tri Street, Phu Thuan Ward, District 7, HCMC"
+      },
+      {
+        "label": "Total Area",
+        "value": "75,224.5 Sqm"
+      },
+      {
+        "label": "Towers",
+        "value": "5 Towers"
+      },
+      {
+        "label": "Floors",
+        "value": "34 Floors"
+      },
+      {
+        "label": "Apartments",
+        "value": "3,580 Units"
+      },
+      {
+        "label": "Office Units",
+        "value": "12 Units"
+      },
+      {
+        "label": "Unit Sizes",
+        "value": "53.2 - 86.69 Sqm"
+      },
+      {
+        "label": "Basements",
+        "value": "1 Level"
+      }
+    ],
+    "gallery_images_alt": [
+      "Panoramic project view",
+      "Real project construction view",
+      "Internal central pool amenities",
+      "Luxurious living space",
+      "Scenic Saigon River view",
+      "Flycam birds eye view"
+    ],
+    "overview": {
+      "label": "Project Overview",
+      "title": "Luxury Riverside",
+      "title_highlight": "Living",
+      "desc": "Q7 Saigon Riverside Complex is located directly on the scenic Saigon River, boasting beautiful waterfront geography, lush green parks, and high-end internal amenities. The project is highly suitable for both refined living and long-term capital appreciation.",
+      "map_alt": "Project Location Map"
+    },
+    "gallery": {
+      "label": "Photo Gallery",
+      "title": "Project",
+      "title_highlight": "Media"
+    },
+    "products": {
+      "label": "Unit Types",
+      "title": "Versatile",
+      "title_highlight": "Floor Plans"
+    },
+    "master_plan": {
+      "label": "Master Plan",
+      "title": "Project",
+      "title_highlight": "Master Plan"
+    },
+    "amenities": {
+      "label": "Amenities",
+      "title": "50+ Premium",
+      "title_highlight": "Facilities",
+      "desc": "All central amenities are mapped out in the master plan illustration below"
+    },
+    "model_unit": {
+      "label": "Model Units",
+      "title": "Actual",
+      "title_highlight": "Interiors"
+    }
+  },
+  "chatbot": {
+    "online": "Active Now",
+    "greeting": "Hello there! I'm your M-Real Estate AI Assistant. Are you interested in renting, buying/selling, or consigning an apartment at Q7 Saigon Riverside Complex?",
+    "fallback": "I'm currently unable to process your request. Please leave your phone number or click Book Consultation, and our expert advisor will contact you shortly.",
+    "suggested_prompts": [
+      "I want to rent a 2BR",
+      "I want to consign my apartment",
+      "I want to buy a Q7 Riverside unit"
+    ],
+    "input_placeholder": "Describe your real estate needs...",
+    "send": "Send",
+    "booking": "Book",
+    "minimize": "Minimize",
+    "open": "Open Chat",
+    "close": "Close Chat",
+    "project_name": "Q7 Saigon Riverside Complex",
+    "greeting_short": "Do you need to rent, lease out, or buy/sell an apartment at Q7 Saigon Riverside?",
+    "out_of_scope": "Currently, I specialize in Q7 Saigon Riverside Complex. Do you need to rent, lease out, or buy/sell an apartment here?",
+    "appointment_phone_question": "Please share your phone number so our advisor can call you to confirm a viewing/advisory schedule.",
+    "appointment_confirmation": "I have recorded your request. Our professional advisor will contact you shortly to confirm the appointment.",
+    "invalid_phone": "Please enter a valid phone number.",
+    "teaser": "🤖AI Advisory",
+    "assistant_name": "M-Real Estate Assistant",
+    "call_now": "Call Now",
+    "appointment_cta": "Schedule Consultation",
+    "phone_recorded": "Phone number {phone} has been securely saved.",
+    "phone_placeholder": "Enter your phone number...",
+    "message_placeholder": "Type your message...",
+    "ask_bedrooms": "How many bedrooms do you need?",
+    "ask_furnishing": "What furnishing package are you looking for?",
+    "ask_rent_price": "What is your target monthly rental price?",
+    "ask_budget": "What is your estimated purchasing budget?",
+    "ask_lease_time": "When would you like to start leasing out the property?",
+    "ask_move_in_time": "When do you plan to move in?",
+    "ask_transaction_time": "When do you need to complete this transaction?",
+    "ask_full_name": "May I have your full name, please?",
+    "ready_to_book": "I have captured all your preferences. Please click Schedule Consultation to have our advisor call you.",
+    "need_labels": {
+      "rent": "Rent a Q7 Saigon Riverside apartment",
+      "lease_out": "Lease out a Q7 Saigon Riverside apartment",
+      "buy_sell": "Buy/Sell a Q7 Saigon Riverside apartment"
+    },
+    "furnishing_labels": {
+      "full": "Fully Furnished",
+      "basic": "Partially Furnished",
+      "empty": "Unfurnished"
+    }
+  },
+  "investment_cta": {
+    "title": "Looking for the Perfect Space?",
+    "description": "Share your parameters with us, and M-Real Estate will audit active inventory and recommend the best matching solutions.",
+    "primary_label": "Schedule Consultation"
+  },
+  "coming_soon": {
+    "meta": {
+      "title": "Coming Soon - M-Real Estate",
+      "description": "This page is currently under construction. Check back soon for exciting content from M-Real Estate."
+    },
+    "label": "Under Construction",
+    "title": "Coming Soon",
+    "desc": "We are polishing this section to bring you the best possible digital experience. In the meantime, feel free to explore our active listings.",
+    "home": "Back to Homepage",
+    "contact": "Get Consultation"
+  },
+  "chat_api": {
+    "appointment_confirmation": "I have recorded your request. Our professional advisor will contact you shortly to confirm the appointment.",
+    "invalid_message": "Invalid message format. Please try again.",
+    "advisor_call_confirmation": "Advisor Confirmation Call",
+    "customer_from_chatbot": "Lead from Chatbot",
+    "method_prefix": "Method",
+    "source_prefix": "Source",
+    "source_chatbot": "chatbot",
+    "need_labels": {
+      "rent": "Rent Q7 Saigon Riverside Apartment",
+      "lease_out": "Lease Out Q7 Saigon Riverside Apartment",
+      "buy_sell": "Buy/Sell Q7 Saigon Riverside Apartment"
+    },
+    "furnishing_labels": {
+      "full": "Fully Furnished",
+      "basic": "Partially Furnished",
+      "empty": "Unfurnished",
+      "any": "Furnished"
+    },
+    "summary_fallback": "Consultation via Chatbot"
+  },
+  "form_actions": {
+    "required_appointment": "Please fill in all mandatory appointment fields.",
+    "required_contact": "Please fill in all mandatory contact fields.",
+    "generic_error": "An unexpected error occurred. Please try again.",
+    "invalid_status": "Invalid status value.",
+    "appointment_time": "Appointment Time",
+    "contact_method": "Preferred Contact Method",
+    "source": "Source"
+  }
+}

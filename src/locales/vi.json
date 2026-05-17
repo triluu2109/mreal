@@ -8,7 +8,32 @@
     "book_appointment": "Đặt lịch tư vấn",
     "send_listing": "Gửi bán & Cho thuê",
     "search_placeholder": "Tìm kiếm không gian sống...",
-    "copyright": "© {year} M-Real Estate. All rights reserved"
+    "copyright": "© {year} M-Real Estate. All rights reserved",
+    "call_prefix": "Gọi:",
+    "view_all": "Xem tất cả",
+    "view_details": "Xem chi tiết",
+    "loading_send": "Đang gửi...",
+    "featured": "Nổi bật",
+    "sale_badge": "[Bán]",
+    "rent_badge": "[Thuê]",
+    "bed_short": "PN",
+    "bath_short": "WC",
+    "no_image": "Chưa có ảnh",
+    "project_name": "Q7 Saigon Riverside Complex",
+    "project_location_short": "Q7 Saigon Riverside Complex, TP.HCM",
+    "full_name": "Họ và tên",
+    "phone_number": "Số điện thoại",
+    "email": "Email",
+    "note": "Ghi chú",
+    "close": "Đóng",
+    "search": "Tìm kiếm",
+    "results": "kết quả",
+    "read_more": "Đọc thêm",
+    "read_next": "Đọc tiếp",
+    "read_minutes": "phút đọc",
+    "share": "Chia sẻ",
+    "copy_link": "Copy link",
+    "home": "Trang chủ"
   },
   "nav": {
     "home": "Trang chủ",
@@ -47,12 +72,31 @@
         "5_10": "5 - 10 tỷ",
         "over_10": "Trên 10 tỷ"
       }
+    },
+    "label": "Bộ lọc",
+    "close_filters": "Đóng bộ lọc",
+    "previous_page": "Trang trước",
+    "next_page": "Trang sau",
+    "no_results_title": "Không tìm thấy căn hộ phù hợp",
+    "no_results_desc": "Vui lòng thay đổi bộ lọc hoặc liên hệ tư vấn trực tiếp.",
+    "furnishing_options": {
+      "developer_handover": "Hoàn thiện cơ bản",
+      "basic_furnished": "Nội thất cơ bản",
+      "fully_furnished": "Full nội thất"
+    },
+    "sort_options": {
+      "featured": "Nổi bật trước",
+      "price_asc": "Giá thấp - cao",
+      "price_desc": "Giá cao - thấp",
+      "created_desc": "Mới nhất"
     }
   },
   "home": {
     "meta": {
       "title": "M-Real Estate | Tư vấn và môi giới bất động sản TP.HCM",
-      "description": "M-Real Estate là đơn vị tư vấn và môi giới bất động sản tại TP.HCM, tập trung vào mua bán, cho thuê, ký gửi và tư vấn căn hộ, hiện ưu tiên dự án Q7 Saigon Riverside Complex."
+      "description": "M-Real Estate là đơn vị tư vấn và môi giới bất động sản tại TP.HCM, tập trung vào mua bán, cho thuê, ký gửi và tư vấn căn hộ, hiện ưu tiên dự án Q7 Saigon Riverside Complex.",
+      "title_short": "M-Real Estate",
+      "description_legacy": "M-Real Estate - Chuyên mua bán, cho thuê, ký gửi bất động sản tại TP.HCM và Bình Dương. Đội ngũ chuyên nghiệp, uy tín, đồng hành cùng bạn từ năm 2018."
     },
     "hero": {
       "slides": [
@@ -87,16 +131,26 @@
       ]
     },
     "about": {
-      "label": "Về M-Real Estate",
-      "title": "TƯ VẤN",
-      "title_highlight": "M-REAL ESTATE",
-      "p1": "là đơn vị tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM.",
+      "label": "Khởi nguồn từ sự minh bạch",
+      "title": "",
+      "title_highlight": "M-REAL",
+      "title_highlight_gold": "ESTATE",
+      "p1": "M-Real Estate tự hào là đơn vị tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM, kiến tạo các giải pháp giao dịch tối ưu và an toàn.",
       "p2": "Chúng tôi tập trung vào nhu cầu mua bán, cho thuê, ký gửi và tư vấn căn hộ, đặc biệt tại khu vực Nam Sài Gòn và dự án Q7 Saigon Riverside Complex.",
       "p3": "Mỗi giao dịch được tiếp cận bằng thông tin rõ ràng, tư vấn thực tế và quy trình làm việc có trách nhiệm, giúp khách hàng ra quyết định dựa trên dữ liệu phù hợp thay vì kỳ vọng cảm tính.",
       "stats": [
-        { "value": "2025", "label": "Thành lập" },
-        { "value": "Nam Sài Gòn", "label": "Thị trường" },
-        { "value": "100%", "label": "Minh bạch" }
+        {
+          "value": "2025",
+          "label": "Thành lập"
+        },
+        {
+          "value": "Nam Sài Gòn",
+          "label": "Thị trường"
+        },
+        {
+          "value": "100%",
+          "label": "Minh bạch"
+        }
       ]
     },
     "vision": {
@@ -117,6 +171,86 @@
           "content": "Chuyên nghiệp, minh bạch, thực tế và trách nhiệm. Đây là nền tảng trong cách chúng tôi tiếp nhận thông tin, tư vấn phương án và đồng hành cùng khách hàng trong quá trình giao dịch."
         }
       ]
+    },
+    "listings": {
+      "tabs": {
+        "all": "Tất cả",
+        "one_bed": "1 Phòng ngủ",
+        "two_bed": "2 Phòng ngủ",
+        "three_bed": "3 Phòng ngủ"
+      },
+      "sale_label": "Mua bán",
+      "sale_title": "Giỏ hàng",
+      "sale_title_highlight": "giá tốt",
+      "sale_view_all": "Xem tất cả giỏ hàng",
+      "rent_label": "Cho thuê",
+      "rent_title": "Căn hộ",
+      "rent_title_highlight": "cho thuê",
+      "rent_view_all": "Xem tất cả cho thuê",
+      "hot": "Hot"
+    },
+    "projects": {
+      "label": "Bất động sản",
+      "title": "Dự án",
+      "title_highlight": "mới",
+      "price_from_label": "Mức giá chỉ từ",
+      "view_detail": "Xem chi tiết dự án",
+      "items": [
+        {
+          "id": "q7-saigon-riverside-complex",
+          "name": "Q7 SAIGON RIVERSIDE COMPLEX",
+          "developer": "Hưng Thịnh Corp",
+          "status": "Đang mở bán",
+          "location": "04 Đào Trí, Phường Phú Thuận, TP.HCM",
+          "start_date": "Bàn giao 2024",
+          "price_from": "Chỉ từ 55 triệu/m²",
+          "tag": "Dự án nổi bật"
+        }
+      ]
+    },
+    "news": {
+      "label": "Blog & Tin tức",
+      "title": "Tin tức",
+      "title_highlight": "mới nhất"
+    },
+    "booking": {
+      "validation": {
+        "full_name": "Vui lòng nhập họ tên",
+        "phone": "Số điện thoại không hợp lệ"
+      },
+      "label": "Đặt lịch tư vấn",
+      "title": "Nhận tư vấn",
+      "title_highlight": "miễn phí",
+      "title_suffix": "ngay hôm nay",
+      "desc_prefix": "Chỉ cần để lại nhu cầu, chuyên viên M-Real Estate sẽ liên hệ hỗ trợ bạn sau",
+      "desc_emphasis": "30 phút",
+      "desc_suffix": "để gửi ngay giỏ hàng giá tốt nhất và tư vấn phương án tối ưu.",
+      "benefits": [
+        {
+          "title": "Tư vấn đúng nhu cầu",
+          "desc": "Chúng tôi lắng nghe và đề xuất giải pháp phù hợp nhất"
+        },
+        {
+          "title": "Phản hồi nhanh chóng",
+          "desc": "Chuyên viên liên hệ trong vòng 30 phút làm việc"
+        },
+        {
+          "title": "Bảo mật thông tin",
+          "desc": "Thông tin cá nhân được bảo mật tuyệt đối"
+        }
+      ],
+      "success_title": "Đặt lịch thành công!",
+      "success_desc": "Cảm ơn bạn đã liên hệ. Chuyên viên sẽ gọi lại trong vòng 30 phút.",
+      "success_reset": "Đặt lịch khác",
+      "form_title": "Thông tin đặt lịch",
+      "full_name_placeholder": "Nguyễn Văn A",
+      "phone_placeholder": "0901 234 567",
+      "need_label": "Nhu cầu thuê / mua",
+      "need_placeholder": "Ví dụ: Muốn thuê căn 2PN, hoặc mua đầu tư...",
+      "budget_label": "Tài chính dự kiến",
+      "budget_placeholder": "Ví dụ: Khoảng 3 tỷ, hoặc 12 triệu/tháng...",
+      "submit": "Đặt lịch tư vấn ngay",
+      "consent": "Bằng cách gửi form, bạn đồng ý để M-Real Estate liên hệ tư vấn."
     }
   },
   "about_page": {
@@ -134,17 +268,29 @@
       "label": "Câu chuyện của chúng tôi",
       "title": "Đồng hành cùng",
       "title_highlight": "nhu cầu thực",
-      "p1": "M-Real Estate ra đời với mong muốn tạo ra một kênh giao dịch bất động sản rõ ràng, chuyên nghiệp và thiết thực. Chúng tôi hiểu rằng mỗi quyết định an cư hay đầu tư đều mang ý nghĩa lớn đối với khách hàng.",
+      "p1": "<strong>M-Real Estate</strong> ra đời với mong muốn tạo ra một kênh giao dịch bất động sản rõ ràng, chuyên nghiệp và thiết thực. Chúng tôi hiểu rằng mỗi quyết định an cư hay đầu tư đều mang ý nghĩa lớn đối với khách hàng.",
       "p2": "Với văn phòng đặt tại trung tâm khu Nam Sài Gòn, chúng tôi chọn hướng đi tập trung và am hiểu chuyên sâu thay vì dàn trải. Sự nắm bắt tường tận từng nhịp đập của thị trường giúp đội ngũ M-Real Estate luôn đưa ra những lời khuyên sát thực tế.",
       "p3": "Dù bạn đang tìm kiếm một tổ ấm, một sản phẩm sinh lời, hay đang cần tìm khách hàng cho bất động sản của mình, chúng tôi luôn ở đây để lắng nghe, san sẻ áp lực và giúp bạn tìm ra phương án tối ưu nhất."
     },
     "timeline": {
       "title": "Định hướng hoạt động",
       "events": [
-        { "year": "01/2025", "event": "M-Real Estate bắt đầu hoạt động với định hướng tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM." },
-        { "year": "2025", "event": "Tập trung xây dựng quy trình tiếp nhận nhu cầu mua, bán, thuê và ký gửi căn hộ theo hướng rõ thông tin, đúng nhu cầu và dễ theo dõi." },
-        { "year": "2025", "event": "Phát triển kênh tư vấn cho chủ nhà cần ký gửi bán hoặc cho thuê, bao gồm tư vấn giá chào, hình ảnh, nội dung và kết nối khách phù hợp." },
-        { "year": "Hiện tại", "event": "Duy trì hoạt động tư vấn dựa trên thông tin minh bạch, phạm vi dịch vụ rõ ràng và sự đồng hành thực tế trong từng giao dịch." }
+        {
+          "year": "01/2025",
+          "event": "M-Real Estate bắt đầu hoạt động với định hướng tư vấn và môi giới bất động sản chuyên nghiệp tại TP.HCM."
+        },
+        {
+          "year": "2025",
+          "event": "Tập trung xây dựng quy trình tiếp nhận nhu cầu mua, bán, thuê và ký gửi căn hộ theo hướng rõ thông tin, đúng nhu cầu và dễ theo dõi."
+        },
+        {
+          "year": "2025",
+          "event": "Phát triển kênh tư vấn cho chủ nhà cần ký gửi bán hoặc cho thuê, bao gồm tư vấn giá chào, hình ảnh, nội dung và kết nối khách phù hợp."
+        },
+        {
+          "year": "Hiện tại",
+          "event": "Duy trì hoạt động tư vấn dựa trên thông tin minh bạch, phạm vi dịch vụ rõ ràng và sự đồng hành thực tế trong từng giao dịch."
+        }
       ]
     },
     "values": {
@@ -152,17 +298,33 @@
       "title": "Cam kết",
       "title_highlight": "từ M-Real Estate",
       "items": [
-        { "title": "Thông tin rõ ràng", "desc": "Cung cấp thông tin căn hộ, giá chào, tình trạng giao dịch và điều kiện làm việc một cách dễ hiểu để khách hàng có cơ sở cân nhắc." },
-        { "title": "Tư vấn theo nhu cầu", "desc": "Lắng nghe mục tiêu ở thực, cho thuê, bán lại hoặc ký gửi để đề xuất phương án phù hợp với ngân sách, thời gian và kỳ vọng của từng khách hàng." },
-        { "title": "Am hiểu khu vực", "desc": "Theo sát nguồn căn, nhu cầu thuê mua và mặt bằng giá tại các khu vực trọng tâm, đặc biệt là Nam Sài Gòn và Q7 Saigon Riverside Complex." },
-        { "title": "Làm việc có trách nhiệm", "desc": "Đồng hành trong quá trình trao đổi, xem căn, thương lượng và chuẩn bị thông tin giao dịch trong phạm vi dịch vụ môi giới, không thay thế tư vấn pháp luật." }
+        {
+          "title": "Thông tin rõ ràng",
+          "desc": "Cung cấp thông tin căn hộ, giá chào, tình trạng giao dịch và điều kiện làm việc một cách dễ hiểu để khách hàng có cơ sở cân nhắc."
+        },
+        {
+          "title": "Tư vấn theo nhu cầu",
+          "desc": "Lắng nghe mục tiêu ở thực, cho thuê, bán lại hoặc ký gửi để đề xuất phương án phù hợp với ngân sách, thời gian và kỳ vọng của từng khách hàng."
+        },
+        {
+          "title": "Am hiểu khu vực",
+          "desc": "Theo sát nguồn căn, nhu cầu thuê mua và mặt bằng giá tại các khu vực trọng tâm, đặc biệt là Nam Sài Gòn và Q7 Saigon Riverside Complex."
+        },
+        {
+          "title": "Làm việc có trách nhiệm",
+          "desc": "Đồng hành trong quá trình trao đổi, xem căn, thương lượng và chuẩn bị thông tin giao dịch trong phạm vi dịch vụ môi giới, không thay thế tư vấn pháp luật."
+        }
       ]
     },
     "team": {
       "label": "Nhân sự",
       "title": "Đội ngũ",
       "title_highlight": "tư vấn",
-      "desc": "Đội ngũ M-Real Estate làm việc theo hướng thực tế, tôn trọng thông tin và đặt nhu cầu khách hàng làm trọng tâm. Mỗi tư vấn viên tập trung hỗ trợ khách hàng hiểu rõ sản phẩm, bối cảnh thị trường và các bước cần chuẩn bị trước giao dịch."
+      "desc": "Đội ngũ M-Real Estate làm việc theo hướng thực tế, tôn trọng thông tin và đặt nhu cầu khách hàng làm trọng tâm. Mỗi tư vấn viên tập trung hỗ trợ khách hàng hiểu rõ sản phẩm, bối cảnh thị trường và các bước cần chuẩn bị trước giao dịch.",
+      "section_label": "Đội ngũ của chúng tôi",
+      "heading": "Chuyên viên",
+      "heading_highlight": "tư vấn",
+      "summary": "Đội ngũ chuyên viên giàu kinh nghiệm, am hiểu thị trường TP.HCM, luôn sẵn sàng đồng hành cùng bạn."
     },
     "cta": {
       "title": "Bạn cần tư vấn mua bán, cho thuê hoặc ký gửi căn hộ?",
@@ -179,32 +341,446 @@
       "col1": {
         "title": "Giới thiệu",
         "links": [
-          { "label": "Chính sách bảo mật", "href": "/coming-soon" },
-          { "label": "Thông tin doanh nghiệp", "href": "/gioi-thieu" },
-          { "label": "Quy định hoạt động", "href": "/coming-soon" },
-          { "label": "Thông tin liên hệ", "href": "/contact" }
+          {
+            "label": "Chính sách bảo mật",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Thông tin doanh nghiệp",
+            "href": "/gioi-thieu"
+          },
+          {
+            "label": "Quy định hoạt động",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Thông tin liên hệ",
+            "href": "/contact"
+          }
         ]
       },
       "col2": {
         "title": "Khách hàng",
         "links": [
-          { "label": "Câu hỏi thường gặp", "href": "/coming-soon" },
-          { "label": "Quy trình giao dịch", "href": "/coming-soon" },
-          { "label": "Lợi ích ký gửi", "href": "/coming-soon" },
-          { "label": "Tin tức thị trường", "href": "/news" }
+          {
+            "label": "Câu hỏi thường gặp",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Quy trình giao dịch",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Lợi ích ký gửi",
+            "href": "/coming-soon"
+          },
+          {
+            "label": "Tin tức thị trường",
+            "href": "/news"
+          }
         ]
       },
       "col3": {
         "title": "Dịch vụ",
         "links": [
-          { "label": "Mua bán căn hộ", "href": "/gio-hang-ban" },
-          { "label": "Cho thuê căn hộ", "href": "/gio-hang-thue" },
-          { "label": "Ký gửi bán và cho thuê", "href": "/ky-gui" }
+          {
+            "label": "Mua bán căn hộ",
+            "href": "/gio-hang-ban"
+          },
+          {
+            "label": "Cho thuê căn hộ",
+            "href": "/gio-hang-thue"
+          },
+          {
+            "label": "Ký gửi bán và cho thuê",
+            "href": "/ky-gui"
+          }
         ]
       }
     },
     "office": {
-      "title": "Địa chỉ liên hệ"
+      "title": "Địa chỉ liên hệ",
+      "name": "Văn phòng",
+      "view_on_maps": "Xem trên Google Maps",
+      "map_title": "Vị trí văn phòng M-Real Estate"
     }
+  },
+  "header": {
+    "search_aria": "Tìm kiếm",
+    "search_placeholder": "Tìm kiếm bất động sản...",
+    "toggle_menu": "Toggle menu"
+  },
+  "layout": {
+    "metadata": {
+      "default_title": "M-Real Estate | Bất động sản TP.HCM",
+      "title_template": "%s | M-Real Estate",
+      "description": "M-Real Estate - Chuyên mua bán, cho thuê, ký gửi bất động sản tại TP.HCM. Đội ngũ chuyên nghiệp, uy tín, đồng hành cùng bạn từ năm 2018.",
+      "og_description": "Chuyên mua bán, cho thuê, ký gửi bất động sản tại TP.HCM.",
+      "keywords": [
+        "bất động sản TP.HCM",
+        "mua bán nhà đất",
+        "cho thuê căn hộ",
+        "M-Real Estate",
+        "bất động sản Bình Chánh",
+        "căn hộ giá tốt"
+      ]
+    }
+  },
+  "contact_page": {
+    "meta": {
+      "title": "Liên hệ",
+      "description": "Liên hệ M-Real Estate để nhận tư vấn miễn phí về mua bán, cho thuê, đầu tư bất động sản TP.HCM. Hotline: 0901 234 567."
+    },
+    "hero": {
+      "label": "Liên hệ",
+      "title": "Liên hệ với",
+      "title_highlight": "chúng tôi",
+      "desc": "Chúng tôi sẵn sàng tư vấn miễn phí và hỗ trợ bạn 24/7."
+    },
+    "info_title": "Thông tin liên hệ",
+    "info": {
+      "address": "Địa chỉ",
+      "hotline": "Hotline",
+      "email": "Email",
+      "hours": "Giờ làm việc",
+      "hours_value": "Luôn sẵn sàng hỗ trợ 24/7"
+    },
+    "success_title": "Gửi thành công!",
+    "success_desc": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.",
+    "send_another": "Gửi tin nhắn khác",
+    "form_title": "Gửi tin nhắn cho chúng tôi",
+    "message_label": "Nội dung",
+    "message_placeholder": "Vui lòng nhập câu hỏi hoặc yêu cầu của bạn...",
+    "submit": "Gửi tin nhắn"
+  },
+  "consignment_page": {
+    "meta": {
+      "title": "Ký gửi bán và cho thuê - M-Real Estate",
+      "description": "Ký gửi căn hộ cần bán hoặc cho thuê với M-Real Estate."
+    },
+    "hero": {
+      "label": "Ký gửi tài sản",
+      "title": "Ký gửi căn hộ",
+      "desc": "Gửi thông tin căn cần bán hoặc cho thuê. Đội ngũ M-Real Estate sẽ thẩm định giá, tư vấn pháp lý và kết nối khách phù hợp."
+    },
+    "success_title": "Đã nhận thông tin ký gửi",
+    "success_desc": "Chuyên viên sẽ liên hệ để xác nhận thông tin căn hộ và phương án bán/cho thuê.",
+    "send_another": "Gửi căn khác",
+    "fields": {
+      "intent": "Nhu cầu",
+      "bedrooms": "Số phòng ngủ",
+      "area": "Diện tích",
+      "furnishing": "Nội thất",
+      "expected_price": "Giá mong muốn"
+    },
+    "options": {
+      "sell": "Bán",
+      "rent": "Cho thuê",
+      "sell_or_rent": "Bán hoặc cho thuê",
+      "not_selected": "Chưa chọn"
+    },
+    "placeholders": {
+      "bedrooms": "VD: 2PN2WC",
+      "area": "VD: 68",
+      "furnishing": "VD: full nội thất",
+      "expected_price": "VD: 4.2 tỷ hoặc 15 triệu/tháng",
+      "note": "Block, tầng, view, tình trạng sổ/hợp đồng..."
+    },
+    "detail_labels": {
+      "need": "Nhu cầu",
+      "bedrooms": "Phòng ngủ",
+      "area": "Diện tích",
+      "furnishing": "Nội thất",
+      "expected_price": "Giá mong muốn",
+      "note": "Ghi chú"
+    },
+    "error": "Không gửi được thông tin. Vui lòng thử lại.",
+    "submit": "Gửi thông tin ký gửi"
+  },
+  "news_page": {
+    "meta": {
+      "title": "Tin tức bất động sản | M-Real Estate",
+      "description": "Cập nhật tin tức, phân tích thị trường và kinh nghiệm thuê bán căn hộ tại Q7 Saigon Riverside Complex, Quận 7 và khu Nam Sài Gòn."
+    },
+    "hero": {
+      "label": "Blog",
+      "title": "Tin tức &",
+      "title_highlight": "Kiến thức",
+      "desc": "Cập nhật thị trường, kinh nghiệm thuê bán căn hộ và góc nhìn chuyên sâu từ đội ngũ M-Real Estate."
+    },
+    "empty": "Chưa có bài viết nào. Vui lòng quay lại sau."
+  },
+  "news_detail": {
+    "not_found_title": "Bài viết không tồn tại | M-Real Estate",
+    "breadcrumb_news": "Tin tức",
+    "back_to_news": "Quay lại tin tức",
+    "share_facebook_title": "Chia sẻ Facebook",
+    "content_updating": "Nội dung đang được cập nhật.",
+    "more_posts": "Xem thêm bài viết",
+    "related_posts": "Bài viết liên quan"
+  },
+  "listing_page": {
+    "titles": {
+      "buy": "Giỏ hàng bán",
+      "rent": "Giỏ hàng thuê"
+    },
+    "detail": {
+      "not_found": "Không tìm thấy căn hộ",
+      "metadata_contact": "Liên hệ M-Real Estate để được tư vấn.",
+      "buy_breadcrumb": "Giỏ hàng mua bán",
+      "rent_breadcrumb": "Căn hộ cho thuê",
+      "specs": {
+        "area": "Diện tích",
+        "bedrooms": "Phòng ngủ",
+        "toilet": "Toilet",
+        "layout": "Loại căn",
+        "furnishing": "Nội thất",
+        "view": "View",
+        "availability": "Tình trạng",
+        "contract_price": "Giá HĐ"
+      },
+      "room_suffix": "phòng",
+      "billion_suffix": "tỷ"
+    },
+    "similar": {
+      "sell_heading": "Căn bán tương tự",
+      "rent_heading": "Căn thuê tương tự",
+      "view_all": "Xem tất cả"
+    },
+    "meta": {
+      "buy_title": "Giỏ hàng bán - M-Real Estate",
+      "buy_description": "Danh sách căn hộ đang chào bán tại Q7 Saigon Riverside Complex.",
+      "rent_title": "Giỏ hàng thuê - M-Real Estate",
+      "rent_description": "Danh sách căn hộ cho thuê tại Q7 Saigon Riverside Complex."
+    }
+  },
+  "detail_booking": {
+    "need_prefix": "Cần tư vấn",
+    "buy_action": "mua",
+    "rent_action": "thuê",
+    "price_label": "Giá",
+    "error": "Không thể gửi lịch hẹn. Vui lòng thử lại.",
+    "success_title": "Đã nhận thông tin",
+    "success_desc": "Chuyên viên sẽ liên hệ xác nhận lịch tư vấn cho căn này trong thời gian sớm nhất.",
+    "send_another": "Gửi yêu cầu khác",
+    "title": "Đặt lịch tư vấn",
+    "appointment_time": "Thời gian hẹn",
+    "contact_method": "Cách liên hệ",
+    "contact_methods": {
+      "phone": "Gọi điện",
+      "zalo": "Zalo",
+      "sms": "SMS",
+      "email": "Email"
+    },
+    "budget": "Ngân sách",
+    "budget_placeholder_sell": "Ví dụ: 3 tỷ",
+    "budget_placeholder_rent": "Ví dụ: 15 triệu/tháng",
+    "note_placeholder": "Nhu cầu, thời gian cụ thể xem nhà...",
+    "submit": "Gửi yêu cầu tư vấn",
+    "consent": "Thông tin này được gửi trực tiếp đến bộ phận tư vấn."
+  },
+  "project_q7": {
+    "meta": {
+      "title": "Q7 Saigon Riverside Complex - Dự án bất động sản | M-Real Estate",
+      "description": "Q7 Saigon Riverside Complex - Đẳng cấp sống ven sông Sài Gòn tại đường Đào Trí, phường Phú Thuận, TP.HCM. 05 Block, 34 tầng, 3.580 căn hộ."
+    },
+    "hero": {
+      "label": "Dự án nổi bật",
+      "title": "Q7 SAIGON",
+      "title_highlight": "RIVERSIDE COMPLEX",
+      "desc": "Đẳng cấp sống ven sông Sài Gòn tại đường Đào Trí, Phường Phú Thuận, TP.HCM",
+      "gallery_cta": "Xem thư viện ảnh",
+      "alt": "Q7 Saigon Riverside Complex"
+    },
+    "floorplans": [
+      {
+        "type": "1 Phòng ngủ+",
+        "area": "53,20 - 53,67 m²",
+        "desc": "Có phần mở rộng tạo thêm không gian sinh hoạt, tối ưu ánh sáng tự nhiên và view sông"
+      },
+      {
+        "type": "2 Phòng ngủ",
+        "area": "66,66 - 73,49 m²",
+        "desc": "Có 3 layout đa dạng, trong đó có 2 layout căn góc diện tích lớn"
+      },
+      {
+        "type": "3 Phòng ngủ",
+        "area": "85,52 - 86,69 m²",
+        "desc": "Toàn bộ là căn góc view sông, không gian rộng rãi và sang trọng cho cả gia đình"
+      }
+    ],
+    "sample_image_alt": "Căn hộ mẫu ảnh {index}",
+    "floorplan_alt": "Mặt bằng {type}",
+    "block_plan_alt": "Mặt bằng {block}",
+    "amenities_alt": "Sơ đồ tiện ích Q7 Saigon Riverside Complex",
+    "specs": [
+      {
+        "label": "Vị trí",
+        "value": "Đường Đào Trí, Phường Phú Thuận, TP.HCM"
+      },
+      {
+        "label": "Diện tích khu đất",
+        "value": "75.224,5 m²"
+      },
+      {
+        "label": "Số Block",
+        "value": "05 Block"
+      },
+      {
+        "label": "Số tầng",
+        "value": "34 tầng"
+      },
+      {
+        "label": "Số căn hộ",
+        "value": "3.580 căn"
+      },
+      {
+        "label": "Số căn Office",
+        "value": "12 căn"
+      },
+      {
+        "label": "Loại diện tích",
+        "value": "53,2 - 86,69 m²"
+      },
+      {
+        "label": "Tầng hầm",
+        "value": "01 tầng"
+      }
+    ],
+    "gallery_images_alt": [
+      "Toàn cảnh dự án",
+      "Hình ảnh thực tế dự án",
+      "Tiện ích nội khu",
+      "Không gian sống",
+      "View sông Sài Gòn",
+      "Toàn cảnh flycam"
+    ],
+    "overview": {
+      "label": "Tổng quan dự án",
+      "title": "Đẳng cấp sống",
+      "title_highlight": "ven sông",
+      "desc": "Q7 Saigon Riverside Complex tọa lạc ngay bên dòng sông Sài Gòn, kết hợp địa thế hướng thủy, không gian xanh mát và chuỗi tiện ích hiện đại. Dự án phù hợp cho cả nhu cầu an cư và đầu tư sinh lời lâu dài.",
+      "map_alt": "Vị trí dự án"
+    },
+    "gallery": {
+      "label": "Thư viện ảnh",
+      "title": "Hình ảnh",
+      "title_highlight": "dự án"
+    },
+    "products": {
+      "label": "Sản phẩm",
+      "title": "Loại căn hộ",
+      "title_highlight": "đa dạng"
+    },
+    "master_plan": {
+      "label": "Mặt bằng",
+      "title": "Mặt bằng",
+      "title_highlight": "tổng thể"
+    },
+    "amenities": {
+      "label": "Nội khu",
+      "title": "50+ Tiện ích",
+      "title_highlight": "đẳng cấp",
+      "desc": "Toàn bộ tiện ích nội khu được chú thích trong sơ đồ bên dưới"
+    },
+    "model_unit": {
+      "label": "Căn hộ mẫu",
+      "title": "Hình ảnh",
+      "title_highlight": "thực tế"
+    }
+  },
+  "chatbot": {
+    "online": "Đang hoạt động",
+    "greeting": "Em chào anh/chị, em là trợ lý tư vấn M-Real Estate. Anh/chị đang quan tâm thuê, mua/bán hay ký gửi căn hộ Q7 Saigon Riverside ạ?",
+    "fallback": "Hiện tại hệ thống chưa phản hồi được. Anh/chị để lại số điện thoại hoặc bấm đặt lịch, tư vấn viên sẽ liên hệ sớm.",
+    "suggested_prompts": [
+      "Tôi muốn thuê căn 2PN",
+      "Tôi muốn ký gửi căn hộ",
+      "Tôi muốn mua căn Q7 Riverside"
+    ],
+    "input_placeholder": "Nhập nhu cầu của anh/chị...",
+    "send": "Gửi",
+    "booking": "Đặt lịch",
+    "minimize": "Thu nhỏ",
+    "open": "Mở chatbot",
+    "close": "Đóng chatbot",
+    "project_name": "Q7 Saigon Riverside Complex",
+    "greeting_short": "Anh/chị cần thuê, cho thuê hay mua bán căn hộ tại Q7 Saigon Riverside?",
+    "out_of_scope": "Hiện chatbot chỉ hỗ trợ Q7 Saigon Riverside. Anh/chị cần thuê, cho thuê hay mua bán căn hộ?",
+    "appointment_phone_question": "Anh/chị để lại số điện thoại để tư vấn viên liên hệ xác nhận lịch.",
+    "appointment_confirmation": "Em đã ghi nhận thông tin. Tư vấn viên sẽ liên hệ sớm để xác nhận lịch.",
+    "invalid_phone": "Anh/chị nhập giúp em số điện thoại hợp lệ.",
+    "teaser": "🤖Tư vấn cùng AI",
+    "assistant_name": "Trợ lý M-Real Estate",
+    "call_now": "Gọi ngay",
+    "appointment_cta": "Đặt lịch tư vấn",
+    "phone_recorded": "Đã ghi nhận SĐT {phone}.",
+    "phone_placeholder": "Nhập SĐT...",
+    "message_placeholder": "Nhập tin nhắn...",
+    "ask_bedrooms": "Anh/chị cần căn mấy phòng ngủ?",
+    "ask_furnishing": "Căn hộ đang có nội thất như thế nào?",
+    "ask_rent_price": "Anh/chị mong muốn giá thuê bao nhiêu?",
+    "ask_budget": "Anh/chị dự kiến ngân sách khoảng bao nhiêu?",
+    "ask_lease_time": "Anh/chị muốn cho thuê từ khi nào?",
+    "ask_move_in_time": "Anh/chị cần vào ở khi nào?",
+    "ask_transaction_time": "Anh/chị cần giao dịch khi nào?",
+    "ask_full_name": "Anh/chị cho em xin họ tên.",
+    "ready_to_book": "Em đã ghi nhận nhu cầu. Anh/chị bấm đặt lịch tư vấn để tư vấn viên liên hệ.",
+    "need_labels": {
+      "rent": "Thuê căn hộ Q7 Saigon Riverside",
+      "lease_out": "Cho thuê căn hộ Q7 Saigon Riverside",
+      "buy_sell": "Mua bán căn hộ Q7 Saigon Riverside"
+    },
+    "furnishing_labels": {
+      "full": "Full nội thất",
+      "basic": "Nội thất cơ bản",
+      "empty": "Nhà trống"
+    }
+  },
+  "investment_cta": {
+    "title": "Cần tư vấn căn phù hợp?",
+    "description": "Để lại nhu cầu, M-Real Estate sẽ rà soát giỏ hàng và liên hệ lại với phương án phù hợp.",
+    "primary_label": "Đặt lịch tư vấn"
+  },
+  "coming_soon": {
+    "meta": {
+      "title": "Sắp ra mắt - M-Real Estate",
+      "description": "Trang này đang được xây dựng. Quay lại sớm để khám phá thêm nhiều nội dung từ M-Real Estate."
+    },
+    "label": "Đang chuẩn bị",
+    "title": "Coming soon",
+    "desc": "Chúng tôi đang hoàn thiện nội dung để mang đến trải nghiệm tốt nhất cho bạn. Trong thời gian chờ đợi, hãy khám phá các trang khác.",
+    "home": "Về trang chủ",
+    "contact": "Liên hệ tư vấn"
+  },
+  "chat_api": {
+    "appointment_confirmation": "Em đã ghi nhận thông tin. Tư vấn viên sẽ liên hệ sớm để xác nhận lịch.",
+    "invalid_message": "Tin nhắn không hợp lệ. Anh/chị vui lòng nhập lại.",
+    "advisor_call_confirmation": "Tư vấn viên gọi xác nhận",
+    "customer_from_chatbot": "Khách từ chatbot",
+    "method_prefix": "Hình thức",
+    "source_prefix": "Nguồn",
+    "source_chatbot": "chatbot",
+    "need_labels": {
+      "rent": "Thuê căn hộ Q7 Saigon Riverside",
+      "lease_out": "Cho thuê căn hộ Q7 Saigon Riverside",
+      "buy_sell": "Mua bán căn hộ Q7 Saigon Riverside"
+    },
+    "furnishing_labels": {
+      "full": "Full nội thất",
+      "basic": "Nội thất cơ bản",
+      "empty": "Nhà trống",
+      "any": "Có nội thất"
+    },
+    "summary_fallback": "Khách trao đổi qua chatbot"
+  },
+  "form_actions": {
+    "required_appointment": "Vui lòng điền đầy đủ thông tin bắt buộc",
+    "required_contact": "Vui lòng điền đầy đủ thông tin",
+    "generic_error": "Có lỗi xảy ra. Vui lòng thử lại.",
+    "invalid_status": "Trạng thái không hợp lệ",
+    "appointment_time": "Thời gian hẹn",
+    "contact_method": "Cách liên hệ",
+    "source": "Nguồn"
   }
 }

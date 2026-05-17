@@ -10,6 +10,7 @@ import ImageGallery from "@/components/ui/ImageGallery";
 import SimilarProperties from "@/components/sections/SimilarProperties";
 import DetailBookingForm from "@/components/sections/DetailBookingForm";
 import { formatFurnishing } from "@/lib/furnishing";
+import { getI18n } from "@/lib/i18n/server";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -20,32 +21,34 @@ async function getListing(id: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
   const { id } = await params;
   const property = await getListing(id);
-  if (!property) return { title: "Không tìm thấy căn hộ" };
+  if (!property) return { title: vi.listing_page.detail.not_found };
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
 
   return {
-    title: `[Bán] ${title} - ${property.displayPrice} | M-Real Estate`,
-    description: `${title} tại Q7 Saigon Riverside Complex. Liên hệ M-Real Estate để được tư vấn.`,
+    title: `${vi.common.sale_badge} ${title} - ${property.displayPrice} | M-Real Estate`,
+    description: `${title} t?i ${vi.common.project_name}. ${vi.listing_page.detail.metadata_contact}`,
   };
 }
 
 export default async function SellDetailPage({ params }: Props) {
+  const { dict: vi } = await getI18n();
   const { id } = await params;
   const property = await getListing(id);
   if (!property) notFound();
 
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
   const specs = [
-    { icon: <Maximize2 size={16} />, label: "Diện tích", value: formatArea(Number(property.areaSqm)) },
-    { icon: <BedDouble size={16} />, label: "Phòng ngủ", value: `${property.bedrooms} phòng` },
-    { icon: <Bath size={16} />, label: "Toilet", value: `${property.bathrooms} WC` },
-    { icon: <BedDouble size={16} />, label: "Loại căn", value: formatLayout(property.bedrooms, property.bathrooms) },
-    { icon: <Building2 size={16} />, label: "Nội thất", value: formatFurnishing(property.furnishingNote, property.furnishingStatus) },
-    property.view && { icon: <Building2 size={16} />, label: "View", value: property.view },
-    property.availability && { icon: <Building2 size={16} />, label: "Tình trạng", value: property.availability },
-    property.contractPrice && { icon: <Building2 size={16} />, label: "Giá HĐ", value: `${(Number(property.contractPrice) / 1e9).toFixed(3).replace(/\.?0+$/, "")} tỷ` },
+    { icon: <Maximize2 size={16} />, label: vi.listing_page.detail.specs.area, value: formatArea(Number(property.areaSqm)) },
+    { icon: <BedDouble size={16} />, label: vi.listing_page.detail.specs.bedrooms, value: `${property.bedrooms} ${vi.listing_page.detail.room_suffix}` },
+    { icon: <Bath size={16} />, label: vi.listing_page.detail.specs.toilet, value: `${property.bathrooms} ${vi.common.bath_short}` },
+    { icon: <BedDouble size={16} />, label: vi.listing_page.detail.specs.layout, value: formatLayout(property.bedrooms, property.bathrooms) },
+    { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.furnishing, value: formatFurnishing(property.furnishingNote, property.furnishingStatus) },
+    property.view && { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.view, value: property.view },
+    property.availability && { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.availability, value: property.availability },
+    property.contractPrice && { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.contract_price, value: `${(Number(property.contractPrice) / 1e9).toFixed(3).replace(/\.?0+$/, "")} ${vi.listing_page.detail.billion_suffix}` },
   ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string | null }[];
 
   return (
@@ -55,9 +58,9 @@ export default async function SellDetailPage({ params }: Props) {
         <div className="bg-gray-bg border-b border-gray-border">
           <div className="container-site py-3 sm:py-4">
             <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-text">
-              <Link href="/" className="shrink-0 hover:text-gold transition-colors">Trang chủ</Link>
+              <Link href="/" className="shrink-0 hover:text-gold transition-colors">{vi.common.home}</Link>
               <span>/</span>
-              <Link href="/gio-hang-ban" className="shrink-0 hover:text-gold transition-colors">Giỏ hàng mua bán</Link>
+              <Link href="/gio-hang-ban" className="shrink-0 hover:text-gold transition-colors">{vi.listing_page.detail.buy_breadcrumb}</Link>
               <span>/</span>
               <span className="min-w-0 flex-1 truncate text-navy font-medium">{title}</span>
             </nav>
@@ -69,7 +72,7 @@ export default async function SellDetailPage({ params }: Props) {
             <div className="lg:col-span-2 space-y-8">
               <Link href="/gio-hang-ban" className="inline-flex items-center gap-2 text-sm text-gray-text hover:text-gold transition-colors">
                 <ArrowLeft size={16} />
-                Giỏ hàng mua bán
+                {vi.listing_page.detail.buy_breadcrumb}
               </Link>
 
               <ImageGallery images={property.imagePaths} alt={title} />
@@ -77,7 +80,7 @@ export default async function SellDetailPage({ params }: Props) {
               <div>
                 <h1 className="font-heading font-bold text-navy text-2xl md:text-3xl mb-3">{title}</h1>
                 <div className="text-3xl font-heading font-bold text-gold mb-2">{property.displayPrice}</div>
-                <div className="text-gray-text text-sm">Q7 Saigon Riverside Complex, TP.HCM</div>
+                <div className="text-gray-text text-sm">{vi.common.project_location_short}</div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">

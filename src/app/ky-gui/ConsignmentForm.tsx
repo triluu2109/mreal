@@ -3,8 +3,10 @@
 import { FormEvent, useState, useTransition } from "react";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { submitAppointment } from "@/app/actions/appointment";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 export default function ConsignmentForm() {
+  const { dict: vi } = useI18n();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -15,12 +17,12 @@ export default function ConsignmentForm() {
     const input = new FormData(form);
     const payload = new FormData();
     const details = [
-      `Nhu cầu: ${input.get("intent") || "Chưa chọn"}`,
-      input.get("bedrooms") && `Phòng ngủ: ${input.get("bedrooms")}`,
-      input.get("area") && `Diện tích: ${input.get("area")} m2`,
-      input.get("furnishing") && `Nội thất: ${input.get("furnishing")}`,
-      input.get("expectedPrice") && `Giá mong muốn: ${input.get("expectedPrice")}`,
-      input.get("note") && `Ghi chú: ${input.get("note")}`,
+      `${vi.consignment_page.detail_labels.need}: ${input.get("intent") || vi.consignment_page.options.not_selected}`,
+      input.get("bedrooms") && `${vi.consignment_page.detail_labels.bedrooms}: ${input.get("bedrooms")}`,
+      input.get("area") && `${vi.consignment_page.detail_labels.area}: ${input.get("area")} m2`,
+      input.get("furnishing") && `${vi.consignment_page.detail_labels.furnishing}: ${input.get("furnishing")}`,
+      input.get("expectedPrice") && `${vi.consignment_page.detail_labels.expected_price}: ${input.get("expectedPrice")}`,
+      input.get("note") && `${vi.consignment_page.detail_labels.note}: ${input.get("note")}`,
     ].filter(Boolean).join(" | ");
 
     payload.set("fullName", String(input.get("fullName") ?? ""));
@@ -36,7 +38,7 @@ export default function ConsignmentForm() {
         setSuccess(true);
         form.reset();
       } else {
-        setError(result.error ?? "Không gửi được thông tin. Vui lòng thử lại.");
+        setError(result.error ?? vi.consignment_page.error);
       }
     });
   };
@@ -45,10 +47,10 @@ export default function ConsignmentForm() {
     return (
       <div className="rounded-lg border border-gray-border bg-white p-8 text-center shadow-card">
         <CheckCircle size={52} className="mx-auto mb-4 text-green-500" />
-        <h2 className="font-heading text-2xl font-bold text-navy">Đã nhận thông tin ký gửi</h2>
-        <p className="mt-2 text-gray-text">Chuyên viên sẽ liên hệ để xác nhận thông tin căn hộ và phương án bán/cho thuê.</p>
+        <h2 className="font-heading text-2xl font-bold text-navy">{vi.consignment_page.success_title}</h2>
+        <p className="mt-2 text-gray-text">{vi.consignment_page.success_desc}</p>
         <button onClick={() => setSuccess(false)} className="mt-6 rounded-lg bg-gold px-6 py-3 font-heading font-bold text-white hover:bg-gold-dark">
-          Gửi căn khác
+          {vi.consignment_page.send_another}
         </button>
       </div>
     );
@@ -57,20 +59,20 @@ export default function ConsignmentForm() {
   return (
     <form onSubmit={onSubmit} className="rounded-lg border border-gray-border bg-white p-6 shadow-card sm:p-8">
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <Field label="Họ và tên *"><input name="fullName" required className={inputClass} /></Field>
-        <Field label="Số điện thoại *"><input name="phone" required inputMode="tel" className={inputClass} /></Field>
-        <Field label="Nhu cầu"><select name="intent" className={inputClass} defaultValue="Bán"><option>Bán</option><option>Cho thuê</option><option>Bán hoặc cho thuê</option></select></Field>
-        <Field label="Số phòng ngủ"><input name="bedrooms" placeholder="VD: 2PN2WC" className={inputClass} /></Field>
-        <Field label="Diện tích"><input name="area" inputMode="decimal" placeholder="VD: 68" className={inputClass} /></Field>
-        <Field label="Nội thất"><input name="furnishing" placeholder="VD: full nội thất" className={inputClass} /></Field>
-        <Field label="Giá mong muốn"><input name="expectedPrice" placeholder="VD: 4.2 tỷ hoặc 15 triệu/tháng" className={inputClass} /></Field>
+        <Field label={`${vi.common.full_name} *`}><input name="fullName" required className={inputClass} /></Field>
+        <Field label={`${vi.common.phone_number} *`}><input name="phone" required inputMode="tel" className={inputClass} /></Field>
+        <Field label={vi.consignment_page.fields.intent}><select name="intent" className={inputClass} defaultValue={vi.consignment_page.options.sell}><option>{vi.consignment_page.options.sell}</option><option>{vi.consignment_page.options.rent}</option><option>{vi.consignment_page.options.sell_or_rent}</option></select></Field>
+        <Field label={vi.consignment_page.fields.bedrooms}><input name="bedrooms" placeholder={vi.consignment_page.placeholders.bedrooms} className={inputClass} /></Field>
+        <Field label={vi.consignment_page.fields.area}><input name="area" inputMode="decimal" placeholder={vi.consignment_page.placeholders.area} className={inputClass} /></Field>
+        <Field label={vi.consignment_page.fields.furnishing}><input name="furnishing" placeholder={vi.consignment_page.placeholders.furnishing} className={inputClass} /></Field>
+        <Field label={vi.consignment_page.fields.expected_price}><input name="expectedPrice" placeholder={vi.consignment_page.placeholders.expected_price} className={inputClass} /></Field>
         <div className="md:col-span-2">
-          <Field label="Ghi chú"><textarea name="note" rows={4} className={`${inputClass} resize-none`} placeholder="Block, tầng, view, tình trạng sổ/hợp đồng..." /></Field>
+          <Field label={vi.common.note}><textarea name="note" rows={4} className={`${inputClass} resize-none`} placeholder={vi.consignment_page.placeholders.note} /></Field>
         </div>
       </div>
       {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
       <button type="submit" disabled={isPending} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3 font-heading font-bold text-white hover:bg-navy-light disabled:opacity-70">
-        {isPending ? <><Loader2 size={18} className="animate-spin" /> Đang gửi...</> : "Gửi thông tin ký gửi"}
+        {isPending ? <><Loader2 size={18} className="animate-spin" /> {vi.common.loading_send}</> : vi.consignment_page.submit}
       </button>
     </form>
   );

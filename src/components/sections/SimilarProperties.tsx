@@ -4,6 +4,7 @@ import { Bath, BedDouble, Maximize2 } from "lucide-react";
 import { prisma } from "@/server/db/prisma";
 import { buildListingTitle, formatArea } from "@/lib/listing-utils";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
+import { getI18n } from "@/lib/i18n/server";
 
 interface Props {
   currentId: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default async function SimilarProperties({ currentId, type }: Props) {
+  const { dict: vi } = await getI18n();
   let items: Array<{
     id: string;
     href: string;
@@ -40,7 +42,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
         beds: s.bedrooms,
         baths: s.bathrooms,
         image: s.imagePaths[0] ?? null,
-        badge: "[Bán]",
+        badge: vi.common.sale_badge,
         badgeColor: "text-gold",
       }));
     } else {
@@ -58,7 +60,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
         beds: r.bedrooms,
         baths: r.bathrooms,
         image: r.imagePaths[0] ?? null,
-        badge: "[Thuê]",
+        badge: vi.common.rent_badge,
         badgeColor: "text-navy",
       }));
     }
@@ -68,7 +70,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
 
   if (items.length === 0) return null;
 
-  const heading = type === "sell" ? "Căn bán tương tự" : "Căn thuê tương tự";
+  const heading = type === "sell" ? vi.listing_page.similar.sell_heading : vi.listing_page.similar.rent_heading;
 
   return (
     <section className="py-12 bg-gray-bg border-t border-gray-border">
@@ -79,8 +81,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
             href={type === "sell" ? "/gio-hang-ban" : "/gio-hang-thue"}
             className="text-gold text-sm font-semibold hover:underline"
           >
-            Xem tất cả →
-          </Link>
+            {vi.listing_page.similar.view_all}</Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -101,7 +102,7 @@ export default async function SimilarProperties({ currentId, type }: Props) {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-300 text-sm">
-                    Chưa có ảnh
+                    {vi.common.no_image}
                   </div>
                 )}
               </div>
@@ -112,8 +113,8 @@ export default async function SimilarProperties({ currentId, type }: Props) {
                 </p>
                 <div className="flex items-center gap-3 text-gray-text text-xs mt-2">
                   {item.area && <span className="flex items-center gap-1"><Maximize2 size={10} className="text-gold" />{item.area}</span>}
-                  {item.beds != null && <span className="flex items-center gap-1"><BedDouble size={10} className="text-gold" />{item.beds} PN</span>}
-                  {item.baths != null && <span className="flex items-center gap-1"><Bath size={10} className="text-gold" />{item.baths} WC</span>}
+                  {item.beds != null && <span className="flex items-center gap-1"><BedDouble size={10} className="text-gold" />{item.beds} {vi.common.bed_short}</span>}
+                  {item.baths != null && <span className="flex items-center gap-1"><Bath size={10} className="text-gold" />{item.baths} {vi.common.bath_short}</span>}
                 </div>
                 <div className="font-heading font-bold text-gold text-base mt-2">{item.price}</div>
               </div>

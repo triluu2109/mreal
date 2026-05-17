@@ -3,16 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
 import { actionError, requirePermission } from "@/lib/admin/auth";
+import { getI18n } from "@/lib/i18n/server";
 
 const CONTACT_STATUSES = new Set(["new", "contacted", "consulting", "closed", "cancelled"]);
 
 export async function submitContact(formData: FormData) {
+  const { dict: vi } = await getI18n();
+
   try {
     const fullName = formData.get("fullName") as string;
     const phone = formData.get("phone") as string;
 
     if (!fullName || !phone) {
-      return { success: false, error: "Vui lòng điền đầy đủ thông tin" };
+      return { success: false, error: vi.form_actions.required_contact };
     }
 
     await prisma.contact.create({
@@ -27,7 +30,7 @@ export async function submitContact(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Contact submission error:", error);
-    return { success: false, error: "Có lỗi xảy ra. Vui lòng thử lại." };
+    return { success: false, error: vi.form_actions.generic_error };
   }
 }
 

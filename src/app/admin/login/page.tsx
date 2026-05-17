@@ -35,7 +35,7 @@ export default async function AdminLoginPage() {
           <div className="relative z-10 max-w-2xl pb-8">
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-gold-light">
               <Sparkles size={14} />
-              Premium admin workspace
+              admin dashboard
             </div>
             <h1 className="max-w-xl font-heading text-5xl font-bold leading-tight text-white">
               Quản trị vận hành bất động sản với độ tin cậy cao.

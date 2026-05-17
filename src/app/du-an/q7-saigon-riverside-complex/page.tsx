@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { siteImages } from "@/config/images";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
+import { getI18n } from "@/lib/i18n/server";
 
 const q7Images = siteImages.project.q7SaigonRiverside;
 
@@ -11,27 +12,6 @@ const q7Images = siteImages.project.q7SaigonRiverside;
 const SUPABASE_BASE = "projects/q7-saigon-riverside";
 
 // Section 1 — Loại căn hộ
-const floorplans = [
-  {
-    type: "1 Phòng ngủ+",
-    area: "53,20 – 53,67 m²",
-    desc: "Có phần mở rộng tạo thêm không gian sinh hoạt, tối ưu ánh sáng tự nhiên và view sông",
-    src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-can-ho/mat-bang-can-ho-1pn.webp`),
-  },
-  {
-    type: "2 Phòng ngủ",
-    area: "66,66 – 73,49 m²",
-    desc: "Có 3 layout đa dạng, trong đó có 2 layout căn góc diện tích lớn",
-    src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-can-ho/mat-bang-can-ho-2pn.webp`),
-  },
-  {
-    type: "3 Phòng ngủ",
-    area: "85,52 – 86,69 m²",
-    desc: "Toàn bộ là căn góc view sông, không gian rộng rãi và sang trọng cho cả gia đình",
-    src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-can-ho/mat-bang-can-ho-3pn.webp`),
-  },
-];
-
 // Section 2 — Mặt bằng tổng thể (S / V / U / M)
 const blockPlans = [
   { block: "Block S", src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-du-an/mat-bang-block-S.webp`) },
@@ -44,38 +24,35 @@ const blockPlans = [
 const TIEN_ICH_SRC = resolveStorageUrl(`${SUPABASE_BASE}/tien-ich/tien-ich.webp`);
 
 // Section 4 — Căn hộ mẫu (9 ảnh)
-const canHoMauImages = Array.from({ length: 9 }, (_, i) => ({
-  src: resolveStorageUrl(`${SUPABASE_BASE}/can-ho-mau/${i + 1}.jpg`),
-  alt: `Căn hộ mẫu ảnh ${i + 1}`,
-}));
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
 
-export const metadata: Metadata = {
-  title: "Q7 Saigon Riverside Complex — Dự án bất động sản | M-Real Estate",
-  description:
-    "Q7 Saigon Riverside Complex — Đẳng cấp sống ven sông Sài Gòn tại đường Đào Trí, phường Phú Thuận, TP.HCM. 05 Block, 34 tầng, 3.580 căn hộ.",
-};
+  return {
+    title: vi.project_q7.meta.title,
+    description: vi.project_q7.meta.description,
+  };
+}
 
-const specs = [
-  { label: "Vị trí", value: "Đường Đào Trí, Phường Phú Thuận, TP.HCM" },
-  { label: "Diện tích khu đất", value: "75.224,5 m²" },
-  { label: "Số Block", value: "05 Block" },
-  { label: "Số tầng", value: "34 tầng" },
-  { label: "Số căn hộ", value: "3.580 căn" },
-  { label: "Số căn Office", value: "12 căn" },
-  { label: "Loại diện tích", value: "53,2 — 86,69 m²" },
-  { label: "Tầng hầm", value: "01 tầng" },
-];
+export default async function Q7RiversidePage() {
+  const { dict: vi } = await getI18n();
+  const floorplans = vi.project_q7.floorplans.map((floorplan, index) => ({
+    ...floorplan,
+    src: resolveStorageUrl(`${SUPABASE_BASE}/mat-bang-can-ho/mat-bang-can-ho-${index + 1}pn.webp`),
+  }));
+  const canHoMauImages = Array.from({ length: 9 }, (_, i) => ({
+    src: resolveStorageUrl(`${SUPABASE_BASE}/can-ho-mau/${i + 1}.jpg`),
+    alt: vi.project_q7.sample_image_alt.replace("{index}", String(i + 1)),
+  }));
+  const specs = vi.project_q7.specs;
+  const galleryImages = [
+    { src: q7Images.hero.overview, alt: vi.project_q7.gallery_images_alt[0] },
+    { src: q7Images.actual.image360, alt: vi.project_q7.gallery_images_alt[1] },
+    { src: q7Images.actual.image363, alt: vi.project_q7.gallery_images_alt[2] },
+    { src: q7Images.actual.image367, alt: vi.project_q7.gallery_images_alt[3] },
+    { src: q7Images.actual.image368, alt: vi.project_q7.gallery_images_alt[4] },
+    { src: q7Images.actual.flycam, alt: vi.project_q7.gallery_images_alt[5] },
+  ];
 
-const galleryImages = [
-  { src: q7Images.hero.overview, alt: "Toàn cảnh dự án" },
-  { src: q7Images.actual.image360, alt: "Hình ảnh thực tế dự án" },
-  { src: q7Images.actual.image363, alt: "Tiện ích nội khu" },
-  { src: q7Images.actual.image367, alt: "Không gian sống" },
-  { src: q7Images.actual.image368, alt: "View sông Sài Gòn" },
-  { src: q7Images.actual.flycam, alt: "Toàn cảnh flycam" },
-];
-
-export default function Q7RiversidePage() {
   return (
     <>
       <Header />
@@ -84,7 +61,7 @@ export default function Q7RiversidePage() {
         <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
           <Image
             src={resolveStorageUrl(`${SUPABASE_BASE}/hero-section/010_tt_duan.webp`)}
-            alt="Q7 Saigon Riverside Complex"
+            alt={vi.project_q7.hero.alt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -94,23 +71,23 @@ export default function Q7RiversidePage() {
           <div className="absolute inset-0 flex items-end">
             <div className="container-site pb-14">
               <span className="inline-block bg-gold text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">
-                Dự án nổi bật
+                {vi.project_q7.hero.label}
               </span>
               <h1
                 className="font-heading font-bold text-white leading-tight mb-4"
                 style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)" }}
               >
-                Q7 SAIGON<br /><span className="text-gold">RIVERSIDE COMPLEX</span>
+                {vi.project_q7.hero.title}<br /><span className="text-gold">{vi.project_q7.hero.title_highlight}</span>
               </h1>
               <p className="text-white/80 text-lg max-w-xl mb-6">
-                Đẳng cấp sống ven sông Sài Gòn tại đường Đào Trí, Phường Phú Thuận, TP.HCM
+                {vi.project_q7.hero.desc}
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#gallery"
                   className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 font-semibold px-7 py-3 rounded-lg transition-colors"
                 >
-                  Xem thư viện ảnh
+                  {vi.project_q7.hero.gallery_cta}
                 </a>
               </div>
             </div>
@@ -120,19 +97,17 @@ export default function Q7RiversidePage() {
         {/* ── TỔNG QUAN ── */}
         <section className="py-14 bg-white">
           <div className="container-site">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[44%_56%] gap-8 lg:gap-12 items-start">
               <div>
-                <span className="section-label mb-3 block">Tổng quan dự án</span>
+                <span className="section-label mb-3 block">{vi.project_q7.overview.label}</span>
                 <h2
                   className="font-heading font-bold text-navy mb-5"
                   style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}
                 >
-                  Đẳng cấp sống <span className="text-gold">ven sông</span>
+                  {vi.project_q7.overview.title} <span className="text-gold">{vi.project_q7.overview.title_highlight}</span>
                 </h2>
                 <p className="text-gray-text leading-relaxed mb-6">
-                  Q7 Saigon Riverside Complex tọa lạc ngay bên dòng sông Sài Gòn, kết hợp địa thế
-                  hướng thủy, không gian xanh mát và chuỗi tiện ích hiện đại. Dự án phù hợp cho
-                  cả nhu cầu an cư và đầu tư sinh lời lâu dài.
+                  {vi.project_q7.overview.desc}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {specs.map((s) => (
@@ -143,12 +118,12 @@ export default function Q7RiversidePage() {
                   ))}
                 </div>
               </div>
-              <div className="relative h-[420px] rounded-2xl overflow-hidden shadow-hover">
+              <div className="relative h-[420px] lg:h-[540px] rounded-2xl overflow-hidden shadow-hover lg:mt-12 lg:translate-x-4">
                 <Image
                   src={resolveStorageUrl(`${SUPABASE_BASE}/vi-tri/074_locationmap.webp`)}
-                  alt="Vị trí dự án"
+                  alt={vi.project_q7.overview.map_alt}
                   fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 56vw, 100vw"
                   className="object-cover"
                 />
               </div>
@@ -160,9 +135,9 @@ export default function Q7RiversidePage() {
         <section className="py-14 bg-gray-bg" id="gallery">
           <div className="container-site">
             <div className="text-center mb-8">
-              <span className="section-label mb-3 block">Thư viện ảnh</span>
+              <span className="section-label mb-3 block">{vi.project_q7.gallery.label}</span>
               <h2 className="font-heading font-bold text-navy" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}>
-                Hình ảnh <span className="text-gold">dự án</span>
+                {vi.project_q7.gallery.title} <span className="text-gold">{vi.project_q7.gallery.title_highlight}</span>
               </h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -192,9 +167,9 @@ export default function Q7RiversidePage() {
         <section className="py-14 bg-white">
           <div className="container-site">
             <div className="text-center mb-8">
-              <span className="section-label mb-3 block">Sản phẩm</span>
+              <span className="section-label mb-3 block">{vi.project_q7.products.label}</span>
               <h2 className="font-heading font-bold text-navy" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}>
-                Loại căn hộ <span className="text-gold">đa dạng</span>
+                {vi.project_q7.products.title} <span className="text-gold">{vi.project_q7.products.title_highlight}</span>
               </h2>
             </div>
 
@@ -216,7 +191,7 @@ export default function Q7RiversidePage() {
                   <div className="relative w-full bg-white" style={{ paddingBottom: "80%" }}>
                     <Image
                       src={u.src}
-                      alt={`Mặt bằng ${u.type}`}
+                      alt={vi.project_q7.floorplan_alt.replace("{type}", u.type)}
                       fill
                       sizes="(min-width: 768px) 33vw, 100vw"
                       className="object-contain p-3 group-hover:scale-[1.03] transition-transform duration-500"
@@ -240,14 +215,14 @@ export default function Q7RiversidePage() {
         {/* Full-bleed section — ảnh tràn ra ngoài container */}
         <section className="py-14 bg-gray-bg">
           <div className="text-center mb-8 container-site">
-            <span className="section-label mb-3 block">Mặt bằng</span>
+            <span className="section-label mb-3 block">{vi.project_q7.master_plan.label}</span>
             <h2 className="font-heading font-bold text-navy" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}>
-              Mặt bằng <span className="text-gold">tổng thể</span>
+              {vi.project_q7.master_plan.title} <span className="text-gold">{vi.project_q7.master_plan.title_highlight}</span>
             </h2>
           </div>
 
-          {/* 2×2 grid — full viewport width, no container wrapping */}
-          <div className="px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Centered grid with custom max-width for desktop, fluid on mobile */}
+          <div className="max-w-[1260px] mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {blockPlans.map((b) => (
               <div key={b.block} className="group rounded-2xl overflow-hidden bg-white border border-gray-border shadow-card">
                 {/* Label strip */}
@@ -258,7 +233,7 @@ export default function Q7RiversidePage() {
                 <div className="relative w-full" style={{ paddingBottom: "80%" }}>
                   <Image
                     src={b.src}
-                    alt={`Mặt bằng ${b.block}`}
+                    alt={vi.project_q7.block_plan_alt.replace("{block}", b.block)}
                     fill
                     sizes="(min-width: 640px) 50vw, 100vw"
                     className="object-contain p-5 group-hover:scale-[1.02] transition-transform duration-500"
@@ -274,28 +249,23 @@ export default function Q7RiversidePage() {
             Section 3 — TIỆN ÍCH (1 ảnh tổng hợp)
         ══════════════════════════════════════════════════════ */}
         <section className="py-14 bg-white">
-          <div className="container-site">
-            <div className="text-center mb-8">
-              <span className="section-label mb-3 block">Nội khu</span>
+          <div className="container-site mb-10">
+            <div className="text-center">
+              <span className="section-label mb-3 block">{vi.project_q7.amenities.label}</span>
               <h2 className="font-heading font-bold text-navy" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}>
-                50+ Tiện ích <span className="text-gold">đẳng cấp</span>
+                {vi.project_q7.amenities.title} <span className="text-gold">{vi.project_q7.amenities.title_highlight}</span>
               </h2>
-              <p className="text-gray-text text-sm mt-2">Toàn bộ tiện ích nội khu được chú thích trong sơ đồ bên dưới</p>
+              <p className="text-gray-text text-sm mt-2">{vi.project_q7.amenities.desc}</p>
             </div>
+          </div>
 
-            {/* Single amenities map image */}
-            <div className="mx-auto max-w-6xl rounded-2xl overflow-hidden shadow-hover border border-gray-border">
-              <div className="relative w-full" style={{ paddingBottom: "66.66%" }}>
-                <Image
-                  src={TIEN_ICH_SRC}
-                  alt="Sơ đồ tiện ích Q7 Saigon Riverside Complex"
-                  fill
-                  sizes="(min-width: 1024px) 70vw, 100vw"
-                  className="object-contain bg-white"
-                  unoptimized
-                />
-              </div>
-            </div>
+          {/* Majestic ultra-wide container for the amenities map */}
+          <div className="max-w-[1344px] mx-auto px-4 md:px-8">
+            <img
+              src={TIEN_ICH_SRC}
+              alt={vi.project_q7.amenities_alt}
+              className="w-full h-auto"
+            />
           </div>
         </section>
 
@@ -305,9 +275,9 @@ export default function Q7RiversidePage() {
         <section className="py-14 bg-gray-bg">
           <div className="container-site">
             <div className="text-center mb-8">
-              <span className="section-label mb-3 block">Căn hộ mẫu</span>
+              <span className="section-label mb-3 block">{vi.project_q7.master_plan.label}</span>
               <h2 className="font-heading font-bold text-navy" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)" }}>
-                Hình ảnh <span className="text-gold">thực tế</span>
+                {vi.project_q7.master_plan.title} <span className="text-gold">{vi.project_q7.master_plan.title_highlight}</span>
               </h2>
             </div>
 

@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PublicListingPage from "@/components/sections/PublicListingPage";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Giỏ hàng thuê - M-Real Estate",
-  description: "Danh sách căn hộ cho thuê tại Q7 Saigon Riverside Complex.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
+
+  return {
+    title: vi.listing_page.meta.rent_title,
+    description: vi.listing_page.meta.rent_description,
+  };
+}
 
 export const revalidate = 3600;
 

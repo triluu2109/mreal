@@ -1,35 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Youtube, Instagram, Twitter, Linkedin } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
-import vi from "@/locales/vi.json";
-
-const navCol1 = [
-  { label: vi.footer.columns.col1.links[0].label, href: vi.footer.columns.col1.links[0].href },
-  { label: vi.footer.columns.col1.links[1].label, href: vi.footer.columns.col1.links[1].href },
-  { label: vi.footer.columns.col1.links[2].label, href: vi.footer.columns.col1.links[2].href },
-  { label: vi.footer.columns.col1.links[3].label, href: vi.footer.columns.col1.links[3].href },
-];
-
-const navCol2 = [
-  { label: vi.footer.columns.col2.links[0].label, href: vi.footer.columns.col2.links[0].href },
-  { label: vi.footer.columns.col2.links[1].label, href: vi.footer.columns.col2.links[1].href },
-  { label: vi.footer.columns.col2.links[2].label, href: vi.footer.columns.col2.links[2].href },
-  { label: vi.footer.columns.col2.links[3].label, href: vi.footer.columns.col2.links[3].href },
-];
-
-const navCol3 = [
-  { label: vi.footer.columns.col3.links[0].label, href: vi.footer.columns.col3.links[0].href },
-  { label: vi.footer.columns.col3.links[1].label, href: vi.footer.columns.col3.links[1].href },
-  { label: vi.footer.columns.col3.links[2].label, href: vi.footer.columns.col3.links[2].href },
-];
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 // Địa chỉ động từ config
 const MAIN_ADDRESS = siteConfig.address;
 const GOOGLE_MAPS_EMBED = siteConfig.mapsEmbedUrl;
 
 export default function Footer() {
+  const { dict: vi } = useI18n();
+  const navCol1 = vi.footer.columns.col1.links;
+  const navCol2 = vi.footer.columns.col2.links;
+  const navCol3 = vi.footer.columns.col3.links;
+
   return (
     <footer className="bg-[#1C1C2E] text-white">
       {/* CTA Banner */}
@@ -47,7 +34,7 @@ export default function Footer() {
               className="inline-flex items-center gap-2 bg-white text-navy font-heading font-bold px-8 py-3 rounded-lg hover:bg-white/90 transition-colors"
             >
               <Phone size={16} />
-              <span>Gọi: {siteConfig.phoneDisplay}</span>
+              <span>{vi.common.call_prefix} {siteConfig.phoneDisplay}</span>
             </a>
             <Link
               href="/#booking"
@@ -157,7 +144,7 @@ export default function Footer() {
             {/* Address info */}
             <div className="space-y-5">
               <div className="bg-white/5 rounded-xl p-5">
-                <h4 className="font-heading font-semibold text-white text-sm mb-3">Văn phòng</h4>
+                <h4 className="font-heading font-semibold text-white text-sm mb-3">{vi.footer.office.name}</h4>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2.5 text-white/60 text-xs">
                     <MapPin size={13} className="text-gold flex-shrink-0 mt-0.5" />
@@ -184,7 +171,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-2 bg-gold/20 hover:bg-gold text-gold hover:text-white border border-gold/40 px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
               >
                 <MapPin size={13} />
-                Xem trên Google Maps
+                {vi.footer.office.view_on_maps}
               </a>
             </div>
 
@@ -198,7 +185,7 @@ export default function Footer() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Vị trí văn phòng M-Real Estate"
+                title={vi.footer.office.map_title}
               />
             </div>
           </div>

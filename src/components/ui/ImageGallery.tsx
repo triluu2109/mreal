@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getImageUrl } from "@/lib/image";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 interface Props {
   images: string[];
@@ -11,13 +12,14 @@ interface Props {
 }
 
 export default function ImageGallery({ images, alt }: Props) {
+  const { dict: vi } = useI18n();
   const [activeIdx, setActiveIdx] = useState(0);
 
   const valid = images.filter(Boolean);
   if (valid.length === 0) {
     return (
       <div className="w-full h-72 md:h-[520px] bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
-        Chưa có hình ảnh
+        {vi.common.no_image}
       </div>
     );
   }
@@ -29,7 +31,7 @@ export default function ImageGallery({ images, alt }: Props) {
     <div className="relative w-full h-72 md:h-[520px] rounded-xl overflow-hidden bg-gray-100 group">
       <Image
         src={getImageUrl(valid[activeIdx])}
-        alt={`${alt} - ảnh ${activeIdx + 1}`}
+        alt={`${alt} - ${activeIdx + 1}`}
         fill
         className="object-contain transition-opacity duration-300"
         sizes="(min-width: 1024px) 66vw, 100vw"
@@ -40,14 +42,14 @@ export default function ImageGallery({ images, alt }: Props) {
         <>
           <button
             onClick={prev}
-            aria-label="Ảnh trước"
+            aria-label={vi.filters.previous_page}
             className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={next}
-            aria-label="Ảnh tiếp theo"
+            aria-label={vi.filters.previous_page}
             className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity"
           >
             <ChevronRight size={18} />

@@ -9,6 +9,7 @@ import { prisma } from "@/server/db/prisma";
 import { formatDate } from "@/lib/utils";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
 import MarkdownRenderer from "@/components/ui/MarkdownRenderer";
+import { getI18n } from "@/lib/i18n/server";
 
 export const revalidate = 3600;
 
@@ -17,13 +18,14 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
   const { slug } = await params;
   const post = await prisma.newsPost.findFirst({
     where: { slug, published: true, deletedAt: null },
     select: { title: true, excerpt: true, thumbnailPath: true, seoTitle: true, seoDescription: true },
   });
 
-  if (!post) return { title: "Bài viết không tồn tại | M-Real Estate" };
+  if (!post) return { title: vi.news_detail.not_found_title };
 
   const title = post.seoTitle || `${post.title} | M-Real Estate`;
   const description = post.seoDescription || post.excerpt || undefined;
@@ -48,6 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NewsDetailPage({ params }: Props) {
+  const { dict: vi } = await getI18n();
   const { slug } = await params;
   const post = await prisma.newsPost.findFirst({ where: { slug, published: true, deletedAt: null } });
   if (!post) notFound();
@@ -96,9 +99,9 @@ export default async function NewsDetailPage({ params }: Props) {
           <div className="mx-auto max-w-[860px] px-4 sm:px-6">
             {/* Breadcrumb */}
             <nav aria-label="Breadcrumb" className="mb-5 flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-white/55">
-              <Link href="/" className="shrink-0 hover:text-gold transition-colors">Trang chủ</Link>
+              <Link href="/" className="shrink-0 hover:text-gold transition-colors">{vi.common.home}</Link>
               <span>/</span>
-              <Link href="/news" className="shrink-0 hover:text-gold transition-colors">Tin tức</Link>
+              <Link href="/news" className="shrink-0 hover:text-gold transition-colors">{vi.news_detail.breadcrumb_news}</Link>
               <span>/</span>
               <span className="min-w-0 flex-1 truncate text-white/75">{post.title}</span>
             </nav>
@@ -109,7 +112,7 @@ export default async function NewsDetailPage({ params }: Props) {
               className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-gold hover:text-white transition-colors"
             >
               <ArrowLeft size={15} />
-              Quay lại tin tức
+              {vi.news_detail.back_to_news}
             </Link>
 
             {/* Meta row */}
@@ -121,8 +124,7 @@ export default async function NewsDetailPage({ params }: Props) {
               {post.content ? (
                 <span className="inline-flex items-center gap-1.5">
                   <Clock size={14} className="text-gold" />
-                  {estimateReadTime(post.content)} phút đọc
-                </span>
+                  {estimateReadTime(post.content)} {vi.common.read_minutes}</span>
               ) : null}
               {/* Tags */}
               {post.tags.slice(0, 3).map((tag) => (
@@ -150,7 +152,7 @@ export default async function NewsDetailPage({ params }: Props) {
         <div className="mx-auto max-w-[860px] px-4 py-10 sm:px-6 sm:py-12">
           {/* Mobile share row */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <span className="text-sm font-semibold text-gray-text">Chia sẻ:</span>
+            <span className="text-sm font-semibold text-gray-text">{vi.common.share}:</span>
             <a
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`}
               target="_blank"
@@ -163,7 +165,7 @@ export default async function NewsDetailPage({ params }: Props) {
               type="button"
               onClick={undefined}
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-border text-navy hover:border-gold hover:text-gold transition-colors"
-              aria-label="Copy link"
+              aria-label={vi.common.copy_link}
             >
               <Link2 size={16} />
             </button>
@@ -172,7 +174,7 @@ export default async function NewsDetailPage({ params }: Props) {
               className="inline-flex h-9 items-center gap-1.5 rounded-full border border-gray-border px-3 text-xs font-semibold text-navy hover:border-gold hover:text-gold transition-colors"
             >
               <Share2 size={13} />
-              Chia sẻ
+              {vi.common.share}
             </button>
           </div>
 
@@ -184,14 +186,14 @@ export default async function NewsDetailPage({ params }: Props) {
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`}
                   target="_blank"
                   rel="noreferrer"
-                  title="Chia sẻ Facebook"
+                  title={vi.news_detail.share_facebook_title}
                   className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-border bg-white text-navy shadow-sm hover:border-gold hover:text-gold transition-colors"
                 >
                   <Facebook size={16} />
                 </a>
                 <a
                   href={articleUrl}
-                  title="Copy link"
+                  title={vi.common.copy_link}
                   className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-border bg-white text-navy shadow-sm hover:border-gold hover:text-gold transition-colors"
                 >
                   <Link2 size={16} />
@@ -203,7 +205,7 @@ export default async function NewsDetailPage({ params }: Props) {
             <article className="prose-article">
               {post.content
                 ? <MarkdownRenderer content={post.content} />
-                : <p className="py-12 text-center text-gray-text">Nội dung đang được cập nhật.</p>
+                : <p className="py-12 text-center text-gray-text">{vi.news_detail.content_updating}</p>
               }
             </article>
           </div>
@@ -215,7 +217,7 @@ export default async function NewsDetailPage({ params }: Props) {
               className="inline-flex items-center gap-2 rounded-xl border border-gray-border px-5 py-3 font-semibold text-navy hover:bg-gray-bg transition-colors"
             >
               <ArrowLeft size={16} />
-              Xem thêm bài viết
+              {vi.news_detail.more_posts}
             </Link>
           </div>
         </div>
@@ -224,7 +226,7 @@ export default async function NewsDetailPage({ params }: Props) {
         {relatedPosts.length > 0 ? (
           <section className="border-t border-gray-border bg-gray-bg py-12 sm:py-16">
             <div className="container-site">
-              <h2 className="mb-8 font-heading text-2xl font-bold text-navy">Bài viết liên quan</h2>
+              <h2 className="mb-8 font-heading text-2xl font-bold text-navy">{vi.news_detail.related_posts}</h2>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 {relatedPosts.map((related) => {
                   const image = resolveStorageUrl(related.thumbnailPath);

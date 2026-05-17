@@ -4,6 +4,7 @@ import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils
 import { formatFurnishing } from "@/lib/furnishing";
 import PropertyListClient from "@/components/sections/PropertyListClient";
 import CompactListingHero from "@/components/sections/CompactListingHero";
+import { getI18n } from "@/lib/i18n/server";
 
 
 type ListingMode = "buy" | "rent";
@@ -27,6 +28,7 @@ export default async function PublicListingPage({
   mode: ListingMode;
   searchParams: Promise<SearchParams>;
 }) {
+  const { dict: vi } = await getI18n();
   const params = await searchParams;
   const page = Math.max(1, Number(params.page) || 1);
   const pageSize = clampPageSize(Number(params.pageSize) || 12);
@@ -82,7 +84,7 @@ export default async function PublicListingPage({
   return (
     <>
       <CompactListingHero
-        title={mode === "buy" ? "Giỏ hàng bán" : "Giỏ hàng thuê"}
+        title={mode === "buy" ? vi.listing_page.titles.buy : vi.listing_page.titles.rent}
         accent="Q7 Saigon Riverside"
       />
       <PropertyListClient

@@ -2,31 +2,35 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Award, Heart, Home, Shield, Star, TrendingUp, Users } from "lucide-react";
-import vi from "@/locales/vi.json";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
+import { getI18n } from "@/lib/i18n/server";
 
 // Confirmed path in storage.objects
 const HERO_BG = resolveStorageUrl("projects/q7-saigon-riverside/hinh-anh-du-an/anh-chup-thuc-te-du-an-bang-flycam.webp");
 
-export const metadata: Metadata = {
-  title: vi.about_page.meta.title,
-  description: vi.about_page.meta.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
+
+  return {
+    title: vi.about_page.meta.title,
+    description: vi.about_page.meta.description,
+  };
+}
 
 const SHOW_TEAM_SECTION = false;
 
 
 
-const values = [
-  { icon: Shield, title: vi.about_page.values.items[0].title, desc: vi.about_page.values.items[0].desc },
-  { icon: Heart, title: vi.about_page.values.items[1].title, desc: vi.about_page.values.items[1].desc },
-  { icon: Award, title: vi.about_page.values.items[2].title, desc: vi.about_page.values.items[2].desc },
-  { icon: TrendingUp, title: vi.about_page.values.items[3].title, desc: vi.about_page.values.items[3].desc },
-];
+export default async function GioiThieuPage() {
+  const { dict: vi } = await getI18n();
+  const values = [
+    { icon: Shield, title: vi.about_page.values.items[0].title, desc: vi.about_page.values.items[0].desc },
+    { icon: Heart, title: vi.about_page.values.items[1].title, desc: vi.about_page.values.items[1].desc },
+    { icon: Award, title: vi.about_page.values.items[2].title, desc: vi.about_page.values.items[2].desc },
+    { icon: TrendingUp, title: vi.about_page.values.items[3].title, desc: vi.about_page.values.items[3].desc },
+  ];
+  const milestones = vi.about_page.timeline.events;
 
-const milestones = vi.about_page.timeline.events;
-
-export default function GioiThieuPage() {
   return (
     <>
       <Header />
@@ -64,7 +68,7 @@ export default function GioiThieuPage() {
                 {vi.about_page.story.title} <span className="text-gold">{vi.about_page.story.title_highlight}</span>
               </h2>
               <div className="mt-5 space-y-4 leading-7 text-gray-text">
-                <p>{vi.about_page.story.p1}</p>
+                <p dangerouslySetInnerHTML={{ __html: vi.about_page.story.p1 }} />
                 <p>{vi.about_page.story.p2}</p>
                 <p>{vi.about_page.story.p3}</p>
               </div>
@@ -98,8 +102,6 @@ export default function GioiThieuPage() {
                   key={item.title}
                   className="group relative rounded-2xl bg-gray-bg border border-transparent p-6 text-center transition-all duration-300 hover:border-gold/40 hover:shadow-lg hover:-translate-y-1"
                 >
-                  {/* Gold accent line on top */}
-                  <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
                   {/* Icon */}
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold/10 transition-colors duration-300 group-hover:bg-gold/20">

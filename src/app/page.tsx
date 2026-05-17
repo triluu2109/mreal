@@ -11,12 +11,16 @@ import NewsSection from "@/components/sections/NewsSection";
 import BookingFormSection from "@/components/sections/BookingFormSection";
 import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
 import { formatFurnishing } from "@/lib/furnishing";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata: Metadata = {
-  title: "M-Real Estate",
-  description:
-    "M-Real Estate — Chuyên mua bán, cho thuê, ký gửi bất động sản tại TP.HCM và Bình Dương. Đội ngũ chuyên nghiệp, uy tín, đồng hành cùng bạn từ năm 2018.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
+
+  return {
+    title: vi.home.meta.title_short,
+    description: vi.home.meta.description_legacy,
+  };
+}
 
 export const revalidate = 3600; // ISR: revalidate mỗi giờ
 
@@ -73,6 +77,22 @@ export default async function HomePage() {
         />
         <NewProjectsSection />
         <NewsSection />
+
+        {/* Separator between News and Booking Section */}
+        <div className="bg-gray-bg py-2">
+          <div className="container-site">
+            <div className="w-full flex items-center justify-center gap-4">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-300/70 to-transparent" />
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold/40" />
+                <span className="w-2 h-2 rounded-full bg-gold/70 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-gold/40" />
+              </div>
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-300/70 to-transparent" />
+            </div>
+          </div>
+        </div>
+
         <BookingFormSection />
       </main>
       <Footer />

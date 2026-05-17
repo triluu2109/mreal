@@ -1,4 +1,5 @@
 import { Phone } from "lucide-react";
+import { getI18n } from "@/lib/i18n/server";
 
 type StaffMember = {
   id: string;
@@ -15,19 +16,20 @@ interface Props {
   staff: StaffMember[];
 }
 
-export default function TeamSection({ staff }: Props) {
+export default async function TeamSection({ staff }: Props) {
+  const { dict: vi } = await getI18n();
+
   return (
     <section className="section-padding bg-white" id="team">
       <div className="container-site">
         <div className="text-center mb-14">
-          <span className="section-label">Đội ngũ của chúng tôi</span>
+          <span className="section-label">{vi.about_page.team.section_label}</span>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy mt-3 mb-4">
-            Chuyên viên{" "}
-            <span className="text-gradient-gold">tư vấn</span>
+            {vi.about_page.team.heading}{" "}
+            <span className="text-gradient-gold">{vi.about_page.team.heading_highlight}</span>
           </h2>
           <p className="text-gray-text max-w-2xl mx-auto text-lg">
-            Đội ngũ chuyên viên giàu kinh nghiệm, am hiểu thị trường TP.HCM,
-            luôn sẵn sàng đồng hành cùng bạn.
+            {vi.about_page.team.summary}
           </p>
         </div>
 

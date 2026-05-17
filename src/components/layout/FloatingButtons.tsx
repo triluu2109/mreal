@@ -33,7 +33,7 @@ export default function FloatingButtons() {
   return (
     <>
       {/* Social contact buttons — bottom left */}
-      <div className="fixed bottom-6 left-5 z-50 flex flex-col gap-3 items-start">
+      <div className="fixed bottom-6 left-5 z-40 flex flex-col gap-3 items-start">
         {/* Messenger */}
         <motion.a
           href={siteConfig.social.messenger}
@@ -87,7 +87,7 @@ export default function FloatingButtons() {
             transition={{ duration: 0.2 }}
             whileHover={{ scale: 1.12 }}
             whileTap={{ scale: 0.95 }}
-            className="fixed bottom-24 right-5 z-50 w-12 h-12 bg-navy rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
+            className="fixed bottom-40 right-5 z-40 w-12 h-12 bg-navy rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow sm:bottom-44"
           >
             <ArrowUp size={20} className="text-white" />
           </motion.button>

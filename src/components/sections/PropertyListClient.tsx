@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bath, BedDouble, ChevronLeft, ChevronRight, Maximize2, SlidersHorizontal, Star, X, Search } from "lucide-react";
 import { getImageUrl } from "@/lib/image";
-import vi from "@/locales/vi.json";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 export type PublicListing = {
   id: string;
@@ -42,39 +42,36 @@ interface Props {
   totalPages: number;
 }
 
-const bedroomOptions = [
-  ["all", vi.filters.all],
-  ["1", "1"],
-  ["2", "2"],
-  ["3", "3"],
-  ["4", "4+"],
-];
-
-const bathroomOptions = [
-  ["all", vi.filters.all],
-  ["1", "1"],
-  ["2", "2"],
-  ["3", "3"],
-  ["4", "4+"],
-];
-
-const furnishingOptions = [
-  ["all", vi.filters.all],
-  ["DEVELOPER_HANDOVER", "Hoàn thiện cơ bản"],
-  ["BASIC_FURNISHED", "Nội thất cơ bản"],
-  ["FULLY_FURNISHED", "Full nội thất"],
-];
-
-const sortOptions = [
-  ["featured", "Nổi bật trước"],
-  ["price_asc", "Giá thấp - cao"],
-  ["price_desc", "Giá cao - thấp"],
-  ["created_desc", "Mới nhất"],
-];
-
 export default function PropertyListClient({ properties, mode, filters, page, total, totalPages }: Props) {
+  const { dict: vi } = useI18n();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const badge = mode === "buy" ? "[Bán]" : "[Thuê]";
+  const bedroomOptions = [
+    ["all", vi.filters.all],
+    ["1", "1"],
+    ["2", "2"],
+    ["3", "3"],
+    ["4", "4+"],
+  ];
+  const bathroomOptions = [
+    ["all", vi.filters.all],
+    ["1", "1"],
+    ["2", "2"],
+    ["3", "3"],
+    ["4", "4+"],
+  ];
+  const furnishingOptions = [
+    ["all", vi.filters.all],
+    ["DEVELOPER_HANDOVER", vi.filters.furnishing_options.developer_handover],
+    ["BASIC_FURNISHED", vi.filters.furnishing_options.basic_furnished],
+    ["FULLY_FURNISHED", vi.filters.furnishing_options.fully_furnished],
+  ];
+  const sortOptions = [
+    ["featured", vi.filters.sort_options.featured],
+    ["price_asc", vi.filters.sort_options.price_asc],
+    ["price_desc", vi.filters.sort_options.price_desc],
+    ["created_desc", vi.filters.sort_options.created_desc],
+  ];
+  const badge = mode === "buy" ? vi.common.sale_badge : vi.common.rent_badge;
   const badgeColor = mode === "buy" ? "text-gold" : "text-navy";
   const basePath = mode === "buy" ? "/gio-hang-ban" : "/gio-hang-thue";
 
@@ -121,11 +118,10 @@ export default function PropertyListClient({ properties, mode, filters, page, to
                 className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-navy hover:border-gold"
               >
                 <SlidersHorizontal size={16} />
-                Bộ lọc
+                {vi.filters.label}
               </button>
               <div className="text-sm font-semibold text-navy">
-                <span className="font-bold">{total}</span> kết quả
-              </div>
+                <span className="font-bold">{total}</span> {vi.common.results}</div>
             </div>
           </form>
         </div>
@@ -136,13 +132,13 @@ export default function PropertyListClient({ properties, mode, filters, page, to
           <button
             type="button"
             className="absolute inset-0 bg-navy/45 backdrop-blur-sm transition-opacity"
-            aria-label="Đóng bộ lọc"
+            aria-label={vi.filters.close_filters}
             onClick={() => setMobileFiltersOpen(false)}
           />
           <form action={basePath} className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-white p-5 shadow-2xl transition-transform animate-in slide-in-from-bottom-10">
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="font-heading text-lg font-bold text-navy">Bộ lọc</h2>
-              <button type="button" onClick={() => setMobileFiltersOpen(false)} className="rounded-lg p-2 text-gray-text hover:bg-gray-bg" aria-label="Đóng">
+              <h2 className="font-heading text-lg font-bold text-navy">{vi.filters.label}</h2>
+              <button type="button" onClick={() => setMobileFiltersOpen(false)} className="rounded-lg p-2 text-gray-text hover:bg-gray-bg" aria-label={vi.common.close}>
                 <X size={20} />
               </button>
             </div>
@@ -165,14 +161,14 @@ export default function PropertyListClient({ properties, mode, filters, page, to
       <section className="bg-gray-bg py-8 sm:py-10">
         <div className="container-site">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map((p) => (
+            {properties.map((p, idx) => (
               <Link key={p.id} href={p.href} className="group flex cursor-pointer flex-col overflow-hidden rounded-lg bg-white shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-hover">
                 <div className="relative h-52 flex-shrink-0 overflow-hidden bg-gray-100">
-                  {p.images[0] && <Image src={getImageUrl(p.images[0])} alt={p.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />}
+                  {p.images[0] && <Image src={getImageUrl(p.images[0])} alt={p.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" priority={idx < 3} />}
                   {p.isFeatured && (
                     <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-gold px-2.5 py-1 text-xs font-semibold text-white shadow">
                       <Star size={12} fill="currentColor" />
-                      Nổi bật
+                      {vi.common.featured}
                     </span>
                   )}
                 </div>
@@ -184,8 +180,8 @@ export default function PropertyListClient({ properties, mode, filters, page, to
                   {p.furniture && <div className="mb-3 text-xs text-gray-text">{p.furniture}</div>}
                   <div className="mt-auto flex items-center gap-3 border-t border-gray-100 py-2.5 text-xs text-gray-text">
                     {p.area && <span className="flex items-center gap-1"><Maximize2 size={11} className="text-gold" />{p.area}</span>}
-                    {p.beds != null && <span className="flex items-center gap-1"><BedDouble size={11} className="text-gold" />{p.beds} PN</span>}
-                    {p.baths != null && <span className="flex items-center gap-1"><Bath size={11} className="text-gold" />{p.baths} WC</span>}
+                    {p.beds != null && <span className="flex items-center gap-1"><BedDouble size={11} className="text-gold" />{p.beds} {vi.common.bed_short}</span>}
+                    {p.baths != null && <span className="flex items-center gap-1"><Bath size={11} className="text-gold" />{p.baths} {vi.common.bath_short}</span>}
                     <span className="ml-auto font-heading text-base font-bold text-gold">{p.price}</span>
                   </div>
                 </div>
@@ -195,14 +191,14 @@ export default function PropertyListClient({ properties, mode, filters, page, to
 
           {properties.length === 0 && (
             <div className="py-20 text-center text-gray-text">
-              <p className="mb-2 text-lg font-semibold">Không tìm thấy căn hộ phù hợp</p>
-              <p className="text-sm">Vui lòng thay đổi bộ lọc hoặc liên hệ tư vấn trực tiếp.</p>
+              <p className="mb-2 text-lg font-semibold">{vi.filters.no_results_title}</p>
+              <p className="text-sm">{vi.filters.no_results_desc}</p>
             </div>
           )}
 
           {totalPages > 1 && (
             <div className="mt-10 flex items-center justify-center gap-2">
-              <Link href={hrefForPage(Math.max(1, page - 1))} aria-disabled={page === 1} className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-navy ${page === 1 ? "pointer-events-none opacity-40" : ""}`} aria-label="Trang trước">
+              <Link href={hrefForPage(Math.max(1, page - 1))} aria-disabled={page === 1} className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-navy ${page === 1 ? "pointer-events-none opacity-40" : ""}`} aria-label={vi.filters.previous_page}>
                 <ChevronLeft size={18} />
               </Link>
               {getPageNumbers(page, totalPages).map((pageNumber) => (
@@ -210,7 +206,7 @@ export default function PropertyListClient({ properties, mode, filters, page, to
                   {pageNumber}
                 </Link>
               ))}
-              <Link href={hrefForPage(Math.min(totalPages, page + 1))} aria-disabled={page === totalPages} className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-navy ${page === totalPages ? "pointer-events-none opacity-40" : ""}`} aria-label="Trang sau">
+              <Link href={hrefForPage(Math.min(totalPages, page + 1))} aria-disabled={page === totalPages} className={`inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-navy ${page === totalPages ? "pointer-events-none opacity-40" : ""}`} aria-label={vi.filters.next_page}>
                 <ChevronRight size={18} />
               </Link>
             </div>

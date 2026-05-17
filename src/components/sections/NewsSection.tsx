@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import { resolveStorageUrl } from "@/server/storage/resolve-url";
 import { siteImages } from "@/config/images";
 import { getImageUrl } from "@/lib/image";
+import { getI18n } from "@/lib/i18n/server";
 
 type HomeNewsPost = {
   id: string;
@@ -45,6 +46,7 @@ async function getHomeNews(): Promise<HomeNewsPost[]> {
 }
 
 export default async function NewsSection() {
+  const { dict: vi } = await getI18n();
   const posts = await getHomeNews();
   const [featuredPost, ...sidePosts] = posts;
   const fallbackImage = getImageUrl(siteImages.project.q7SaigonRiverside.gallery[3]);
@@ -56,13 +58,13 @@ export default async function NewsSection() {
       <div className="container-site">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <span className="section-label mb-2 block">Blog & Tin tức</span>
-            <h2 className="font-heading text-2xl font-bold leading-tight text-[#1A1A1A] md:text-4xl">
-              Tin tức <span className="text-orange">mới nhất</span>
+            <span className="section-label mb-2 block">{vi.home.news.label}</span>
+            <h2 className="font-heading text-2xl font-bold leading-tight text-navy md:text-4xl">
+              {vi.home.news.title} <span className="text-orange">{vi.home.news.title_highlight}</span>
             </h2>
           </div>
           <Link href="/news" className="inline-flex items-center gap-1 text-sm font-semibold text-orange transition-all hover:gap-2">
-            Xem tất cả <ChevronRight size={16} />
+            {vi.common.view_all} <ChevronRight size={16} />
           </Link>
         </div>
 
@@ -79,7 +81,7 @@ export default async function NewsSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-                  {featuredPost.featured ? <span className="rounded-full bg-gold px-3 py-1.5 text-xs font-bold text-white">Nổi bật</span> : null}
+                  {featuredPost.featured ? <span className="rounded-full bg-gold px-3 py-1.5 text-xs font-bold text-white">{vi.common.featured}</span> : null}
                   {(featuredPost.tags ?? []).slice(0, 1).map((tag) => (
                     <span key={tag} className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-navy">{tag}</span>
                   ))}
@@ -97,11 +99,10 @@ export default async function NewsSection() {
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock size={12} />
-                    {estimateReadTime(featuredPost.content)} phút đọc
-                  </span>
+                    {estimateReadTime(featuredPost.content)} {vi.common.read_minutes}</span>
                 </div>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-orange">
-                  Đọc tiếp <ArrowRight size={14} />
+                  {vi.common.read_next} <ArrowRight size={14} />
                 </span>
               </div>
             </Link>
@@ -123,7 +124,7 @@ export default async function NewsSection() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="mb-1.5 flex flex-wrap gap-1.5">
-                        {post.featured ? <span className="rounded-full bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold-dark">Nổi bật</span> : null}
+                        {post.featured ? <span className="rounded-full bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold-dark">{vi.common.featured}</span> : null}
                         {(post.tags ?? []).slice(0, 1).map((tag) => (
                           <span key={tag} className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-text">{tag}</span>
                         ))}

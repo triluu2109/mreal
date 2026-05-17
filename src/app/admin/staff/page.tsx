@@ -24,7 +24,7 @@ export default async function StaffPage() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="font-heading text-3xl font-bold text-navy">Nhân sự admin</h1>
-          <p className="mt-1 text-gray-text">Quản lý tài khoản, vai trò và quyền truy cập admin workspace</p>
+          <p className="mt-1 text-gray-text">Quản lý tài khoản, vai trò và quyền truy cập admin dashboard</p>
         </div>
         <Link href="/admin/staff/create" className="flex items-center gap-2 rounded-lg bg-navy px-4 py-2 font-medium text-white transition-colors hover:bg-navy-light">
           <Plus size={18} />

@@ -2,13 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { getI18n } from "@/lib/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Sắp ra mắt – M-Real Estate",
-  description: "Trang này đang được xây dựng. Quay lại sớm để khám phá thêm nhiều nội dung từ M-Real Estate.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict: vi } = await getI18n();
 
-export default function ComingSoonPage() {
+  return {
+    title: vi.coming_soon.meta.title,
+    description: vi.coming_soon.meta.description,
+  };
+}
+
+export default async function ComingSoonPage() {
+  const { dict: vi } = await getI18n();
+
   return (
     <>
       <Header />
@@ -30,17 +37,17 @@ export default function ComingSoonPage() {
 
           {/* Eyebrow */}
           <p className="font-heading text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-4">
-            Đang chuẩn bị
+            {vi.coming_soon.label}
           </p>
 
           {/* Heading */}
-          <h1 className="font-heading text-4xl font-bold text-navy leading-tight mb-5">
-            Trang này sắp ra mắt
-          </h1>
+          <h1 className="font-heading text-3xl font-bold text-navy md:text-5xl">
+              {vi.coming_soon.title}
+            </h1>
 
           {/* Body */}
           <p className="text-gray-text text-base leading-relaxed mb-10 max-w-sm mx-auto">
-            Chúng tôi đang hoàn thiện nội dung để mang đến trải nghiệm tốt nhất cho bạn. Trong thời gian chờ đợi, hãy khám phá các trang khác.
+            {vi.coming_soon.desc}
           </p>
 
           {/* Divider */}
@@ -59,14 +66,14 @@ export default function ComingSoonPage() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 10V10m-4 2h16" />
               </svg>
-              Về trang chủ
-            </Link>
+                {vi.coming_soon.home}
+              </Link>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-semibold text-navy hover:border-gold hover:text-gold transition-colors"
             >
-              Liên hệ tư vấn
-            </Link>
+                {vi.coming_soon.contact}
+              </Link>
           </div>
         </div>
       </main>

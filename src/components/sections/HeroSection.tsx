@@ -8,49 +8,50 @@ import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
 import { getImageUrl } from "@/lib/image";
-import vi from "@/locales/vi.json";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 const q7Images = siteImages.project.q7SaigonRiverside;
 
-const slides = [
-  {
-    src: q7Images.gallery[3],
-    title: vi.home.hero.slides[0].title,
-    subtitle: vi.home.hero.slides[0].subtitle,
-    desc: vi.home.hero.slides[0].desc,
-    cta1: { label: vi.home.hero.slides[0].cta1, href: "#listings" },
-    cta2: { label: vi.home.hero.slides[0].cta2, href: `tel:${siteConfig.phone}` },
-  },
-  {
-    src: q7Images.gallery[4],
-    title: vi.home.hero.slides[1].title,
-    subtitle: vi.home.hero.slides[1].subtitle,
-    desc: vi.home.hero.slides[1].desc,
-    cta1: { label: vi.home.hero.slides[1].cta1, href: "#projects" },
-    cta2: { label: vi.home.hero.slides[1].cta2, href: "#booking" },
-  },
-  {
-    src: q7Images.gallery[2],
-    title: vi.home.hero.slides[2].title,
-    subtitle: vi.home.hero.slides[2].subtitle,
-    desc: vi.home.hero.slides[2].desc,
-    cta1: { label: vi.home.hero.slides[2].cta1, href: "#rental" },
-    cta2: { label: vi.home.hero.slides[2].cta2, href: "/ky-gui" },
-  },
-  {
-    src: q7Images.gallery[5],
-    title: vi.home.hero.slides[3].title,
-    subtitle: vi.home.hero.slides[3].subtitle,
-    desc: vi.home.hero.slides[3].desc,
-    cta1: { label: vi.home.hero.slides[3].cta1, href: "/gioi-thieu" },
-    cta2: { label: vi.home.hero.slides[3].cta2, href: "#booking" },
-  },
-];
-
 export default function HeroSection() {
+  const { dict: vi } = useI18n();
+  const slides = [
+    {
+      src: q7Images.gallery[3],
+      title: vi.home.hero.slides[0].title,
+      subtitle: vi.home.hero.slides[0].subtitle,
+      desc: vi.home.hero.slides[0].desc,
+      cta1: { label: vi.home.hero.slides[0].cta1, href: "#listings" },
+      cta2: { label: vi.home.hero.slides[0].cta2, href: `tel:${siteConfig.phone}` },
+    },
+    {
+      src: q7Images.gallery[4],
+      title: vi.home.hero.slides[1].title,
+      subtitle: vi.home.hero.slides[1].subtitle,
+      desc: vi.home.hero.slides[1].desc,
+      cta1: { label: vi.home.hero.slides[1].cta1, href: "#projects" },
+      cta2: { label: vi.home.hero.slides[1].cta2, href: "#booking" },
+    },
+    {
+      src: q7Images.gallery[2],
+      title: vi.home.hero.slides[2].title,
+      subtitle: vi.home.hero.slides[2].subtitle,
+      desc: vi.home.hero.slides[2].desc,
+      cta1: { label: vi.home.hero.slides[2].cta1, href: "#rental" },
+      cta2: { label: vi.home.hero.slides[2].cta2, href: "/ky-gui" },
+    },
+    {
+      src: q7Images.gallery[5],
+      title: vi.home.hero.slides[3].title,
+      subtitle: vi.home.hero.slides[3].subtitle,
+      desc: vi.home.hero.slides[3].desc,
+      cta1: { label: vi.home.hero.slides[3].cta1, href: "/gioi-thieu" },
+      cta2: { label: vi.home.hero.slides[3].cta2, href: "#booking" },
+    },
+  ];
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const slideCount = slides.length;
 
   const go = useCallback((idx: number) => {
     if (isAnimating) return;
@@ -59,8 +60,8 @@ export default function HeroSection() {
     setTimeout(() => setIsAnimating(false), 600);
   }, [isAnimating]);
 
-  const next = useCallback(() => go((current + 1) % slides.length), [current, go]);
-  const prev = useCallback(() => go((current - 1 + slides.length) % slides.length), [current, go]);
+  const next = useCallback(() => go((current + 1) % slideCount), [current, go, slideCount]);
+  const prev = useCallback(() => go((current - 1 + slideCount) % slideCount), [current, go, slideCount]);
 
   useEffect(() => {
     timerRef.current = setInterval(next, 5500);

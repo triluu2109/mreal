@@ -4,23 +4,29 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CheckCircle, Loader2, Calendar } from "lucide-react";
+import { CheckCircle, Loader2, Calendar, Target, Zap, ShieldCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { submitAppointment } from "@/app/actions/appointment";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
-const schema = z.object({
-  fullName: z.string().min(2, "Vui lòng nhập họ tên"),
-  phone: z.string().min(9, "Số điện thoại không hợp lệ"),
+const baseSchema = z.object({
+  fullName: z.string(),
+  phone: z.string(),
   need: z.string().optional(),
   budget: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof schema>;
+type FormValues = z.infer<typeof baseSchema>;
 
 export default function BookingFormSection() {
+  const { dict: vi } = useI18n();
   const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const schema = baseSchema.extend({
+    fullName: z.string().min(2, vi.home.booking.validation.full_name),
+    phone: z.string().min(9, vi.home.booking.validation.phone),
+  });
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -46,33 +52,32 @@ export default function BookingFormSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
           {/* Left info */}
           <div>
-            <span className="section-label">Đặt lịch tư vấn</span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#1A1A1A] mt-3 mb-6">
-              Nhận tư vấn{" "}
-              <span className="text-orange">miễn phí</span>
+            <span className="section-label">{vi.home.booking.label}</span>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy mt-3 mb-6">
+              {vi.home.booking.title}{" "}
+              <span className="text-orange">{vi.home.booking.title_highlight}</span>
               <br />
-              ngay hôm nay
+              {vi.home.booking.title_suffix}
             </h2>
             <p className="text-gray-text text-lg leading-relaxed mb-8">
-              Điền thông tin bên dưới, chuyên viên của chúng tôi sẽ liên hệ lại
-              trong vòng <strong className="text-[#1A1A1A]">30 phút</strong> để tư vấn
-              chi tiết và sắp xếp lịch hẹn.
+              {vi.home.booking.desc_prefix} <strong className="text-navy">{vi.home.booking.desc_emphasis}</strong> {vi.home.booking.desc_suffix}
             </p>
 
             <div className="space-y-5">
-              {[
-                { icon: "🎯", title: "Tư vấn đúng nhu cầu", desc: "Chúng tôi lắng nghe và đề xuất giải pháp phù hợp nhất" },
-                { icon: "⚡", title: "Phản hồi nhanh chóng", desc: "Chuyên viên liên hệ trong vòng 30 phút làm việc" },
-                { icon: "🔒", title: "Bảo mật thông tin", desc: "Thông tin cá nhân được bảo mật tuyệt đối" },
-              ].map((item) => (
-                <div key={item.title} className="flex items-start gap-4">
-                  <div className="text-2xl">{item.icon}</div>
-                  <div>
-                    <div className="font-heading font-semibold text-[#1A1A1A]">{item.title}</div>
-                    <div className="text-gray-text text-sm">{item.desc}</div>
+              {vi.home.booking.benefits.map((benefit, index) => ({ icon: [Target, Zap, ShieldCheck][index], ...benefit })).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="flex items-start gap-4">
+                    <div className="p-2.5 rounded-xl bg-orange/10 text-orange flex-shrink-0 mt-0.5">
+                      <Icon size={20} className="stroke-[2.5]" />
+                    </div>
+                    <div>
+                      <div className="font-heading font-semibold text-navy">{item.title}</div>
+                      <div className="text-gray-text text-sm mt-0.5">{item.desc}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -81,14 +86,14 @@ export default function BookingFormSection() {
             {success ? (
               <div className="bg-white rounded-3xl p-10 shadow-md text-center border border-gray-border">
                 <CheckCircle size={56} className="text-green-500 mx-auto mb-4" />
-                <h3 className="font-heading font-bold text-[#1A1A1A] text-2xl mb-3">
-                  Đặt lịch thành công!
+                <h3 className="font-heading font-bold text-navy text-2xl mb-3">
+                  {vi.home.booking.success_title}
                 </h3>
                 <p className="text-gray-text mb-6">
-                  Cảm ơn bạn đã liên hệ. Chuyên viên sẽ gọi lại trong vòng 30 phút.
+                  {vi.home.booking.success_desc}
                 </p>
                 <button onClick={() => setSuccess(false)} className="btn-gold px-8">
-                  Đặt lịch khác
+                  {vi.home.booking.success_reset}
                 </button>
               </div>
             ) : (
@@ -98,17 +103,17 @@ export default function BookingFormSection() {
               >
                 <div className="flex items-center gap-3 pb-4 border-b border-gray-border">
                   <Calendar size={22} className="text-orange" />
-                  <h3 className="font-heading font-bold text-[#1A1A1A] text-lg">Thông tin đặt lịch</h3>
+                  <h3 className="font-heading font-bold text-navy text-lg">{vi.home.booking.form_title}</h3>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2 sm:col-span-1">
                     <Label htmlFor="fullName" className="text-[#1A1A1A] font-medium mb-1.5 block">
-                      Họ và tên <span className="text-red-500">*</span>
+                      {vi.common.full_name} <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="fullName"
-                      placeholder="Nguyễn Văn A"
+                      placeholder={vi.home.booking.full_name_placeholder}
                       {...register("fullName")}
                       className={errors.fullName ? "border-red-400" : ""}
                     />
@@ -116,11 +121,11 @@ export default function BookingFormSection() {
                   </div>
                   <div className="col-span-2 sm:col-span-1">
                     <Label htmlFor="phone" className="text-[#1A1A1A] font-medium mb-1.5 block">
-                      Số điện thoại <span className="text-red-500">*</span>
+                      {vi.common.phone_number} <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="phone"
-                      placeholder="0901 234 567"
+                      placeholder={vi.home.booking.phone_placeholder}
                       {...register("phone")}
                       className={errors.phone ? "border-red-400" : ""}
                     />
@@ -130,22 +135,22 @@ export default function BookingFormSection() {
 
                 <div>
                   <Label htmlFor="need" className="text-[#1A1A1A] font-medium mb-1.5 block">
-                    Nhu cầu thuê / mua
+                    {vi.home.booking.need_label}
                   </Label>
                   <Input
                     id="need"
-                    placeholder="Ví dụ: Muốn thuê căn 2PN, hoặc mua đầu tư..."
+                    placeholder={vi.home.booking.need_placeholder}
                     {...register("need")}
                   />
                 </div>
 
                 <div>
                   <Label htmlFor="budget" className="text-[#1A1A1A] font-medium mb-1.5 block">
-                    Tài chính dự kiến
+                    {vi.home.booking.budget_label}
                   </Label>
                   <Input
                     id="budget"
-                    placeholder="Ví dụ: Khoảng 3 tỷ, hoặc 12 triệu/tháng..."
+                    placeholder={vi.home.booking.budget_placeholder}
                     {...register("budget")}
                   />
                 </div>
@@ -156,14 +161,14 @@ export default function BookingFormSection() {
                   className="btn-gold w-full py-4 text-base disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isPending ? (
-                    <><Loader2 size={18} className="animate-spin" /> Đang gửi...</>
+                    <><Loader2 size={18} className="animate-spin" /> {vi.common.loading_send}</>
                   ) : (
-                    "Đặt lịch tư vấn ngay"
+                    vi.home.booking.submit
                   )}
                 </button>
 
                 <p className="text-gray-text text-xs text-center">
-                  Bằng cách gửi form, bạn đồng ý để M-Real Estate liên hệ tư vấn.
+                  {vi.home.booking.consent}
                 </p>
               </form>
             )}
