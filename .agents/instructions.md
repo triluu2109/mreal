@@ -257,3 +257,14 @@ npx prisma studio
 # Prisma — pull schema từ database hiện tại
 npx prisma db pull
 ```
+
+---
+
+## 11. Git Workflow
+
+- `main` = production.
+- `dev` = development.
+- Vercel Production Branch must be `main`.
+- `dev` and feature branches are preview/development deployments only.
+- Do not develop directly on `main`, except urgent hotfixes.
+- Release flow: checkout `main`, merge tested `dev`, run `npm run lint`, `npx tsc --noEmit`, `npm run build`, then push `main`.

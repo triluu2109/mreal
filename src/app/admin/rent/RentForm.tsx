@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createRentalListing, updateRentalListing } from "@/app/actions/rent";
+import { createRentalListing, updateRentalListing, updateRentalListingMedia } from "@/app/actions/rent";
 import ImageUploadField from "@/app/admin/_components/ImageUploadField";
 import { parseRentRaw } from "@/lib/listing-parsers";
 
@@ -102,8 +102,14 @@ export default function RentForm({ initialData = null }: { initialData?: RentFor
       areaSqm: parsed.areaSqm?.toString() ?? current.areaSqm,
       bedrooms: parsed.bedrooms?.toString() ?? current.bedrooms,
       bathrooms: parsed.bathrooms?.toString() ?? current.bathrooms,
+      furnishingStatus: parsed.furnishingStatus ?? current.furnishingStatus,
+      furnishingNote: parsed.furnishingNote?.toString() ?? current.furnishingNote,
       view: parsed.view?.toString() ?? current.view,
+      rentPrice: parsed.price?.toString() ?? current.rentPrice,
+      displayPrice: parsed.displayPrice?.toString() ?? current.displayPrice,
       availability: parsed.availability?.toString() ?? current.availability,
+      sourceName: parsed.sourceName?.toString() ?? current.sourceName,
+      note: parsed.note?.toString() ?? current.note,
       rawText: current.rawText,
     }));
   }
@@ -187,6 +193,7 @@ export default function RentForm({ initialData = null }: { initialData?: RentFor
             value={form.imagePaths}
             onChange={(paths) => setField("imagePaths", paths)}
             directory={`listings/rent/${listingId}`}
+            persistMedia={initialData?.id ? (paths, removedPath) => updateRentalListingMedia(initialData.id, paths, removedPath) : undefined}
           />
         </div>
       </div>

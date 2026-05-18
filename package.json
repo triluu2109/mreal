@@ -8,6 +8,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
+    "import:rent": "tsx scripts/import-rent-listings.ts",
+    "cleanup:rent-media": "tsx scripts/cleanup-rental-listing-media.ts",
     "seed": "tsx prisma/seed.ts"
   },
   "prisma": {

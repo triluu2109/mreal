@@ -1,12 +1,20 @@
+export type FurnishingStatusValue = "DEVELOPER_HANDOVER" | "BASIC_FURNISHED" | "FULLY_FURNISHED";
+
 export type ParsedRent = {
   projectCode?: string;
   unitCode?: string;
+  block?: string;
+  floor?: number;
+  unitNumber?: string;
   areaSqm?: number;
   bedrooms?: number;
   bathrooms?: number;
   furnishing?: string;
+  furnishingStatus?: FurnishingStatusValue;
+  furnishingNote?: string;
   view?: string;
   price?: number;
+  displayPrice?: string;
   availability?: string;
   sourceName?: string;
   note?: string;
@@ -45,12 +53,17 @@ export function parseRentRaw(rawText: string): ParsedRent {
     if ([pricePart, sourcePart, viewPart, availabilityPart].includes(part)) return false;
     return !isArea(part) && !isLayout(part);
   });
+  const furnishingParts = parseFurnishing(furnishing);
+  const price = parseRentPrice(pricePart);
 
   return {
     ...common.base,
     furnishing,
+    furnishingStatus: furnishingParts.furnishingStatus,
+    furnishingNote: furnishingParts.furnishingNote,
     view: removePrefix(viewPart, "view"),
-    price: parseFirstNumber(pricePart),
+    price,
+    displayPrice: price ? formatRentDisplayPrice(price) : undefined,
     availability: availabilityPart,
     sourceName: removePrefix(sourcePart, "nguon"),
     note,
@@ -102,6 +115,7 @@ function parseHeaderAndCommon(body: string) {
   const withoutProject = body.replace(/\u3010[^\u3011]+\u3011/, "").trim();
   const [unitAndArea = "", ...rest] = withoutProject.split(",");
   const [unitCodeRaw = "", areaRaw = ""] = unitAndArea.split(/\s+-\s+/);
+  const unitCode = unitCodeRaw.trim() || undefined;
   const parts = [areaRaw, ...rest].map((part) => part.trim()).filter(Boolean);
   const areaPart = parts.find(isArea);
   const layoutPart = parts.find(isLayout);
@@ -110,7 +124,8 @@ function parseHeaderAndCommon(body: string) {
   return {
     base: {
       projectCode,
-      unitCode: unitCodeRaw.trim() || undefined,
+      unitCode,
+      ...parseUnitCode(unitCode),
       areaSqm: parseFirstNumber(areaPart),
       bedrooms: layout?.[1] ? Number(layout[1]) : undefined,
       bathrooms: layout?.[2] ? Number(layout[2]) : undefined,
@@ -147,4 +162,54 @@ function isLayout(part: string) {
 function parseFirstNumber(text?: string) {
   const match = text?.match(/\d+(?:[.,]\d+)?/);
   return match ? Number(match[0].replace(",", ".")) : undefined;
+}
+
+function parseUnitCode(unitCode?: string) {
+  const match = unitCode?.match(/^([A-Z]+\d*)\.(\d{1,2})\.(\d{1,2})$/i);
+  if (!match) return {};
+
+  return {
+    block: match[1].toUpperCase(),
+    floor: Number(match[2]),
+    unitNumber: match[3],
+  };
+}
+
+function parseFurnishing(furnishing?: string): Pick<ParsedRent, "furnishingStatus" | "furnishingNote"> {
+  if (!furnishing) return {};
+
+  const detailMatch = furnishing.match(/\((.*)\)\s*$/);
+  const label = detailMatch ? furnishing.slice(0, detailMatch.index).trim() : furnishing.trim();
+  const detail = detailMatch?.[1]?.trim();
+  const normalizedLabel = normalized(label);
+  const furnishingStatus = /full\s*nt|full noi that|day du|du do/.test(normalizedLabel)
+    ? "FULLY_FURNISHED"
+    : /ntcb|noi that co ban|co ban/.test(normalizedLabel)
+      ? "BASIC_FURNISHED"
+      : /cdt|chu dau tu|ban giao/.test(normalizedLabel)
+        ? "DEVELOPER_HANDOVER"
+        : undefined;
+
+  return {
+    furnishingStatus,
+    furnishingNote: detail || (!furnishingStatus ? furnishing.trim() : undefined),
+  };
+}
+
+function parseRentPrice(text?: string) {
+  const numeric = parseFirstNumber(text);
+  if (!numeric) return undefined;
+  const normalizedText = normalized(text ?? "");
+
+  if (/\btr\b|trieu|million/.test(normalizedText)) {
+    return Math.round(numeric * 1_000_000);
+  }
+
+  if (numeric < 1_000) return Math.round(numeric * 1_000_000);
+  return Math.round(numeric);
+}
+
+function formatRentDisplayPrice(priceVnd: number): string {
+  const millions = priceVnd / 1_000_000;
+  return `${Number.isInteger(millions) ? millions : millions.toFixed(1)} triệu/tháng`;
 }

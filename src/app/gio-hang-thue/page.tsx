@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PublicListingPage from "@/components/sections/PublicListingPage";
+import PublicListingPage from "@/components/layout/sections/PublicListingPage";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {

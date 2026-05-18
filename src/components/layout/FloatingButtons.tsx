@@ -11,8 +11,9 @@ function ZaloIcon() {
     <Image
       src="/Icon_of_Zalo.svg"
       alt="Zalo"
-      width={24}
-      height={24}
+      width={46}
+      height={46}
+      className="w-9 h-9 object-contain"
       unoptimized
     />
   );

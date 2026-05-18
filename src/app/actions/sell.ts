@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db/prisma";
-import { normalizeStoragePath } from "@/server/storage/resolve-url";
+import { writableStorageProvider } from "@/server/storage/provider";
+import { normalizeListingImagePaths } from "@/lib/listing-media";
 import type { FurnishingStatus } from "@prisma/client";
 import { actionError, requirePermission } from "@/lib/admin/auth";
 
@@ -49,6 +50,31 @@ export async function updateSaleListing(id: string, data: SaleListingInput) {
   } catch (error) {
     console.error("Update sale listing error:", error);
     return { success: false, error: actionError(error, "Không cập nhật được căn bán") };
+  }
+}
+
+export async function updateSaleListingMedia(id: string, imagePaths: string[], removedPath?: string) {
+  try {
+    await requirePermission("listings.update");
+    const normalizedPaths = normalizeListingImagePaths(imagePaths);
+
+    await prisma.saleListing.update({
+      where: { id },
+      data: {
+        imagePaths: normalizedPaths,
+        ...(normalizedPaths.length === 0 ? { isVisible: false } : {}),
+      },
+    });
+
+    if (removedPath) {
+      await writableStorageProvider.deleteFile?.(removedPath);
+    }
+
+    revalidateSalePaths();
+    return { success: true, imagePaths: normalizedPaths };
+  } catch (error) {
+    console.error("Update sale listing media error:", error);
+    return { success: false, error: actionError(error, "Không cập nhật được hình ảnh căn bán") };
   }
 }
 
@@ -105,6 +131,7 @@ function revalidateSalePaths() {
 function buildSaleData(data: SaleListingInput, includeId: boolean) {
   const sellingPrice = Number(data.sellingPrice ?? 0);
   const contractPrice = data.contractPrice ? Number(data.contractPrice) : null;
+  const imagePaths = normalizeListingImagePaths(data.imagePaths ?? data.imageUrls);
   return {
     ...(includeId && data.id ? { id: data.id } : {}),
     projectCode: data.projectCode,
@@ -121,8 +148,8 @@ function buildSaleData(data: SaleListingInput, includeId: boolean) {
     availability: emptyToNull(data.availability),
     sourceName: emptyToNull(data.sourceName),
     note: emptyToNull(data.note),
-    imagePaths: normalizeImagePaths(data.imagePaths ?? data.imageUrls),
-    isVisible: data.isVisible ?? true,
+    imagePaths,
+    isVisible: imagePaths.length > 0 ? data.isVisible ?? true : false,
     isFeatured: data.isFeatured ?? false,
   };
 }
@@ -130,10 +157,6 @@ function buildSaleData(data: SaleListingInput, includeId: boolean) {
 function emptyToNull(value: string | null | undefined) {
   if (value == null) return null;
   return value.trim() || null;
-}
-
-function normalizeImagePaths(paths: string[] | undefined | null): string[] {
-  return (paths ?? []).map((p) => normalizeStoragePath(p)).filter(Boolean);
 }
 
 function formatSaleDisplayPrice(priceVnd: number): string {

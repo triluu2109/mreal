@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createSaleListing, updateSaleListing } from "@/app/actions/sell";
+import { createSaleListing, updateSaleListing, updateSaleListingMedia } from "@/app/actions/sell";
 import ImageUploadField from "@/app/admin/_components/ImageUploadField";
 import { parseSellRaw } from "@/lib/listing-parsers";
 
@@ -189,6 +189,7 @@ export default function SellForm({ initialData = null }: { initialData?: SellFor
             value={form.imagePaths}
             onChange={(paths) => setField("imagePaths", paths)}
             directory={`listings/sell/${listingId}`}
+            persistMedia={initialData?.id ? (paths, removedPath) => updateSaleListingMedia(initialData.id, paths, removedPath) : undefined}
           />
         </div>
       </div>

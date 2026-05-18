@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import { prisma } from "@/server/db/prisma";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import HeroSection from "@/components/sections/HeroSection";
-import AboutSection from "@/components/sections/AboutSection";
-import VisionMissionSection from "@/components/sections/VisionMissionSection";
-import CombinedListingsSection from "@/components/sections/CombinedListingsSection";
-import NewProjectsSection from "@/components/sections/NewProjectsSection";
-import NewsSection from "@/components/sections/NewsSection";
-import BookingFormSection from "@/components/sections/BookingFormSection";
+import HeroSection from "@/components/layout/sections/HeroSection";
+import AboutSection from "@/components/layout/sections/AboutSection";
+import VisionMissionSection from "@/components/layout/sections/VisionMissionSection";
+import CombinedListingsSection from "@/components/layout/sections/CombinedListingsSection";
+import NewProjectsSection from "@/components/layout/sections/NewProjectsSection";
+import NewsSection from "@/components/layout/sections/NewsSection";
+import BookingFormSection from "@/components/layout/sections/BookingFormSection";
 import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
 import { formatFurnishing } from "@/lib/furnishing";
+import { normalizeListingImagePaths } from "@/lib/listing-media";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -58,7 +59,7 @@ export default async function HomePage() {
             beds: property.bedrooms,
             baths: property.bathrooms,
             furniture: formatFurnishing(property.furnishingNote, property.furnishingStatus),
-            images: property.imagePaths,
+            images: normalizeListingImagePaths(property.imagePaths),
             isFeatured: property.isFeatured,
           }))}
           rentProps={rentProps.map((property) => ({
@@ -71,7 +72,7 @@ export default async function HomePage() {
             beds: property.bedrooms,
             baths: property.bathrooms,
             furniture: formatFurnishing(property.furnishingNote, property.furnishingStatus),
-            images: property.imagePaths,
+            images: normalizeListingImagePaths(property.imagePaths),
             isFeatured: property.isFeatured,
           }))}
         />

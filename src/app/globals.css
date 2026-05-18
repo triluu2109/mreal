@@ -160,11 +160,11 @@
   }
 
   /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: var(--color-gray-bg); }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-gold);
-    border-radius: 3px;
+    background: var(--color-gold-light);
+    border-radius: 4px;
   }
   * {
     @apply border-border outline-ring/50;

@@ -7,10 +7,11 @@ import Footer from "@/components/layout/Footer";
 import { prisma } from "@/server/db/prisma";
 import { buildListingTitle, formatArea, formatLayout } from "@/lib/listing-utils";
 import ImageGallery from "@/components/ui/ImageGallery";
-import SimilarProperties from "@/components/sections/SimilarProperties";
-import DetailBookingForm from "@/components/sections/DetailBookingForm";
+import SimilarProperties from "@/components/layout/sections/SimilarProperties";
+import DetailBookingForm from "@/components/layout/sections/DetailBookingForm";
 import { formatFurnishing } from "@/lib/furnishing";
 import { getI18n } from "@/lib/i18n/server";
+import { normalizeListingImagePaths } from "@/lib/listing-media";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -42,6 +43,7 @@ export default async function RentDetailPage({ params }: Props) {
 
   const title = buildListingTitle(property.projectCode, property.unitCode, property.areaSqm.toString(), property.bedrooms, property.bathrooms);
   const price = property.displayPrice;
+  const imagePaths = normalizeListingImagePaths(property.imagePaths);
   const specs = [
     { icon: <Maximize2 size={16} />, label: vi.listing_page.detail.specs.area, value: formatArea(Number(property.areaSqm)) },
     { icon: <BedDouble size={16} />, label: vi.listing_page.detail.specs.bedrooms, value: `${property.bedrooms} ${vi.listing_page.detail.room_suffix}` },
@@ -49,7 +51,6 @@ export default async function RentDetailPage({ params }: Props) {
     { icon: <BedDouble size={16} />, label: vi.listing_page.detail.specs.layout, value: formatLayout(property.bedrooms, property.bathrooms) },
     { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.furnishing, value: formatFurnishing(property.furnishingNote, property.furnishingStatus) },
     property.view && { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.view, value: property.view },
-    property.availability && { icon: <Building2 size={16} />, label: vi.listing_page.detail.specs.availability, value: property.availability },
   ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string | null }[];
 
   return (
@@ -76,7 +77,7 @@ export default async function RentDetailPage({ params }: Props) {
                 {vi.listing_page.detail.rent_breadcrumb}
               </Link>
 
-              <ImageGallery images={property.imagePaths} alt={title} />
+              <ImageGallery images={imagePaths} alt={title} />
 
               <div>
                 <h1 className="font-heading font-bold text-navy text-2xl md:text-3xl mb-3">{title}</h1>

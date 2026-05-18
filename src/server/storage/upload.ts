@@ -1,6 +1,5 @@
 import path from "node:path";
-import { mkdir, writeFile } from "node:fs/promises";
-import sharp from "sharp";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { normalizeStoragePath } from "./resolve-url";
 import type { UploadImageInput, WritableStorageProvider } from "./types";
 
@@ -18,7 +17,7 @@ export const localWritableProvider: WritableStorageProvider = {
 
   async uploadImage({ file, directory, fileName }: UploadImageInput): Promise<string> {
     const cleanDir = normalizeStoragePath(directory);
-    const cleanName = `${fileName.replace(/\.webp$/i, "")}.webp`;
+    const cleanName = path.posix.basename(fileName);
     const relativePath = `${cleanDir}/${cleanName}`.replace(/\/+/g, "/").replace(/^\//, "");
     const outputPath = path.join(STORAGE_DIR, ...relativePath.split("/"));
 
@@ -30,9 +29,20 @@ export const localWritableProvider: WritableStorageProvider = {
     await mkdir(path.dirname(outputPath), { recursive: true });
 
     const input = Buffer.from(await file.arrayBuffer());
-    const output = await sharp(input).webp({ quality: 82 }).toBuffer();
-    await writeFile(outputPath, output);
+    await writeFile(outputPath, input);
 
     return relativePath;
+  },
+
+  async deleteFile(relativePath: string): Promise<void> {
+    const cleanPath = normalizeStoragePath(relativePath);
+    if (!cleanPath) return;
+
+    const outputPath = path.join(STORAGE_DIR, ...cleanPath.split("/"));
+    if (!outputPath.startsWith(STORAGE_DIR)) {
+      throw new Error("Invalid delete path: outside storage root");
+    }
+
+    await rm(outputPath, { force: true });
   },
 };
